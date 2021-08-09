@@ -16,6 +16,7 @@
           @click="onDelete"
           :loading="deleting"
           :disabled="selected.length == 0"
+          v-if="list.length > 0"
         >
           Delete
         </v-btn>
@@ -23,6 +24,7 @@
 
       <div class="mt-3">
         <v-data-table
+          class="elevation-1"
           v-model="selected"
           :loading="loading"
           :show-select="list.length > 0"

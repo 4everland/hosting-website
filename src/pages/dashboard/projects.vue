@@ -32,7 +32,7 @@
             <v-img
               :src="$getImgSrc(it.production.screenshot)"
               lazy-src="img/proj-bg-def.png"
-              height="165"
+              height="155"
             ></v-img>
           </a>
 
@@ -64,7 +64,7 @@
             </v-btn>
           </div>
 
-          <v-card-subtitle>
+          <v-card-subtitle class="pt-2">
             <div class="" style="min-height: 60px">
               <e-build-line
                 type="Production"

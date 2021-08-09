@@ -1,6 +1,7 @@
 <template>
   <div>
     <v-data-table
+      class="elevation-1"
       :headers="headers"
       :items="list"
       hide-default-footer

@@ -18,6 +18,7 @@
             @click="onDelete"
             :loading="deleting"
             :disabled="selected.length == 0"
+            v-if="list.length > 0"
           >
             {{ $t(`${locales}Delete`) }}
           </v-btn>
