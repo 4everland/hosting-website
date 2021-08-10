@@ -121,7 +121,7 @@ export default {
             `/project/config/${this.info.id}/git/hooks/${row.name}`
           );
         }
-        this.$toast("deleted successfully");
+        this.$toast("Deleted successfully");
       } catch (error) {
         //
       }
@@ -147,7 +147,7 @@ export default {
         this.form = {
           ...this.initForm,
         };
-        this.$toast("added successfully");
+        this.$toast("Added successfully");
         this.getList();
       } catch (error) {
         //

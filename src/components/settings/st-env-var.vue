@@ -109,7 +109,11 @@ export default {
         this.adding = true;
         await this.$http.post("/project/env/" + this.info.id, this.form);
         this.showPop = false;
-        this.$toast("added successfully");
+        this.form = {
+          key: "",
+          value: "",
+        };
+        this.$toast("Added successfully");
         this.getList();
       } catch (error) {
         //
@@ -122,7 +126,7 @@ export default {
         for (const row of this.selected) {
           await this.$http.delete("/project/env?id=" + row.id);
         }
-        this.$toast("deleted successfully");
+        this.$toast("Deleted successfully");
       } catch (error) {
         //
       }
@@ -135,9 +139,8 @@ export default {
         this.loading = true;
         const { data } = await this.$http.get(`/project/env/${this.info.id}`);
         // console.log(data)
-        const now = new Date();
         this.list = data.content.map((it) => {
-          it.time = new Date(it.createAt).toNiceTime(now);
+          it.time = new Date(it.createAt).format("y-m-d HH:ii:ss");
           return it;
         });
       } catch (error) {

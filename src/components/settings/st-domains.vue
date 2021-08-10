@@ -159,6 +159,7 @@ export default {
           projectId: this.info.id,
         });
         this.domain = "";
+        this.$toast("Added successfully");
         await this.getList();
         // console.log(data)
       } catch (error) {
@@ -183,7 +184,7 @@ export default {
         this.$set(it, "removing", true);
         await this.$http.delete("/domain/" + it.domainId);
         await this.getList();
-        this.$toast(it.domain + " removed");
+        this.$toast("Removed successfully");
       } catch (error) {
         //
       }
