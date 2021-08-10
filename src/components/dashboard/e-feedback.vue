@@ -18,7 +18,7 @@
           persistent-placeholder
           v-model="form.email"
           label="Email"
-          :placeholder="userInfo.email"
+          placeholder="Your email"
         />
         <v-textarea
           prepend-icon="mdi-note-text-outline"
@@ -77,14 +77,23 @@ export default {
         this.title = data ? data.label : "Feedback";
       }
     },
+    showPop() {
+      this.form.email = this.userInfo.email;
+    },
   },
   methods: {
     async onSubmit() {
       const body = { ...this.form };
-      if (!body.email) body.email = this.userInfo.email;
-      if (!body.description) {
-        return this.$toast("No Description");
+      let msg = "";
+      if (!this.$regMap.email.test(body.email)) {
+        msg = "Invalid Email";
+      } else if (!body.description) {
+        msg = "No Description";
       }
+      if (msg) {
+        return this.$toast(msg);
+      }
+
       const form = new FormData();
       for (const key in body) {
         form.append(key, body[key]);

@@ -141,9 +141,13 @@ export default {
     },
     async onSave(key) {
       try {
+        const val = this[key];
+        if (key == "email" && !this.$regMap.email.test(val)) {
+          return this.$toast("Invalid Email");
+        }
         this.saving = key;
         await this.$http.put("/user", {
-          [key]: this[key],
+          [key]: val,
         });
         this.$setState({
           noticeMsg: {

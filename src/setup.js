@@ -51,3 +51,7 @@ Vue.prototype.$openWindow = (url) => {
 
 Vue.prototype.$color1 = "#4A96FA";
 Vue.prototype.$bg1 = "#1e2226";
+
+Vue.prototype.$regMap = {
+  email: /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/,
+};
