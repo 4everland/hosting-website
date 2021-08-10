@@ -65,6 +65,7 @@
                 v-model="inputVal"
                 dense
                 v-bind="alertInfo.inputAttrs"
+                @keyup.enter="hideAlert(1)"
               ></v-text-field>
             </v-form>
           </div>
