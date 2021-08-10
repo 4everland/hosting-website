@@ -7,7 +7,13 @@
       for each one.
     </div>
     <div class="mt-5 d-flex">
-      <v-text-field outlined dense v-model="domain" placeholder="mywebsite.com">
+      <v-text-field
+        outlined
+        dense
+        v-model="domain"
+        @keyup.enter="onAdd"
+        placeholder="mywebsite.com"
+      >
       </v-text-field>
       <v-btn
         @click="onAdd"
@@ -143,7 +149,8 @@ export default {
     },
     async onAdd() {
       try {
-        if (!/(\w+\.)+\w{2,10}/.test(this.domain)) {
+        if (!this.domain) return;
+        if (!this.$regMap.domain.test(this.domain)) {
           return this.$alert("invalid domain");
         }
         this.adding = true;

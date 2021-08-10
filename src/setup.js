@@ -54,4 +54,5 @@ Vue.prototype.$bg1 = "#1e2226";
 
 Vue.prototype.$regMap = {
   email: /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/,
+  domain: /(\w+\.)+\w{2,10}/,
 };

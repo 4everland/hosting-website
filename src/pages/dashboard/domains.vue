@@ -98,6 +98,7 @@
                 outlined
                 v-model="domain"
                 placeholder="mywebsite.com"
+                @keyup.enter="onAdd"
               />
             </div>
           </v-window-item>
@@ -213,7 +214,8 @@ export default {
     },
     async onAdd() {
       try {
-        if (!/(\w+\.)+\w{2,10}/.test(this.domain)) {
+        if (!this.domain) return;
+        if (!this.$regMap.domain.test(this.domain)) {
           return this.$alert("invalid domain");
         }
         this.adding = true;
