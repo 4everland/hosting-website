@@ -82,9 +82,6 @@ export default {
     showPop() {
       this.form.email = this.userInfo.email;
     },
-    files() {
-      console.log(this.files);
-    },
   },
   methods: {
     async onSubmit() {

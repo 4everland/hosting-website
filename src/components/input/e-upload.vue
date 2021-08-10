@@ -56,9 +56,7 @@
           />
         </div>
       </div>
-      <div class="gray fz-13">
-        You can upload {{ limit }} pictures at maximum
-      </div>
+      <div class="gray fz-13">You can attach {{ limit }} images at maximum</div>
     </div>
   </div>
 </template>
@@ -114,6 +112,10 @@ export default {
       for (const file of files) {
         if (this.limit && this.files.length >= this.limit) break;
         if (!/image/.test(file.type)) continue;
+        if (file.size > Math.pow(1024, 2) * 10) {
+          this.$toast(`${file.name} is too larg (over 10MB)`);
+          continue;
+        }
         this.files.push(file);
         const reader = new FileReader();
         reader.readAsDataURL(file);
