@@ -174,11 +174,11 @@ export default {
       try {
         this.$loading();
         const { data } = await this.$http.get("/bill/history");
+        this.$loading.close();
         if (data.content.length) {
           localStorage[skey] = 1;
           return;
         }
-        this.$loading.close();
         this.showPop = true;
         return true;
       } catch (error) {

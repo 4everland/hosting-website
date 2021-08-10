@@ -37,14 +37,19 @@
 
               <div
                 class="bd-1 bg-f5 bdrs-5 pa-10 d-flex flex-center al-c"
-                style="min-height: 250px"
+                style="min-height: 350px"
                 v-else-if="!list.length"
               >
                 <div>
                   <div>{{ $t(`${locales}NoGitRepositoriesFound`) }}</div>
                   <div class="gray fz-14 mt-3">
-                    {{ $t(`${locales}TrySelectingDifferentGit`) }}
+                    <p>{{ $t(`${locales}TrySelectingDifferentGit`) }}</p>
                   </div>
+                  <v-skeleton-loader
+                    v-if="timing"
+                    class="mt-5"
+                    type="article"
+                  />
                 </div>
               </div>
               <div class="ta-c mt-8" v-else-if="!repoList.length">
@@ -155,6 +160,7 @@ export default {
         },
       ],
       keyword: "",
+      timing: null, // after select git, auto refresh
     };
   },
   computed: {
@@ -173,9 +179,13 @@ export default {
       if (val && this.isAddClick) {
         this.isAddClick = false;
         this.getList();
-        setTimeout(() => {
+        let times = 0;
+        this.clearTiming();
+        this.timing = setInterval(() => {
           this.getList();
-        }, 4e3);
+          times += this.list.length ? 2 : 1;
+          if (times > 2) this.clearTiming();
+        }, 5e3);
       }
     },
   },
@@ -183,6 +193,12 @@ export default {
     this.getList();
   },
   methods: {
+    clearTiming() {
+      if (this.timing) {
+        clearInterval(this.timing);
+        this.timing = null;
+      }
+    },
     getTplLink(it) {
       return `#/new/clone-flow?s=${encodeURIComponent(it.src)}&t=${it.title}`;
     },
