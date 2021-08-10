@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-dialog v-model="showPop" max-width="650">
+    <v-dialog eager v-model="showPop" max-width="650">
       <div class="pos-r">
         <h2 class="pd-15 fz-18 ta-c">{{ title }}</h2>
         <div
@@ -25,18 +25,19 @@
           outlined
           persistent-placeholder
           v-model="form.description"
-          rows="5"
+          rows="4"
           label="Description"
           placeholder="Your feedback..."
         />
-        <v-file-input
+        <!-- <v-file-input
           v-model="files"
           label="Pictures"
           accept="image/*"
           counter
           multiple
           outlined
-        ></v-file-input>
+        ></v-file-input> -->
+        <e-upload v-model="files"></e-upload>
 
         <div class="ta-c mt-5">
           <v-btn color="primary" :loading="loading" @click="onSubmit"
@@ -67,18 +68,22 @@ export default {
         description: "",
       },
       files: [],
+      fileList: [],
       loading: false,
     };
   },
   watch: {
     noticeMsg({ name, data }) {
-      if (name == "feedback") {
+      if (name == "feedback" && !this.showPop) {
         this.showPop = true;
         this.title = data ? data.label : "Feedback";
       }
     },
     showPop() {
       this.form.email = this.userInfo.email;
+    },
+    files() {
+      console.log(this.files);
     },
   },
   methods: {
@@ -107,7 +112,7 @@ export default {
         this.showPop = false;
         this.$toast("Your feedback is received.");
         this.form.description = "";
-        this.files = null;
+        this.files = [];
       } catch (error) {
         //
       }
