@@ -1,5 +1,6 @@
-import termTxt from "./term-txt";
-import privacyTxt from "./privacy-txt";
+import termTxt from "./text/term-txt";
+import privacyTxt from "./text/privacy-txt";
+import bugBounty from "./text/bug-bounty";
 
 const locale = {
   common: {
@@ -10,6 +11,7 @@ const locale = {
     ReadAndAgree:
       "I have read carefully and agree to the above terms and conditions",
     PrivacyTxt: privacyTxt.en,
+    BugBounty: bugBounty.en,
   },
   home: {
     LoginToHosting: "Login to Hosting",

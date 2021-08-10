@@ -106,10 +106,14 @@ export default {
           subs: [
             {
               label: "Bug Bounty",
-              name: "feedback",
+              to: "/bug-bounty",
             },
             {
               label: "Feedback",
+              name: "feedback",
+            },
+            {
+              label: "Tip-off",
               name: "feedback",
             },
           ],

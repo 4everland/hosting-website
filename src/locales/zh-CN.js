@@ -1,4 +1,4 @@
-import termTxt from "./term-txt";
+import termTxt from "./text/term-txt";
 
 const locale = {
   common: {

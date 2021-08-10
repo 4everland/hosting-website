@@ -10,6 +10,7 @@ import Solution from "./solution";
 import Templates from "./solution/templates";
 import Changelog from "./docs/changelog";
 import CloneFlow from "./new/clone-flow";
+import BugBounty from "./docs/bug-bounty";
 
 export default [
   {
@@ -19,6 +20,10 @@ export default [
   {
     path: "/new/clone-flow",
     component: CloneFlow,
+  },
+  {
+    path: "/bug-bounty",
+    component: BugBounty,
   },
   {
     path: "/changelog",

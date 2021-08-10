@@ -143,3 +143,20 @@ $bdcolor: #E6E8EB;
   &.c-success { color: #69C07E; }
   &.c-failure, &.c-error { color: #E43D3D; }
 }
+
+.e-table-1 {
+  width: 100%;
+  border-spacing: 0;
+  &, td {
+    border: 1px solid $bdcolor;
+  }
+  & {
+    border-bottom: none;
+    border-right: none;
+  }
+  td {
+    padding: 5px;
+    border-left: none;
+    border-top: none;
+  }
+}
