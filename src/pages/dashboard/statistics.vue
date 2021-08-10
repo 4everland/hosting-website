@@ -11,22 +11,24 @@
 </style>
 
 <template>
-  <v-card class="pd-20" outlined v-if="!apps">
-    <v-row>
-      <v-col cols="12" :md="6" :lg="4" v-for="i in 3" :key="i">
-        <v-skeleton-loader max-width="450" type="card"></v-skeleton-loader>
-      </v-col>
-    </v-row>
-    <v-skeleton-loader class="mt-5" type="article" />
-  </v-card>
-  <div v-else-if="!apps.length" class="ta-c">
-    <img src="img/bill-empty.svg" style="height: 200px" />
-    <div class="gray mt-4">
-      {{ $t(`${locales}NoAppDeployed`) }}
+  <v-card class="pd-20" outlined>
+    <div v-if="!apps">
+      <v-row>
+        <v-col cols="12" :md="6" :lg="4" v-for="i in 3" :key="i">
+          <v-skeleton-loader max-width="450" type="card"></v-skeleton-loader>
+        </v-col>
+      </v-row>
+      <v-skeleton-loader class="mt-5" type="article" />
     </div>
-  </div>
-  <v-card v-else outlined>
-    <div class="pd-20">
+
+    <div v-else-if="!apps.length" class="ta-c pd-20 mt-8 mb-8">
+      <img src="img/bill-empty.svg" style="height: 200px" />
+      <div class="gray mt-4">
+        {{ $t(`${locales}NoAppDeployed`) }}
+      </div>
+    </div>
+
+    <div v-else>
       <div class="mb-6">
         <v-select
           style="max-width: 300px"
