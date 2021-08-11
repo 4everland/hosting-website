@@ -37,7 +37,7 @@
 
               <div
                 class="bd-1 bg-f5 bdrs-5 pa-10 d-flex flex-center al-c"
-                style="min-height: 350px"
+                style="min-height: 355px"
                 v-else-if="!list.length"
               >
                 <div>

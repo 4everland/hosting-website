@@ -48,7 +48,7 @@
                 <v-skeleton-loader type="article" />
               </div>
               <template v-else>
-                <div class="d-flex al-c" v-if="projects.length">
+                <div class="d-flex al-c">
                   <v-icon class="ml-4">mdi-magnify</v-icon>
                   <input
                     type="text"
@@ -75,7 +75,7 @@
                 </div>
                 <div class="d-flex al-c bdt-1 pd-15 gray fz-15">
                   <v-icon>mdi-folder-plus-outline</v-icon>
-                  <span class="ml-2">{{ $t(`${locales}YouCanAlso`) }}</span>
+                  <!-- <span class="ml-2">{{ $t(`${locales}YouCanAlso`) }}</span> -->
                   <a class="color-1 ml-1" href="#/new">{{
                     $t(`${locales}CreateNewProject`)
                   }}</a>
