@@ -1,10 +1,14 @@
 <template>
   <div class="wrap-1">
     <div class="con-1">
-      <div class="ta-c pt-5">
-        <h1 class="mt-10">{{ $t(`${locales}LoginToHosting`) }}</h1>
+      <div
+        class="ta-c pt-10 pb-10 bg-white bd-1 m-auto"
+        style="max-width: 600px"
+      >
+        <img src="img/bg/login.svg" style="width: 220px" />
+        <h1 class="mt-5 fz-25">{{ $t(`${locales}LoginToHosting`) }}</h1>
         <div class="mt-8">
-          <v-btn color="#24292e" large :loading="inLogin" @click="onLogin">
+          <v-btn color="primary" large :loading="inLogin" @click="onLogin">
             <v-icon color="white">mdi-github</v-icon>
             <span class="white-0 ml-1">{{
               $t(`${locales}ContinuewithGithub`)
