@@ -60,7 +60,7 @@ const locale = {
       PageView: "Page View",
       Time: "Time",
       Day: "{num}day",
-      YesterdayRetentionRate: "Yesterday retention rate",
+      RetentionRate: "Next day retention rate",
     },
     billing: {
       MyResource: "My Resource",

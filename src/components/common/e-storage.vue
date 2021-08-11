@@ -103,7 +103,6 @@ export default {
       if (val > oldVal) {
         clearInterval(this.timing);
         this.timing = setInterval(() => {
-          console.log(this.downSec);
           if (this.downSec > 0) this.downSec -= 1;
           else clearInterval(this.timing);
         }, 1e3);
@@ -124,6 +123,7 @@ export default {
       if (this.curStep == 0) {
         this.curStep = 1;
         this.downSec = 5;
+        this.isAgree = false;
         const el = this.$refs.con1;
         if (el) el.scrollTo(0, 0);
       } else {

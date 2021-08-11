@@ -254,6 +254,7 @@ export default {
   },
   mounted() {
     this.initData();
+    // this.onBuildSuc();
   },
   methods: {
     async onBuildSuc() {
@@ -264,7 +265,7 @@ export default {
       if (data.length > 1) {
         html = "Redeployed successfully.";
       }
-      html += `<div class="mt-5 ta-c"><img src="img/build-suc.svg" style="height: 200px;" /></div>`;
+      html += `<div class="mt-5 ta-c"><img src="img/bg/party.gif" style="height: 200px;" /></div>`;
       this.$alert(html, "Congratulations!", {
         type: "success",
       });

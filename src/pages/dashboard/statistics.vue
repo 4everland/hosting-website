@@ -156,7 +156,7 @@ export default {
           value: this.info.totalUsers,
         },
         {
-          title: this.$t(`dashboard.statistics.YesterdayRetentionRate`),
+          title: this.$t(`dashboard.statistics.RetentionRate`),
           value: (this.info.retentionRate || 0) + "%",
         },
       ];

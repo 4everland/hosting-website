@@ -49,7 +49,7 @@
                 <img
                   v-on="on"
                   :src="chooseFramework.logo"
-                  style="width: 20px"
+                  style="width: 16px"
                 />
               </template>
               <p>
@@ -72,7 +72,7 @@
             <template v-slot:prepend>
               <v-tooltip bottom max-width="300">
                 <template v-slot:activator="{ on }">
-                  <v-icon v-on="on"> mdi-help-circle-outline </v-icon>
+                  <v-icon v-on="on" size="15"> mdi-help-circle-outline </v-icon>
                 </template>
                 <p>
                   The command your frontend framework provides for compiling
@@ -103,7 +103,7 @@
             <template v-slot:prepend>
               <v-tooltip bottom max-width="300">
                 <template v-slot:activator="{ on }">
-                  <v-icon v-on="on"> mdi-help-circle-outline </v-icon>
+                  <v-icon v-on="on" size="15"> mdi-help-circle-outline </v-icon>
                 </template>
                 <p>
                   The directory in which your compiled frontend will be located.
@@ -133,7 +133,7 @@
             <template v-slot:prepend>
               <v-tooltip bottom max-width="300">
                 <template v-slot:activator="{ on }">
-                  <v-icon v-on="on"> mdi-help-circle-outline </v-icon>
+                  <v-icon v-on="on" size="15"> mdi-help-circle-outline </v-icon>
                 </template>
                 <p>
                   The command that is used to install your Project's software

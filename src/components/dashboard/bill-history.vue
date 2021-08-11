@@ -17,7 +17,7 @@ export default {
   data() {
     return {
       headers: [
-        { text: this.$t(`dashboard.billing.N`), value: "seq" },
+        // { text: this.$t(`dashboard.billing.N`), value: "seq" },
         // { text: 'Account', value: 'account' },
         { text: this.$t(`dashboard.billing.Storage`), value: "storage" },
         { text: this.$t(`dashboard.billing.Amount`), value: "amount" },

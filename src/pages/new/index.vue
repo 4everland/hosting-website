@@ -1,6 +1,14 @@
 <template>
   <div class="wrap-1">
     <v-dialog v-model="showSelect" max-width="600">
+      <div class="pos-r">
+        <div
+          class="pos-a top-0 right-0 pd-15 z-100 hover-1"
+          @click="showSelect = false"
+        >
+          <v-icon>mdi-close</v-icon>
+        </div>
+      </div>
       <e-deploy
         :value="showSelect"
         :clone="!!isClone"
