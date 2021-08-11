@@ -91,6 +91,8 @@ export default {
         msg = "Invalid Email";
       } else if (!body.description) {
         msg = "No Description";
+      } else if (body.description.length > 10) {
+        msg = "Description: 10000 chars at maximum";
       }
       if (msg) {
         return this.$toast(msg);
