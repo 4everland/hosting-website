@@ -205,7 +205,10 @@ export default {
       }
     },
     getTplLink(it) {
-      return `#/new/clone-flow?s=${encodeURIComponent(it.src)}&t=${it.title}`;
+      const src =
+        "https://github.com/4everland/project-templates/tree/main/examples/" +
+        it.slug;
+      return `#/new/clone-flow?s=${encodeURIComponent(src)}&t=${it.name}`;
     },
     onImport(it) {
       this.importItem = it;
