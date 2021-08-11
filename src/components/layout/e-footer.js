@@ -6,24 +6,24 @@ export default {
           title: "Frameworks",
           subs: [
             {
-              label: "Next.js",
-              to: "/solution/nextjs",
+              label: "Vue.js",
+              to: "/solution/vue",
             },
             {
               label: "Create React App",
               to: "/solution/create-react-app",
             },
             {
-              label: "Gatsby",
-              to: "/solution/gatsby",
+              label: "Next.js",
+              to: "/solution/nextjs",
             },
             {
               label: "Nuxt.js",
               to: "/solution/nuxtjs",
             },
             {
-              label: "Vue",
-              to: "/solution/vue",
+              label: "Gatsby",
+              to: "/solution/gatsby",
             },
             {
               label: "Angular",

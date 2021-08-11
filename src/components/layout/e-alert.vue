@@ -33,6 +33,7 @@
 
     <v-dialog
       v-model="showAlert"
+      v-show="!!alertInfo.content"
       max-width="460"
       :persistent="alertInfo.showCancel"
     >

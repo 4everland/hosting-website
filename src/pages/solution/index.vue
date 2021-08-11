@@ -1,7 +1,7 @@
 <template>
   <div class="wrap-1">
     <div
-      class="con-2 bg-white bd-1 bdrs-5 d-flex f-center al-c pos-r"
+      class="con-3 bg-white bd-1 bdrs-5 d-flex f-center al-c pos-r"
       style="min-height: 480px; height: 55vh"
       :style="{
         background: `-webkit-linear-gradient(-55deg, ${info.bg1}, #fff 60%)`,
@@ -20,7 +20,11 @@
         </div>
       </div>
 
-      <img :src="info.logo" class="pos-a btm-0 right-0 pa-10" />
+      <img
+        :src="info.logo"
+        class="pos-a btm-0 right-0 pa-10"
+        style="height: 140px"
+      />
     </div>
   </div>
 </template>
