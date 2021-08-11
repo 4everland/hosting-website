@@ -3,7 +3,7 @@ import Axios from "axios";
 import router from "./router";
 
 const http = Axios.create({
-  baseURL: process.env.BASE_URL,
+  baseURL: process.env.VUE_APP_BASE_URL,
 });
 
 http.interceptors.request.use(
