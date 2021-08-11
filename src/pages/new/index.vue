@@ -136,25 +136,25 @@ export default {
       tplList: [
         {
           img: "img/new/nextjs.png",
-          logo: "img/new/next.svg",
+          logo: "img/logos/next.svg",
           title: "Next.js",
           src: "https://github.com/4everland/project-templates/tree/main/examples/nextjs",
         },
         {
           img: "img/new/vue.png",
-          logo: "img/new/vuejs.png",
+          logo: "img/logos/vuejs.png",
           title: "Vue.js",
           src: "https://github.com/4everland/project-templates/tree/main/examples/vue",
         },
         {
           img: "img/new/nuxtjs.png",
-          logo: "img/new/nuxt.svg",
+          logo: "img/logos/nuxt.svg",
           title: "Nuxt.js",
           src: "https://github.com/4everland/project-templates/tree/main/examples/nuxtjs",
         },
         {
           img: "img/new/gatsbyjs.png",
-          logo: "img/new/gatsby.svg",
+          logo: "img/logos/gatsby.svg",
           title: "Gatsby.js",
           src: "https://github.com/4everland/project-templates/tree/main/examples/gatsby",
         },
@@ -183,8 +183,8 @@ export default {
         this.clearTiming();
         this.timing = setInterval(() => {
           this.getList();
-          times += this.list.length ? 2 : 1;
-          if (times > 2) this.clearTiming();
+          times += this.list.length ? 3 : 1;
+          if (times > 4) this.clearTiming();
         }, 5e3);
       }
     },
