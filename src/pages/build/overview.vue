@@ -262,7 +262,7 @@ export default {
       );
       let html = "You just deployed a new Project to 4everland.";
       if (data.length > 1) {
-        html = "Deployment created successfully";
+        html = "Redeployed successfully.";
       }
       html += `<div class="mt-5 ta-c"><img src="img/build-suc.svg" style="height: 200px;" /></div>`;
       this.$alert(html, "Congratulations!", {
