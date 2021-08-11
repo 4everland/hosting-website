@@ -260,10 +260,11 @@ export default {
       const { data } = await this.$http.get(
         `/project/task/${this.info.projectId}/all`
       );
-      if (data.length > 1) return;
-      let html =
-        "You just deployed a new Project to 4everland." +
-        `<div class="mt-5 ta-c"><img src="img/build-suc.svg" style="height: 200px;" /></div>`;
+      let html = "You just deployed a new Project to 4everland.";
+      if (data.length > 1) {
+        html = "Deployment created successfully";
+      }
+      html += `<div class="mt-5 ta-c"><img src="img/build-suc.svg" style="height: 200px;" /></div>`;
       this.$alert(html, "Congratulations!", {
         type: "success",
       });
