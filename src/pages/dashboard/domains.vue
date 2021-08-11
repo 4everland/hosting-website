@@ -216,7 +216,9 @@ export default {
       try {
         if (!this.domain) return;
         if (!this.$regMap.domain.test(this.domain)) {
-          return this.$alert("invalid domain");
+          return this.$alert(
+            `The specified value "${this.domain}” is not a fully qualified domain name.`
+          );
         }
         this.adding = true;
         await this.$http.post("/domain", {
