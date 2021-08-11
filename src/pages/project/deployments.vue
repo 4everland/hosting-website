@@ -13,7 +13,7 @@
           <v-skeleton-loader v-if="!list" type="article" />
 
           <div class="ta-c pd-20 gray fz-14" v-else-if="!list.length">
-            empty
+            No Deployments
           </div>
 
           <div
@@ -34,7 +34,11 @@
               "
             >
               <div class="flex-1">
-                <div>{{ it.buildConfig.name }}</div>
+                <a
+                  :href="`#/build/${it.buildConfig.name}/${it.taskId}/overview`"
+                  class="b"
+                  >{{ it.buildConfig.name }}</a
+                >
                 <div class="gray mt-1 fz-13">
                   Production
                   <!-- (Current) -->

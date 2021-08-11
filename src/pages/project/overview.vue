@@ -47,10 +47,21 @@
               'mt-4': $vuetify.breakpoint.mobile,
             }"
           >
-            <v-btn small class="mr-5" :to="getLink('log')">
+            <v-btn small :to="getLink('log')" v-if="info.latest">
               View Build Logs
             </v-btn>
-            <v-btn small :to="getLink('domain')"> View Domains </v-btn>
+            <v-btn
+              small
+              color="primary"
+              @click="onBuild"
+              :loading="building"
+              v-else
+            >
+              Start Build
+            </v-btn>
+            <v-btn class="ml-5" small :to="getLink('domain')">
+              View Domains
+            </v-btn>
           </div>
         </div>
 
@@ -116,7 +127,7 @@
                 <e-branch></e-branch>
 
                 <div class="mt-2">
-                  <e-commit :info="info.latest.commits"></e-commit>
+                  <e-commit :info="(info.latest || {}).commits"></e-commit>
                 </div>
               </template>
               <v-skeleton-loader v-else type="article" />
@@ -136,6 +147,7 @@ export default {
     const { id } = this.$route.params;
     return {
       id,
+      building: false,
     };
   },
   computed: {
@@ -157,8 +169,20 @@ export default {
     },
   },
   methods: {
+    async onBuild() {
+      try {
+        this.building = true;
+        const { data } = await this.$http.post(
+          `/project/${this.info.id}/build`
+        );
+        this.$router.push(`/build/${this.info.name}/${data.taskId}/overview`);
+      } catch (error) {
+        //
+      }
+      this.building = false;
+    },
     getLink(name) {
-      const { latest } = this.info;
+      const { latest = {} } = this.info;
       let link;
       if (name == "log") {
         link = `/build/${this.info.name}/${latest.taskId}/overview`;

@@ -62,9 +62,9 @@
                   color="error"
                   class="flex-1 mr-5"
                   :loading="deploying"
-                  @click="onDeploy"
+                  @click="onBtn1"
                 >
-                  Redeploy
+                  {{ btn1Txt }}
                 </v-btn>
                 <v-btn
                   :disabled="!isSuccess || !visitUrl"
@@ -78,7 +78,7 @@
               </div>
             </div>
           </v-col>
-          <v-col cols="12" md="6">
+          <v-col cols="12" md="6" class="pos-r">
             <div class="pd-20" v-if="!info.taskId">
               <v-skeleton-loader type="article" />
             </div>
@@ -136,6 +136,35 @@
                 <e-commit :info="info.commits"></e-commit>
               </div>
             </div>
+
+            <v-menu>
+              <template v-slot:activator="{ attrs, on }">
+                <v-btn
+                  icon
+                  v-bind="attrs"
+                  v-on="on"
+                  class="pos-a right-0 top-0 mt-2 mr-2"
+                >
+                  <v-icon>mdi-dots-vertical</v-icon>
+                </v-btn>
+              </template>
+              <v-list>
+                <v-list-item
+                  link
+                  v-clipboard="opt.name == 'copy' ? info.domain || '' : ''"
+                  @click="onOpt(opt)"
+                  v-for="(opt, i) in optList"
+                  :key="i"
+                >
+                  <v-list-item-title :class="opt.cls">
+                    <v-icon size="16" :color="opt.iconColor"
+                      >mdi-{{ opt.icon }}</v-icon
+                    >
+                    <span class="fz-15 ml-2">{{ opt.text }}</span>
+                  </v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
           </v-col>
         </v-row>
 
@@ -220,6 +249,10 @@ export default {
         })
         .join("\n");
     },
+    btn1Txt() {
+      if (this.isRunning) return "Cancel";
+      return "Redeploy";
+    },
   },
   data() {
     return {
@@ -227,6 +260,20 @@ export default {
       logs: [],
       deploying: false,
       state: "",
+      optList: [
+        {
+          text: "Copy URL",
+          name: "copy",
+          icon: "link-variant",
+        },
+        {
+          text: "Delete",
+          name: "delete",
+          icon: "delete",
+          cls: "red-1",
+          iconColor: "error",
+        },
+      ],
     };
   },
   watch: {
@@ -257,6 +304,46 @@ export default {
     // this.onBuildSuc();
   },
   methods: {
+    onOpt(opt) {
+      let { name } = opt;
+      if (name == "copy") {
+        this.$toast("copied");
+      } else if (name == "delete") {
+        this.onDelete();
+      }
+    },
+    async onCancel() {
+      try {
+        let html = `Canceling this deployment will immediately stop the build, with no way to resume.<br><br>
+Are you sure you want to continue?`;
+        await this.$confirm(html, "Cancel Deployment");
+        this.$loading();
+        await this.$http.post(`/project/${this.taskId}/cancel`);
+        this.$toast("Cancelled successfully.");
+        this.$router.back();
+      } catch (error) {
+        //
+      }
+      this.$loading.close();
+    },
+    async onDelete() {
+      try {
+        let html = `<div class="fz-14 mt-2">
+<b>NOTE</b>: Deployments that are not actively receiving any traffic do not generate any costs nor count towards any limits.<br><br>
+Deleting this deployment will prevent you from instantly reverting and might break links used in integrations, such as the ones in the pull requests of your Git provider.<br><br>
+Are you sure you want to continue?
+</div>
+`;
+        await this.$confirm(html, "Delete Deployment");
+        this.$loading();
+        await this.$http.delete("/project/task/object/" + this.taskId);
+        this.$toast("Deleted successfully.");
+        this.$router.back();
+      } catch (error) {
+        console.log(error);
+      }
+      this.$loading.close();
+    },
     async onBuildSuc() {
       const { data } = await this.$http.get(
         `/project/task/${this.info.projectId}/all`
@@ -288,6 +375,10 @@ export default {
     },
     onCopied() {
       this.$notice("copied");
+    },
+    onBtn1() {
+      if (this.isRunning) this.onCancel();
+      else this.onDeploy();
     },
     async onDeploy() {
       try {
