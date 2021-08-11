@@ -18,7 +18,7 @@
         <div class="mt-10">
           <v-btn
             icon
-            :href="item.link"
+            :href="item.href"
             target="_blank"
             class="mr-2"
             v-for="(item, i) in links"
@@ -34,11 +34,15 @@
           <v-col cols="6" lg="3" md="3" v-for="(item, i) in menus" :key="i">
             <div class="ml-3 mb-5 fz-14">{{ item.title }}</div>
             <div v-for="(sub, j) in item.subs" :key="j">
-              <v-btn text small color="#BBC2C9"
+              <v-btn
+                text
+                small
+                color="#BBC2C9"
                 :to="sub.to"
                 :href="sub.href"
                 :target="/^http/.test(sub.href) ? '_blank' : ''"
-                @click="onClick(sub)">
+                @click="onClick(sub)"
+              >
                 {{ sub.label }}
               </v-btn>
             </div>

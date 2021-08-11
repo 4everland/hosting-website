@@ -101,10 +101,6 @@ export default {
           href: "https://github.com/4everland",
         },
         {
-          icon: "mdi-facebook",
-          link: "",
-        },
-        {
           icon: "mdi-twitter",
           href: "https://twitter.com/4everland_org",
         },
@@ -113,12 +109,16 @@ export default {
           href: "https://t.me/org_4everland",
         },
         {
+          icon: "mdi-reddit",
+          href: "https://www.reddit.com/user/4everland_org/",
+        },
+        {
           icon: "mdi-discord",
           href: "https://discord.gg/sxtHDvvpuT",
         },
         {
           icon: "mdi-email",
-          link: "mailto:info@4everland.org",
+          href: "mailto:info@4everland.org",
         },
       ],
     };
