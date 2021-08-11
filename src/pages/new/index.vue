@@ -150,7 +150,7 @@ export default {
         },
         {
           img: "img/new/vue.png",
-          logo: "img/logos/vuejs.png",
+          logo: "img/logos/vue.svg",
           title: "Vue.js",
           src: "https://github.com/4everland/project-templates/tree/main/examples/vue",
         },

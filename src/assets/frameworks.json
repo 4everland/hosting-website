@@ -137,7 +137,7 @@
 }, {
   "name": "Angular",
   "slug": "angular",
-  "bg1": "#D7D3E8",
+  "bg1": "#ffd5df",
   "solution": "Deploy an enterprise-class application on a world-class platform.",
   "demo": "https://angular.examples.4everland.org",
   "logo": "img/logos/angular.svg",
@@ -465,7 +465,7 @@
 }, {
   "name": "Create React App",
   "slug": "create-react-app",
-  "bg1": "#D7D3E8",
+  "bg1": "#c6f3ff",
   "solution": "Deploy React apps on the platform its community loves.",
   "demo": "https://react-functions.examples.4everland.org",
   "logo": "img/logos/react.svg",
