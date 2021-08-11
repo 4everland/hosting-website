@@ -119,10 +119,9 @@ export default {
           ],
         };
         if (this.asMobile) {
-          feedback = feedback.subs.slice(0, 2)
-          links = feedback.concat(links)
-        }
-        else links.unshift(feedback);
+          feedback = feedback.subs.slice(0, 2);
+          links = feedback.concat(links);
+        } else links.unshift(feedback);
         const subs = [
           {
             label: "Settings",
@@ -144,12 +143,17 @@ export default {
             subs,
           });
       } else {
-        links.push({
+        const login = {
           label: "Login",
           name: "login",
           color: "#4A96FA",
           outlined: true,
-        });
+        };
+        if (this.$route.path == "/") {
+          login.color = "#BBC2C9";
+        }
+        console.log(login);
+        links.push(login);
       }
       return links;
     },

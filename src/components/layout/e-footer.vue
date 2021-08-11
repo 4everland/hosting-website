@@ -32,12 +32,12 @@
       <div class="flex-grow-1">
         <v-row>
           <v-col cols="6" lg="3" md="3" v-for="(item, i) in menus" :key="i">
-            <div class="ml-3 mb-5 fz-14">{{ item.title }}</div>
+            <div class="ml-3 mb-5 fz-14 white-8">{{ item.title }}</div>
             <div v-for="(sub, j) in item.subs" :key="j">
               <v-btn
                 text
                 small
-                color="#BBC2C9"
+                color="#999"
                 :to="sub.to"
                 :href="sub.href"
                 :target="/^http/.test(sub.href) ? '_blank' : ''"
