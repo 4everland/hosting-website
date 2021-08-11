@@ -206,11 +206,16 @@ export default {
       this.importItem = it;
       this.showSelect = true;
     },
-    addNew() {
+    async addNew() {
       this.isAddClick = true;
-      this.$openWindow(
-        "https://github.com/apps/foreverlandxyz/installations/new"
-      );
+      try {
+        this.$loading();
+        const { data } = await this.$http.get("/githubapp/install");
+        this.$openWindow(data.installUrl);
+      } catch (error) {
+        //
+      }
+      this.$loading.close();
     },
     async getList() {
       try {
