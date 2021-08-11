@@ -94,7 +94,7 @@ export default {
         },
         {
           label: "Docs",
-          href: "https://4ever-hosting-docs.vercel.app/",
+          href: "https://docs.hosting.4everland.org/guide/",
         },
       ];
       const { username } = this.userInfo;
@@ -113,18 +113,16 @@ export default {
               name: "feedback",
             },
             {
-              label: "Tip-off",
+              label: "Report",
               name: "feedback",
             },
           ],
         };
         if (this.asMobile) {
-          feedback = {
-            label: "Feedback",
-            name: "feedback",
-          };
+          feedback = feedback.subs.slice(0, 2)
+          links = feedback.concat(links)
         }
-        links.unshift(feedback);
+        else links.unshift(feedback);
         const subs = [
           {
             label: "Settings",

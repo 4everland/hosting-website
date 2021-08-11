@@ -40,7 +40,7 @@ export default {
           subs: [
             {
               label: "Documentation",
-              href: "https://4ever-hosting-docs.vercel.app/",
+              href: "https://docs.hosting.4everland.org/guide/",
             },
             {
               label: "Changelog",
