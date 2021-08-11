@@ -3,7 +3,7 @@ import Axios from "axios";
 import router from "./router";
 
 const http = Axios.create({
-  baseURL: "https://h.foreverland.xyz",
+  baseURL: process.env.BASE_URL,
 });
 
 http.interceptors.request.use(

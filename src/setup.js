@@ -27,7 +27,7 @@ Vue.prototype.$navTo = (url) => {
 
 Vue.prototype.$getImgSrc = function(src) {
   if (!src) src = "img/proj-bg-def.png";
-  else if (!/^http/.test(src)) src = "https://h.foreverland.xyz" + src;
+  else if (!/^http/.test(src)) src = process.env.BASE_URL + src;
   return src;
 };
 

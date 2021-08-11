@@ -6,6 +6,7 @@ import { mapState } from "vuex";
 import vuetify from "./plugins/vuetify";
 import "./setup";
 import locales from "./locales";
+require("dotenv").config();
 Vue.config.productionTip = false;
 
 new Vue({
