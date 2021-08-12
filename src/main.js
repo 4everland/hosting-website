@@ -61,7 +61,10 @@ new Vue({
       }
     },
     initSocket() {
-      this.socket = window.io("ws.foreverland.xyz", {
+      const url = /xyz/.test(process.env.VUE_APP_BASE_URL)
+        ? "ws.foreverland.xyz"
+        : "ws.4everland.org";
+      this.socket = window.io(url, {
         path: "/socket.io",
         query: "token=" + this.token,
         withCredentials: false,
