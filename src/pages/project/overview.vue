@@ -86,25 +86,21 @@
                 </div>
 
                 <div class="label-1 mt-6">Domains</div>
-                <div v-for="(it, i) in info.domains.slice(0, 2)" :key="i">
+                <div v-for="(it, i) in info.domains.slice(0, 1)" :key="i">
                   <e-domain :val="info.domains[i].domain"></e-domain>
-                  <v-menu
-                    v-if="i == 1 && info.domains.length > 2"
-                    offset-y
-                    open-on-hover
-                  >
+                  <v-menu v-if="info.domains.length > 1" offset-y open-on-hover>
                     <template v-slot:activator="{ attrs, on }">
                       <span v-bind="attrs" v-on="on" class="ml-5">
-                        +{{ info.domains.length - 2 }}
+                        +{{ info.domains.length - 1 }}
                       </span>
                     </template>
                     <div class="bg-white pd-10 fz-14">
                       <div
                         class="pd-5"
-                        v-for="(row, j) in info.domains.slice(2)"
+                        v-for="(row, j) in info.domains.slice(1)"
                         :key="j"
                       >
-                        <e-domain :val="info.domains[2 + j].domain"></e-domain>
+                        <e-domain :val="info.domains[1 + j].domain"></e-domain>
                       </div>
                     </div>
                   </v-menu>
