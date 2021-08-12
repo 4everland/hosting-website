@@ -27,11 +27,12 @@
               </div>
               <div class="d-flex al-c mb-5 mt-1">
                 <v-btn small :loading="loading" @click="getList" class="mr-3">
-                  Refresh
+                  <v-icon>mdi-refresh</v-icon>
                 </v-btn>
                 <v-btn color="primary" class="mr-3" @click="addNew" small>
                   {{ $t(`${locales}AddGithub`) }}</v-btn
                 >
+
                 <v-text-field
                   v-model="keyword"
                   prepend-icon="mdi-magnify"
