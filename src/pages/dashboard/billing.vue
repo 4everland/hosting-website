@@ -15,7 +15,7 @@ export default {
       },
       menus: [
         {
-          text: this.$t(`dashboard.billing.MyResource`),
+          text: this.$t(`dashboard.billing.Usage`),
           comp: "bill-resource",
         },
         {

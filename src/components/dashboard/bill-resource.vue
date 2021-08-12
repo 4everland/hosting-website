@@ -41,7 +41,7 @@
           <!-- <span class="gray mr-2"></span> -->
           <v-progress-linear :value="restPerc"></v-progress-linear>
           <div class="gray ml-2 shrink-0">
-            {{ info.left }}GB / {{ info.total }}GB
+            {{ info.used }}GB / {{ info.total }}GB
           </div>
         </div>
         <v-list>
@@ -82,9 +82,9 @@ export default {
       });
     },
     restPerc() {
-      const { total, left } = this.info;
+      const { total, used } = this.info;
       if (!total) return 0;
-      return (left / total) * 100;
+      return (used / total) * 100;
     },
   },
   data() {
