@@ -242,9 +242,8 @@ export default {
             size: this.pageSize == -1 ? 20 : this.pageSize,
           },
         });
-        const now = new Date();
         this.list = data.content.map((it) => {
-          it.createTime = new Date(it.createAt * 1e3).toNiceTime(now);
+          it.createTime = new Date(it.createAt * 1e3).format();
           return it;
         });
       } catch (error) {

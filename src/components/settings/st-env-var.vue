@@ -140,7 +140,7 @@ export default {
         const { data } = await this.$http.get(`/project/env/${this.info.id}`);
         // console.log(data)
         this.list = data.content.map((it) => {
-          it.time = new Date(it.createAt).format("y-m-d HH:ii:ss");
+          it.time = new Date(it.createAt).format();
           return it;
         });
       } catch (error) {
