@@ -100,6 +100,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   data() {
     return {
@@ -112,13 +114,19 @@ export default {
     };
   },
   computed: {
-    info() {
-      return this.$store.state.projectInfo;
+    ...mapState({
+      info: (s) => s.projectInfo,
+      isFocus: (s) => s.isFocus,
+    }),
+  },
+  watch: {
+    isFocus(val) {
+      if (val) this.setRefresh();
     },
   },
   mounted() {
     this.getList();
-    this.getDnsName();
+    // this.getDnsName();
   },
   methods: {
     async getDnsName() {
@@ -127,6 +135,19 @@ export default {
         this.dnsName = data;
       } catch (error) {
         //
+      }
+    },
+    onUpdate() {
+      this.$setState({
+        noticeMsg: {
+          name: "updateProject",
+        },
+      });
+    },
+    async setRefresh() {
+      const rows = (this.list || []).filter((it) => !it.valid);
+      for (const it of rows) {
+        await this.onRefresh(it);
       }
     },
     async getList() {
@@ -165,6 +186,8 @@ export default {
         this.$toast("Added successfully");
         await this.getList();
         // console.log(data)
+        this.onUpdate();
+        this.setRefresh();
       } catch (error) {
         console.log(error);
       }
@@ -188,6 +211,7 @@ export default {
         await this.$http.delete("/domain/" + it.domainId);
         await this.getList();
         this.$toast("Removed successfully");
+        this.onUpdate();
       } catch (error) {
         //
       }

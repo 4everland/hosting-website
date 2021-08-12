@@ -67,6 +67,7 @@ const locale = {
       History: "History",
       NoResource: "No Resource",
       Storage: "Storage",
+      Usage: "Usage",
       Network: "Network",
       Free: "Free",
       TotalCoast: "Total coast:",
