@@ -3,6 +3,7 @@
     <div class="pd-20">
       <div class="pd-20 ta-c" v-if="isError">
         <v-img src="img/building.svg" width="200" class="m-auto"></v-img>
+        <p class="mt-5 gray">No Output.</p>
       </div>
       <v-row v-else>
         <v-col cols="12" md="5">

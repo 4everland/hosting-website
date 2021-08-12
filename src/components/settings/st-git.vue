@@ -79,11 +79,16 @@
           </template>
         </div>
       </div>
-      <!-- <div class="pd-15-20 bdt-1 bg-f8">
+      <div class="pd-15-20 bdt-1 bg-f8">
         <div class="gray fz-12">
-          Learn more about <a href="" target="_blank">4everland for Git</a>
+          Learn more about
+          <a
+            href="https://docs.hosting.4everland.org/guide/settings.html"
+            target="_blank"
+            >4everland for Git</a
+          >
         </div>
-      </div> -->
+      </div>
     </div>
 
     <template v-if="repoName">

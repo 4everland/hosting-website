@@ -28,7 +28,7 @@ const locale = {
     projects: {
       NewProject: "New Project",
       NoDeployments: "No deployments.",
-      GetStartDeployed: "Get Start Deployed",
+      GetStart: "Get Started For Free",
       Visit: "Visit",
     },
     domains: {
