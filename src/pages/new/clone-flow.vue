@@ -30,12 +30,13 @@
 
             <div class="mt-8 d-flex al-c">
               <v-text-field
-                style="max-width: 350px;"
+                style="max-width: 350px"
                 :label="$t(`${locales}RepositoryName`)"
                 v-model="name"
                 hide-details
                 dense
                 persistent-placeholder
+                autocomplete="off"
               ></v-text-field>
               <v-checkbox
                 class="ml-5"
