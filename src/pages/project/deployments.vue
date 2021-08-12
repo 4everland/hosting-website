@@ -169,7 +169,7 @@ export default {
           .replace("{projName}", it.buildConfig.name);
         this.$router.push(link);
       } else if (name == "copy") {
-        this.$toast("copied");
+        this.$toast("Copied to clipboard !");
       } else if (name == "deploy") {
         this.onDeploy(it);
       }

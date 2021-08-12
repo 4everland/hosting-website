@@ -137,7 +137,7 @@
               </div>
             </div>
 
-            <v-menu>
+            <v-menu v-if="info.taskId">
               <template v-slot:activator="{ attrs, on }">
                 <v-btn
                   icon
@@ -151,7 +151,9 @@
               <v-list>
                 <v-list-item
                   link
-                  v-clipboard="opt.name == 'copy' ? info.domain || '' : ''"
+                  v-clipboard="
+                    opt.name == 'copy' ? 'https://' + info.domain || '' : ''
+                  "
                   @click="onOpt(opt)"
                   v-for="(opt, i) in optList"
                   :key="i"
@@ -307,7 +309,7 @@ export default {
     onOpt(opt) {
       let { name } = opt;
       if (name == "copy") {
-        this.$toast("copied");
+        this.$toast("Copied to clipboard !");
       } else if (name == "delete") {
         this.onDelete();
       }
@@ -374,7 +376,7 @@ Are you sure you want to continue?
       }
     },
     onCopied() {
-      this.$notice("copied");
+      this.$notice("Copied to clipboard !");
     },
     onBtn1() {
       if (this.isRunning) this.onCancel();

@@ -86,9 +86,10 @@
               <p
                 class="mt-3 hover-1"
                 v-clipboard="dnsName"
-                @success="$toast('copied')"
+                @success="$toast('Copied to clipboard !')"
               >
                 {{ dnsName }}
+                <v-icon size="14" class="ml-1">mdi-content-copy</v-icon>
               </p>
             </div>
           </div>
