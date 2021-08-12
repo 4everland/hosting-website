@@ -16,8 +16,6 @@
           </v-btn>
         </div>
       </div>
-      <!-- <v-btn to="/dashboard/projects">dashbaord</v-btn>
-    <v-btn to="/project/overview" class="ml-5">project</v-btn> -->
     </div>
   </div>
 </template>
@@ -45,7 +43,7 @@ export default {
       if (val && this.isOpen) {
         this.isOpen = false;
         console.log("on focus");
-        this.onInit();
+        // this.onInit();
       }
     },
     noticeMsg({ name }) {
@@ -55,6 +53,10 @@ export default {
     },
   },
   mounted() {
+    const { to } = this.$route.query;
+    if (to) {
+      localStorage.loginTo = to;
+    }
     this.onInit();
     if (/installation_id/.test(location.href) && !this.isTouch) {
       window.close();
@@ -66,11 +68,8 @@ export default {
       if (token) {
         localStorage.token = token;
         localStorage.refreshAt = Date.now();
-        if (!this.isTouch) {
-          // window.close();
-          location.href = "index.html";
-          return;
-        }
+        location.href = "index.html";
+        return;
       }
       if (localStorage.token) {
         if (this.token != localStorage.token) {
@@ -81,7 +80,12 @@ export default {
           console.log(is_new);
           this.$setState(data);
         }
-        this.$router.replace("/dashboard/projects");
+        let path = "/dashboard/projects";
+        if (localStorage.loginTo) {
+          path = localStorage.loginTo;
+          localStorage.loginTo = "";
+        }
+        this.$router.replace(path);
       }
     },
     async onLogin() {

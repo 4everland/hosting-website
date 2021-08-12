@@ -158,7 +158,6 @@ export default {
         if (this.$route.path == "/") {
           login.color = "#BBC2C9";
         }
-        console.log(login);
         links.push(login);
       }
       return links;

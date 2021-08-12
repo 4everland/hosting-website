@@ -30,9 +30,10 @@ http.interceptors.response.use(
         let msg = data.message || `${data.code} error`;
         Vue.prototype.$loading.close();
         // console.log(msg)
-        if (data.code == 401 || data.code == 10023 || data.code == 10008) {
+        if (data.code == 401 || [10024, 10023, 10008].includes(data.code)) {
           localStorage.clear();
-          location.href = "index.html";
+          let { path = "" } = router.history.current || {};
+          location.href = "index.html#/?to=" + path;
         } else if (!noTip) {
           setTimeout(() => {
             Vue.prototype.$alert(msg);
