@@ -29,7 +29,7 @@
 
 <template>
   <div class="d-flex al-start">
-    <v-icon class="mr-2 mt-5">mdi-paperclip</v-icon>
+    <v-icon class="mr-2 mt-5">mdi-image</v-icon>
     <div>
       <div class="d-flex flex-wrap e-upload">
         <div class="bd-1 item pd-10 pos-r" v-for="(it, i) in imgList" :key="i">

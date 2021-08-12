@@ -67,6 +67,9 @@
               :key="j"
             >
               <v-list-item-title>
+                <v-icon size="16" class="mr-1" v-if="sub.icon">
+                  mdi-{{ sub.icon }}
+                </v-icon>
                 <span class="fz-15">{{ sub.label }}</span>
               </v-list-item-title>
             </v-list-item>
@@ -107,14 +110,17 @@ export default {
             {
               label: "Bug Bounty",
               to: "/bug-bounty",
+              icon: "bug-outline",
             },
             {
               label: "Feedback",
               name: "feedback",
+              icon: "comment-quote-outline",
             },
             {
               label: "Report",
               name: "feedback",
+              icon: "alert-octagon-outline",
             },
           ],
         };
