@@ -32,8 +32,8 @@ http.interceptors.response.use(
         // console.log(msg)
         if (data.code == 401 || [10024, 10023, 10008].includes(data.code)) {
           localStorage.clear();
-          let { path = "" } = router.history.current || {};
-          location.href = "index.html#/?to=" + path;
+          localStorage.loginTo = location.hash;
+          location.href = "index.html";
         } else if (!noTip) {
           setTimeout(() => {
             Vue.prototype.$alert(msg);

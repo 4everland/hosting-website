@@ -53,10 +53,6 @@ export default {
     },
   },
   mounted() {
-    const { to } = this.$route.query;
-    if (to) {
-      localStorage.loginTo = to;
-    }
     this.onInit();
     if (/installation_id/.test(location.href) && !this.isTouch) {
       window.close();
@@ -68,7 +64,12 @@ export default {
       if (token) {
         localStorage.token = token;
         localStorage.refreshAt = Date.now();
-        location.href = "index.html";
+        let hash = "";
+        if (localStorage.loginTo) {
+          hash = localStorage.loginTo;
+          localStorage.loginTo = "";
+        }
+        location.href = "index.html" + hash;
         return;
       }
       if (localStorage.token) {
@@ -80,12 +81,7 @@ export default {
           console.log(is_new);
           this.$setState(data);
         }
-        let path = "/dashboard/projects";
-        if (localStorage.loginTo) {
-          path = localStorage.loginTo;
-          localStorage.loginTo = "";
-        }
-        this.$router.replace(path);
+        this.$router.replace("/dashboard/projects");
       }
     },
     async onLogin() {
