@@ -81,6 +81,7 @@ new Vue({
         this.isSocketOn = true;
       });
       this.socket.on("PROJECT_BUILD", ({ name, data }) => {
+        if (!name) return;
         if (name == "log") {
           // data.content = atob(data.content)
           data.state = "RUNNING";
