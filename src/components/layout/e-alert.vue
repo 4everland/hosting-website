@@ -54,18 +54,19 @@
           <div class="fz-16" v-html="alertInfo.content"></div>
           <div class="mt-8" v-if="alertInfo.showInput">
             <v-form ref="form" lazy-validation>
-              <v-textarea
-                v-if="alertInfo.inputType == 'textarea'"
-                v-model="inputVal"
-                rows="3"
-                dense
-                v-bind="alertInfo.inputAttrs"
-              />
               <v-text-field
-                v-else
                 v-model="inputVal"
+                autofocus
                 dense
                 v-bind="alertInfo.inputAttrs"
+                @keyup.enter="hideAlert(1)"
+              ></v-text-field>
+              <v-text-field
+                class="mt-6"
+                v-if="alertInfo.input2Attrs"
+                v-model="inputVal2"
+                dense
+                v-bind="alertInfo.input2Attrs"
                 @keyup.enter="hideAlert(1)"
               ></v-text-field>
             </v-form>
@@ -115,6 +116,7 @@ export default {
       showLoading: false,
       showSnackbar: false,
       inputVal: "",
+      inputVal2: "",
       noticeInfo: {},
     };
   },

@@ -26,6 +26,7 @@ new Vue({
   watch: {
     "$route.path"() {
       window.scrollTo(0, 0);
+      this.$loading.close();
     },
     token(val) {
       if (val) {

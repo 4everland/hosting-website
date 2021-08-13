@@ -89,11 +89,11 @@ export default {
           "4everland will delete all of your projects，along with all of its Deployments, Domains, SSL Certificates, and all other resources belonging to your project.";
         html +=
           '<div class="bg-warning pd-10-20 fz-14 mt-3"><b>Warning</b>: This action is not reversible.Please be certain</div>';
-        const { username } = this.userInfo;
+        const { name } = this.info;
         await this.$prompt(html, "Delete Project", {
           inputAttrs: {
-            label: `Enter your name \`${username}\` to continue`,
-            rules: [(v) => v == username || "incorrect"],
+            label: `Enter project name \`${name}\` to continue`,
+            rules: [(v) => v == name || "The text you entered didn't match."],
             required: true,
           },
         });

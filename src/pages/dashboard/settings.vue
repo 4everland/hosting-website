@@ -120,7 +120,18 @@ export default {
         await this.$prompt(html, "Delete Personal Account", {
           inputAttrs: {
             label: `Enter your name \`${username}\` to continue`,
-            rules: [(v) => v == username || "incorrect"],
+            rules: [
+              (v) => v == username || "The text you entered didn't match.",
+            ],
+            required: true,
+          },
+          input2Attrs: {
+            label: `Type \`delete my account\` To verify`,
+            rules: [
+              (v) =>
+                v == "delete my account" ||
+                "The text you entered didn't match.",
+            ],
             required: true,
           },
         });

@@ -1,11 +1,11 @@
 <style>
-.theme--light.v-messages {
+.e-deploy-card .theme--light.v-messages {
   display: none;
   /* v-treeview底部 无内容 */
 }
 </style>
 <template>
-  <v-card v-if="importItem">
+  <v-card v-if="importItem" class="e-deploy-card">
     <v-card-title> {{ $t(`${locales}SelectScope`) }} </v-card-title>
     <v-card-text>
       <div class="d-flex al-c">
