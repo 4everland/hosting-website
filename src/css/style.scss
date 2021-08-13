@@ -9,6 +9,8 @@ $color1: #4A96FA;
 body {
   box-sizing: border-box;
   font-family: Helvetica, Arial, sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
   .v-application {
     .primary {
       background-color: $color1 !important;
