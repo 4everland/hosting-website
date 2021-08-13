@@ -46,8 +46,8 @@
                 <span>Connect Github</span>
               </v-btn>
             </div>
-            <div v-else style="max-height: 60vh" class="ov-a">
-              <div class="d-flex al-c" v-if="repoList.length">
+            <div v-else>
+              <div class="d-flex al-c bdb-1" v-if="repoList.length">
                 <v-icon class="ml-4">mdi-magnify</v-icon>
                 <input
                   type="text"
@@ -57,23 +57,31 @@
                   style="height: 54px; outline: none"
                 />
               </div>
-              <div
-                class="pd-15 d-flex al-c bdt-1"
-                v-for="(it, i) in repoResList"
-                :key="i"
-              >
-                <span class="fz-17 line-1">{{ it.name }}</span>
-                <!-- <span class="ml-3 mr-3 gray fz-13 shrink-0">
-                {{ it.updateAt }}
-              </span> -->
-                <v-btn
-                  class="ml-auto"
-                  color="primary"
-                  small
-                  @click="onConnect(it)"
+              <div class="ta-c pd-20" v-if="!repoResList.length">
+                No Result Found
+              </div>
+              <div v-else style="max-height: 60vh" class="ov-a">
+                <div
+                  class="pd-15 d-flex al-c"
+                  :class="{
+                    'bdt-1': i > 0,
+                  }"
+                  v-for="(it, i) in repoResList"
+                  :key="i"
                 >
-                  Connect
-                </v-btn>
+                  <span class="fz-17 line-1">{{ it.name }}</span>
+                  <!-- <span class="ml-3 mr-3 gray fz-13 shrink-0">
+                  {{ it.updateAt }}
+                </span> -->
+                  <v-btn
+                    class="ml-auto"
+                    color="primary"
+                    small
+                    @click="onConnect(it)"
+                  >
+                    Connect
+                  </v-btn>
+                </div>
               </div>
             </div>
           </template>
