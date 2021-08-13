@@ -118,6 +118,11 @@ export default {
           '<div class="bg-warning pd-10-20 fz-14 mt-3"><b>Warning</b>: This action is not reversible. Please be certain.</div>';
         const { username } = this.userInfo;
         await this.$prompt(html, "Delete Personal Account", {
+          confirmText: "Delete",
+          confirmTextAttrs: {
+            color: "error",
+            text: false,
+          },
           inputAttrs: {
             label: `Enter your name \`${username}\` to continue`,
             rules: [

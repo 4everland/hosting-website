@@ -58,6 +58,12 @@ body {
 .v-btn, .v-tab {
   text-transform: none;
 }
+.v-dialog .v-label {
+  font-size: 18px;
+  &.error--text {
+    color: rgba(0, 0, 0, 0.6)!important;
+  }
+}
 
 .shadow-1 {
   box-shadow: 0 1px 2px #f0f0f0;

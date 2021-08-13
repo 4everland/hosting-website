@@ -33,7 +33,6 @@
 
     <v-dialog
       v-model="showAlert"
-      v-show="!!alertInfo.content"
       max-width="460"
       :persistent="alertInfo.showCancel"
     >
@@ -55,6 +54,7 @@
           <div class="mt-8" v-if="alertInfo.showInput">
             <v-form ref="form" lazy-validation>
               <v-text-field
+                persistent-placeholder
                 v-model="inputVal"
                 autofocus
                 dense
@@ -62,7 +62,8 @@
                 @keyup.enter="hideAlert(1)"
               ></v-text-field>
               <v-text-field
-                class="mt-6"
+                persistent-placeholder
+                class="mt-8"
                 v-if="alertInfo.input2Attrs"
                 v-model="inputVal2"
                 dense
@@ -72,7 +73,7 @@
             </v-form>
           </div>
         </v-card-text>
-        <v-card-actions>
+        <v-card-actions class="pb-4">
           <v-spacer></v-spacer>
           <v-btn
             text
@@ -82,7 +83,15 @@
           >
             {{ alertInfo.cancelText || "Cancel" }}
           </v-btn>
-          <v-btn color="primary" text @click="hideAlert(1)">
+          <v-btn
+            class="ml-4"
+            v-bind="{
+              text: true,
+              color: 'primary',
+              ...alertInfo.confirmTextAttrs,
+            }"
+            @click="hideAlert(1)"
+          >
             {{ alertInfo.confirmText || "OK" }}
           </v-btn>
         </v-card-actions>
@@ -122,6 +131,8 @@ export default {
   },
   watch: {
     alertInfo(info) {
+      this.showAlert = false;
+      this.showLoading = false;
       if (info.type == "loading") {
         this.showLoading = info.isLoading;
       } else if (info.type == "snackbar") {
