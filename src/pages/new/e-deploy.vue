@@ -71,9 +71,14 @@
             <v-text-field label="Project Name" v-model="form.name" />
             <div class="d-flex al-c">
               <v-text-field label="Root Dorectory" :value="srcDir" disabled />
-              <v-btn color="primary" class="ml-5" small @click="curStep = 1">{{
-                $t(`${locales}Edit`)
-              }}</v-btn>
+              <v-btn
+                color="primary"
+                class="ml-5"
+                small
+                :disabled="creating"
+                @click="curStep = 1"
+                >{{ $t(`${locales}Edit`) }}</v-btn
+              >
             </div>
             <v-select
               v-model="form.framework"

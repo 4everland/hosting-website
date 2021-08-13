@@ -53,7 +53,7 @@ export default {
           ],
         },
         {
-          title: "Company",
+          title: "Project",
           subs: [
             {
               label: "Home",

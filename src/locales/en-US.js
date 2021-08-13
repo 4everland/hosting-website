@@ -85,13 +85,13 @@ const locale = {
   new: {
     index: {
       ImportGitRepositor: "Import Git Repositor",
-      AddGithub: "Select Git",
+      AddGithub: "Connect To Git",
       Search: "Search",
       NoGitRepositoriesFound: "No Git Repositories Found",
       TrySelectingDifferentGit:
         "Try selecting a different Git account or creating repositories.",
       NoResultsFound: "No Results Found",
-      Import: "Import",
+      Import: "Select",
       CloneTemplate: "Clone Template",
       GetStartedwithTemplate: "Alternatively, get started with a template",
       CreateGitRepository: "Create Git Repository",
