@@ -134,7 +134,7 @@ export default {
       return con
         .split(/\n/)
         .map((txt) => {
-          return `<p class="mt-2 ti-2">${txt}</p>`;
+          return `<p class="mt-2">${txt}</p>`;
         })
         .join("");
     },
