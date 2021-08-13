@@ -8,10 +8,10 @@
 $color1: #4A96FA;
 body {
   box-sizing: border-box;
-  font-family: Helvetica, Arial, sans-serif;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   .v-application {
+    font-family: "PingFang SC",Roboto,"Helvetica Neue","Helvetica, Tahoma",Arial,"PingFang SC-Light","Microsoft YaHei";
     .primary {
       background-color: $color1 !important;
       border-color: $color1 !important;
