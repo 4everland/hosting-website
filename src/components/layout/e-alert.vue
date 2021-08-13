@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-snackbar
-      color="primary"
+      :color="noticeInfo.color || 'primary'"
       timeout="2000"
       v-bind="noticeInfo.attrs"
       v-model="showSnackbar"
@@ -190,13 +190,18 @@ export default {
     };
     Vue.prototype.$toast = Vue.prototype.$notice = (
       content,
+      color,
       attrs = {},
       opts = {}
     ) => {
       this.showSnackbar = false;
+      if ((!color && /success/.test(content)) || color == 1) {
+        color = "success";
+      }
       this.noticeInfo = {
         type: "snackbar",
         content,
+        color,
         attrs,
         ...opts,
       };

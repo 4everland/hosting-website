@@ -190,7 +190,6 @@ export default {
           });
         else location.href = "index.html";
       }
-      // this.$notice(it.label)
     },
   },
 };

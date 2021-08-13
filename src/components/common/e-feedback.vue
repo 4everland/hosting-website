@@ -115,7 +115,7 @@ export default {
         this.loading = true;
         await this.$http.post("/feedback/upload", form);
         this.showPop = false;
-        this.$toast("Your feedback is received.");
+        this.$toast("Your feedback is received.", 1);
         this.form.description = "";
         this.files = [];
       } catch (error) {

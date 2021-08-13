@@ -231,7 +231,7 @@ export default {
         this.onUpdted();
         if (repoId) {
           this.keyword = "";
-          this.$notice("Connected Git Repository successfully");
+          this.$toast("Connected Git Repository successfully");
         }
       } catch (error) {
         //
@@ -258,7 +258,7 @@ export default {
           name: this.currentBranch,
         });
         this.onUpdted();
-        this.$notice("Updated Production Branch successfully.");
+        this.$toast("Updated Production Branch successfully.");
       } catch (error) {
         //
       }

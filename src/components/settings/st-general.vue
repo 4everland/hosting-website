@@ -267,7 +267,7 @@ export default {
         await this.saveProject({
           rootDirectory: this.rootDirectory,
         });
-        this.$notice("Project updated successfully");
+        this.$toast("Project updated successfully");
       } catch (error) {
         //
       }
@@ -277,7 +277,7 @@ export default {
       try {
         this.savingCmd = true;
         await this.saveProject(this.form);
-        this.$notice("Project updated successfully");
+        this.$toast("Project updated successfully");
       } catch (error) {
         //
       }
@@ -290,7 +290,7 @@ export default {
         await this.saveProject({
           name: this.name,
         });
-        this.$notice("Project renamed successfully");
+        this.$toast("Project renamed successfully");
       } catch (error) {
         //
       }

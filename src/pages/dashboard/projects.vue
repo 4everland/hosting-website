@@ -133,7 +133,7 @@ export default {
       this.$router.push("/new");
     },
     onChart() {
-      this.$notice("chart");
+      this.$toast("chart");
     },
     onVisit(it) {
       const { domain } = it.production;

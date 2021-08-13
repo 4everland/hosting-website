@@ -376,7 +376,7 @@ Are you sure you want to continue?
       }
     },
     onCopied() {
-      this.$notice("Copied to clipboard !");
+      this.$toast("Copied to clipboard !");
     },
     onBtn1() {
       if (this.isRunning) this.onCancel();
