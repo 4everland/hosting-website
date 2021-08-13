@@ -61,9 +61,9 @@
         <div class="pd-20">
           <h3>Delete Personal Account</h3>
           <div class="gray mt-1 fz-14">
-            Permanently remove your Personal Account and all of its contents
+            Permanently delete your Personal Account and all of its contents
             from the Vercel platform. This action is not reversible, so please
-            continue with caution.
+            continue to act with caution.
           </div>
         </div>
         <div class="pd-10-20 bdt-1 bg-f8 d-flex al-c">
@@ -113,7 +113,7 @@ export default {
     async onDelete() {
       try {
         let html =
-          "4everland will delete all of your projects, along with all of your deployments, domains, SSL certificates, activity, and all other resources belonging to your Personal Account.";
+          "4everland will delete all of your projects, as well as all their deployments, domains, SSL certificates, activity, and all other resources belonging to your Personal Account.";
         html +=
           '<div class="bg-warning pd-10-20 fz-14 mt-3"><b>Warning</b>: This action is not reversible. Please be certain.</div>';
         const { username } = this.userInfo;

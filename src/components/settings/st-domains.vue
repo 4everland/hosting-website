@@ -197,7 +197,7 @@ export default {
       try {
         if (it.valid) {
           let html = `<div class="fz-15">${it.domain} will no longer be a production domain of this project.</div>
-              <ul class="mt-3 fz-14 gray-6"><li>The domain will not be applied to future production deployments</li>
+              <ul class="mt-3 fz-14 gray-6"><li>The domain will not be used in future production deployments</li>
               <li>The domain will be removed from your latest production deployment</li>
               <li>The domain is still owned by you</li>
               <li>Existing deployments will not be affected</li></ul>`;

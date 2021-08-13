@@ -56,7 +56,7 @@ http.interceptors.response.use(
       (status ? `${config.url}：${status}` : error.message);
     if (msg == "Network Error") {
       msg =
-        "A network error has occurred. Please check your connection and try again.";
+        "A network error has occurred. Please check your connections and try again.";
     }
     if (status == 401) {
       router.replace("/");

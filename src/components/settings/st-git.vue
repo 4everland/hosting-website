@@ -4,7 +4,7 @@
       <div class="pd-20">
         <h3>Connected Fit Repository</h3>
         <div class="gray mt-1 fz-14">
-          Seamlessly creat Deployments for any commits pushed to your Git
+          Seamlessly create Deployments for any commits pushed to your Git
           repository.
         </div>
         <div class="mt-5 bd-1">

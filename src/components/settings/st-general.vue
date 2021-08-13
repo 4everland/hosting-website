@@ -3,7 +3,7 @@
     <div class="bd-1 pd-20 pb-0">
       <h3>Project Name</h3>
       <div class="gray mt-1 fz-14">
-        Used to identify your Project on the Dashboard, 4everland CLI, and in
+        Used to identify your Project in the Dashboard, 4everland CLI, and in
         the URL of your Deployments.
       </div>
       <div class="mt-8 d-flex">
@@ -30,7 +30,7 @@
     <div class="bd-1 pd-20 mt-5">
       <h3>Build & Development Settings</h3>
       <div class="gray mt-1 fz-14">
-        When using a framework for a new project, it will be automatically
+        When using a framework of a new project, it will be automatically
         detected. As a result, several project settings are automatically
         configured to achieve the best result. You can override them below.
       </div>

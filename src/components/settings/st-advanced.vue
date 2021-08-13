@@ -25,11 +25,9 @@
       <div class="mr-8">
         <h3>Your Statistics</h3>
         <div class="gray mt-1 fz-14">
-          We will display your DApps information on the 4everland website, if
-          you do not want to display your data, close the button and it will be
-          hidden on the website, but your data will still be visible to
-          yourself.
-          <!-- If you don't want to open it, close the button and we will hide your information. -->
+          We will display your DApps statistics on the 4EVERLAND website. If you
+          don't want to display it, close the button and will hide DApps
+          statistics, but all your data is still visible to yourself.
         </div>
       </div>
       <v-switch class="ml-auto" v-model="isStatis" disabled></v-switch>
