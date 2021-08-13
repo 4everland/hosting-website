@@ -33,10 +33,10 @@
 
     <v-dialog
       v-model="showAlert"
-      max-width="460"
+      max-width="500"
       :persistent="alertInfo.showCancel"
     >
-      <v-card>
+      <v-card class="pd-10">
         <v-card-title>
           <v-icon :color="iconColor" class="mr-2">
             {{ iconName }}
@@ -73,7 +73,7 @@
             </v-form>
           </div>
         </v-card-text>
-        <v-card-actions class="pb-4">
+        <v-card-actions class="pb-3">
           <v-spacer></v-spacer>
           <v-btn
             text
@@ -145,6 +145,7 @@ export default {
       return new Promise((resolve, reject) => {
         if (config.showInput) {
           this.inputVal = config.defaultValue || "";
+          this.inputVal2 = "";
         }
         this.$setState({
           alertInfo: {
