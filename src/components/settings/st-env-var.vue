@@ -5,14 +5,14 @@
         <h3>Environment Variable</h3>
         <div class="gray mt-1 fz-14">
           In order to provide your Deployment with Environment Variables at
-          Build and Runtime, you may enter them right here, for the Environment of
-          your choice.
+          Build and Runtime, you may enter them right here, for the Environment
+          of your choice.
         </div>
       </div>
     </div>
 
     <div class="mt-5 ta-r">
-      <v-btn small color="primary" @click="showPop = true"> Add </v-btn>
+      <v-btn small color="primary" @click="clickAdd"> Add </v-btn>
       <v-btn
         small
         color="error"
@@ -101,6 +101,11 @@ export default {
     this.getList();
   },
   methods: {
+    clickAdd() {
+      if (this.list.length >= 10)
+        return this.$toast("You can add 10 variables at maximum.");
+      this.showPop = true;
+    },
     async onAdd() {
       try {
         if (!this.form.key) {
