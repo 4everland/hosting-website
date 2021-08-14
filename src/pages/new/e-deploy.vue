@@ -301,17 +301,35 @@ export default {
         body.outputDirectory = "dist";
       }
       console.log(body);
+      let { devNum = 1 } = this.$route.query;
+      const isDev = devNum > 1;
       try {
         this.creating = true;
-        const { data } = await this.$http.post("/project", body);
-        const projId = data.projectId;
-        const {
-          data: { taskId },
-        } = await this.$http.post(`/project/${projId}/build`);
-        // await this.$alert('Project created successfully')
-        this.$router.replace(`/build/${projId}/${taskId}/overview`);
+        let i = 0;
+        while (i < devNum) {
+          i++;
+          if (isDev) {
+            body.name = this.form.name + "-dev" + i;
+          }
+          const { data } = await this.$http.post("/project", body);
+          const projId = data.projectId;
+          const {
+            data: { taskId },
+          } = await this.$http.post(`/project/${projId}/build`);
+          // await this.$alert('Project created successfully')
+          const path = `/build/${projId}/${taskId}/overview`;
+          if (!isDev) {
+            this.$router.replace(path);
+          } else {
+            const link = "index.html#" + path;
+            console.log(body.name, location.origin + "/" + link);
+            this.$confirm("go to build " + i).then(() => {
+              window.open(link);
+            });
+          }
+        }
       } catch (error) {
-        //
+        console.log(error);
       }
       this.creating = false;
     },
@@ -326,7 +344,7 @@ export default {
         this.curStep = 1;
       } catch (error) {
         console.log(error);
-        this.curStep = 2;
+        // this.curStep = 2;
       }
       this.selecting = false;
     },
