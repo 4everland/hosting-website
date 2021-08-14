@@ -62,7 +62,7 @@ new Vue({
       }
     },
     initSocket() {
-      const url = /xyz/.test(process.env.VUE_APP_BASE_URL)
+      const url = /xyz$/.test(process.env.VUE_APP_BASE_URL)
         ? "ws.foreverland.xyz"
         : "ws.4everland.org";
       this.socket = window.io(url, {

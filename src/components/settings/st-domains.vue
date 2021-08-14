@@ -107,7 +107,7 @@ export default {
       domain: "",
       list: null,
       adding: false,
-      dnsName: /test|vercel|localhost/.test(location.origin)
+      dnsName: /xyz$/.test(process.env.VUE_APP_BASE_URL)
         ? "cname.foreverland.xyz"
         : "cname.4everland.app",
     };
