@@ -164,6 +164,7 @@ export default {
             name: "updateUser",
           },
         });
+        this.$toast("Updated successfully");
       } catch (error) {
         //
       }
