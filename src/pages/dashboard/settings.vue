@@ -3,11 +3,8 @@
     <div class="pd-30">
       <div class="bd-1">
         <div class="pd-20">
-          <h3>Your Name</h3>
-          <div class="gray mt-1 fz-14">
-            Please enter your full name, or a display name you are comfortable
-            with.
-          </div>
+          <h3>Your Username</h3>
+          <div class="gray mt-1 fz-14">This is your username in 4EVERLAND.</div>
           <div class="mt-8 d-flex" style="max-width: 500px">
             <v-text-field outlined dense v-model="username"></v-text-field>
             <v-btn
@@ -29,13 +26,10 @@
         </div>
       </div>
 
-      <div class="bd-1 mt-8">
+      <!-- <div class="bd-1 mt-8">
         <div class="pd-20">
           <h3>Your Email</h3>
-          <div class="gray mt-1 fz-14">
-            Please enter the email address you want to use to log in with
-            Vercel.
-          </div>
+          <div class="gray mt-1 fz-14">Please enter the email address.</div>
           <div class="mt-8 d-flex" style="max-width: 500px">
             <v-text-field outlined dense v-model="email"></v-text-field>
             <v-btn
@@ -55,15 +49,15 @@
             We will email you to verify the change.
           </div>
         </div>
-      </div>
+      </div> -->
 
       <div class="bd-1 mt-8">
         <div class="pd-20">
           <h3>Delete Personal Account</h3>
           <div class="gray mt-1 fz-14">
             Permanently delete your Personal Account and all of its contents
-            from the Vercel platform. This action is not reversible, so please
-            continue to act with caution.
+            from the 4everland platform. This action is not reversible, so
+            please continue to act with caution.
           </div>
         </div>
         <div class="pd-10-20 bdt-1 bg-f8 d-flex al-c">
