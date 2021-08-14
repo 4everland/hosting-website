@@ -89,6 +89,11 @@ export default {
           '<div class="bg-warning pd-10-20 fz-14 mt-3"><b>Warning</b>: This action is not reversible.Please be certain</div>';
         const { name } = this.info;
         await this.$prompt(html, "Delete Project", {
+          confirmText: "Delete",
+          confirmTextAttrs: {
+            color: "error",
+            text: false,
+          },
           inputAttrs: {
             label: `Enter project name \`${name}\` to continue`,
             rules: [(v) => v == name || "The text you entered didn't match."],
