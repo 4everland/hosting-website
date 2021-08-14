@@ -11,9 +11,22 @@
       <div class="d-flex al-c">
         <span>{{ $t(`${locales}importing`) }}</span>
         <v-icon size="16" class="ml-5">mdi-github</v-icon>
-        <span class="ml-2">{{ importItem.name }}</span>
+        <a class="ml-2 b u" :href="importItem.cloneUrl" target="_blank">{{
+          importItem.name
+        }}</a>
         <v-icon size="16" class="ml-5">mdi-source-branch</v-icon>
-        <span class="ml-2">{{ importItem.defaultBranch }}</span>
+        <a
+          class="ml-2 b u"
+          :href="
+            importItem.cloneUrl.replace(
+              '.git',
+              '/tree/' + importItem.defaultBranch
+            )
+          "
+          target="_blank"
+        >
+          {{ importItem.defaultBranch }}
+        </a>
       </div>
     </v-card-text>
     <div
@@ -60,7 +73,7 @@
               :items="dirList"
             >
               <template v-slot:prepend="{ item }">
-                <v-radio v-if="item.type == 'dir'" :value="item.id"></v-radio>
+                <v-radio v-if="item.radio" :value="item.id"></v-radio>
               </template>
             </v-treeview>
           </v-radio-group>
@@ -280,6 +293,7 @@ export default {
     async onDeploy() {
       if (this.curStep < 2) {
         this.curStep += 1;
+        this.envList = [];
         return;
       }
       const { id: repoId } = this.importItem;
@@ -359,7 +373,10 @@ export default {
       data = data
         .map((it) => {
           it.id = it.fullPath;
-          if (it.type == "dir") it.children = [];
+          if (it.type == "dir") {
+            it.children = [];
+            if (!item) it.radio = true;
+          }
           return it;
         })
         .sort((a) => {
@@ -373,6 +390,7 @@ export default {
             name: this.importItem.name,
             id: srcDir,
             type: "dir",
+            radio: true,
             children: data,
           },
         ];

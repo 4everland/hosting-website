@@ -151,7 +151,6 @@ export default {
       cloneDir: c,
       isClone: false,
       minHeight: 520,
-
       list: null,
       loading: false,
       showSelect: false,
@@ -193,6 +192,9 @@ export default {
           if (times > 4) this.clearTiming();
         }, 5e3);
       }
+    },
+    showSelect(val) {
+      if (!val) this.getList();
     },
   },
   mounted() {
