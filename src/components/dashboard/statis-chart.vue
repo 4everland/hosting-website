@@ -63,8 +63,8 @@ export default {
         for (const it of list) {
           const fmt = /hour/i.test(this.timeLimit) ? "HH:ii" : "mm-dd";
           xArr.push(it.time.format(fmt));
-          const num = (Math.random() * 20) | 0;
-          yArr.push(num);
+          // const num = (Math.random() * 20) | 0;
+          yArr.push(it.num);
         }
         this.setData(xArr, yArr);
       } catch (error) {
