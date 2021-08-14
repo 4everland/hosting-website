@@ -19,6 +19,7 @@ export default {
   data() {
     return {
       timeLimit: "HOUR_24", //DAY_7 DAY_30
+      list: [],
     };
   },
   watch: {
@@ -58,10 +59,12 @@ export default {
         list.sort((a, b) => {
           return a.time - b.time;
         });
+        this.list = list;
         for (const it of list) {
           const fmt = /hour/i.test(this.timeLimit) ? "HH:ii" : "mm-dd";
           xArr.push(it.time.format(fmt));
-          yArr.push(it.num);
+          const num = (Math.random() * 20) | 0;
+          yArr.push(num);
         }
         this.setData(xArr, yArr);
       } catch (error) {
@@ -83,9 +86,15 @@ export default {
         },
         yAxis: {
           type: "value",
+          interval: 1,
         },
         tooltip: {
           trigger: "axis",
+          formatter: (params) => {
+            const { dataIndex: idx } = params[0];
+            const obj = this.list[idx];
+            return `${obj.time.format("y-m-d HH:ii")}<br>${obj.num}`;
+          },
         },
         series: [
           {

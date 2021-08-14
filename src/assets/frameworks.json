@@ -25,6 +25,7 @@
       "placeholder": "next"
     },
     "outputDirectory": {
+      "value": "build",
       "placeholder": "Next.js default"
     }
   },
