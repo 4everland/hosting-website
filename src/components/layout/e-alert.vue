@@ -145,7 +145,9 @@ export default {
       return new Promise((resolve, reject) => {
         if (config.showInput) {
           this.inputVal = config.defaultValue || "";
-          this.inputVal2 = "";
+          setTimeout(() => {
+            this.$refs.form.reset();
+          }, 10);
         }
         this.$setState({
           alertInfo: {
