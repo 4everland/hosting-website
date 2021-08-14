@@ -139,7 +139,7 @@
                   <div class="d-flex al-c">
                     <v-text-field
                       persistent-placeholder
-                      v-model="envForm.name"
+                      v-model="envForm.key"
                       :label="$t(`${locales}Name`)"
                       placeholder="Variable_Name"
                     />
@@ -217,12 +217,12 @@ export default {
         outputDirectory: "",
       },
       envHeaders: [
-        { text: "Name", value: "name" },
-        { text: "Value", value: "enc" },
+        { text: "Name", value: "key" },
+        { text: "Value", value: "value" },
       ],
       envList: [],
       envForm: {
-        name: "",
+        key: "",
         value: "",
       },
       creating: false,
@@ -269,11 +269,11 @@ export default {
       this.form.outputDirectory = outputDirectory.value || "";
     },
     addEnv() {
-      const { name } = this.envForm;
-      if (!name) return this.$alert("invalid name");
+      const { key } = this.envForm;
+      if (!key) return this.$alert("Invalid Name");
       this.envList.push(this.envForm);
       this.envForm = {
-        name: "",
+        key: "",
         value: "",
       };
     },
