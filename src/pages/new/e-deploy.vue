@@ -290,6 +290,21 @@ export default {
         value: "",
       };
     },
+    async getFramework() {
+      try {
+        const { data } = await this.$http.get(
+          "/project/detect-framework/" + this.importItem.id
+        );
+        this.form.framework = data.framework || null;
+        let { scripts = "" } = data;
+        if (scripts) {
+          const { build } = JSON.parse(scripts) || {};
+          if (build) this.form.buildCommand = build;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
     async onDeploy() {
       if (this.curStep < 2) {
         this.curStep += 1;
@@ -352,6 +367,9 @@ export default {
       let framework = this.importItem.frameWorkAdvice || null;
       if (framework == "other") framework = null;
       this.form.framework = framework;
+      if (!framework) {
+        this.getFramework();
+      }
       try {
         this.selecting = true;
         await this.getRepoDir();

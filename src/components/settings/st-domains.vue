@@ -66,8 +66,7 @@
         </div>
         <div class="pd-20 bdt-1" v-if="!it.valid">
           <div class="fz-14">
-            <b>A Record </b>
-            <span class="ml-3">Nameserver</span>
+            <b>Nameservers</b>
           </div>
           <p class="gray mt-1 fz-13">
             Set the following record on your DNS provider to continue:
@@ -110,7 +109,7 @@ export default {
       adding: false,
       dnsName: /test|vercel|localhost/.test(location.origin)
         ? "cname.foreverland.xyz"
-        : "cname.4everland-dns.com",
+        : "cname.4everland.app",
     };
   },
   computed: {
@@ -126,7 +125,7 @@ export default {
   },
   mounted() {
     this.getList();
-    // this.getDnsName();
+    this.getDnsName();
   },
   methods: {
     async getDnsName() {
