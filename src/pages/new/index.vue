@@ -242,6 +242,7 @@ export default {
             this.isClone = true;
             this.onImport(item);
           }
+          this.cloneDir = "";
         }
       } catch (error) {
         //
