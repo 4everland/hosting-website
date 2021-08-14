@@ -66,7 +66,8 @@
                   <e-branch :info="it"></e-branch>
                 </div>
               </div>
-              <span class="fl-r gray fz-13 shrink-0" v-show="!asMobile">
+              <span class="ml-a"></span>
+              <span class="gray fz-13 shrink-0" v-show="!asMobile">
                 <e-time
                   :value="it.createAt"
                   :sub="'by ' + userInfo.username"
