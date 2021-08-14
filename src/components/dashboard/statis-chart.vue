@@ -63,7 +63,7 @@ export default {
         for (const it of list) {
           const fmt = /hour/i.test(this.timeLimit) ? "HH:ii" : "mm-dd";
           xArr.push(it.time.format(fmt));
-          // const num = (Math.random() * 20) | 0;
+          // it.num = (Math.random() * 20) | 0;
           yArr.push(it.num);
         }
         this.setData(xArr, yArr);
@@ -86,14 +86,14 @@ export default {
         },
         yAxis: {
           type: "value",
-          interval: 1,
+          // interval: 1,
         },
         tooltip: {
           trigger: "axis",
           formatter: (params) => {
             const { dataIndex: idx } = params[0];
             const obj = this.list[idx];
-            return `${obj.time.format("y-m-d HH:ii")}<br>${obj.num}`;
+            return `${obj.time.format("y-m-d HH:ii")}<br><b>${obj.num}</b>`;
           },
         },
         series: [
