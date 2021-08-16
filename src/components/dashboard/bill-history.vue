@@ -47,8 +47,8 @@ export default {
           it.seq = i + 1;
           it.storage += "GB";
           it.amount = "0 USDT";
-          it.date = new Date(it.date).format("yy-mm-dd");
-          it.end = "2021-12-31";
+          it.date = new Date(it.date).format("date");
+          it.end = "Dec 31 2021";
           // it.pay += ' USDT'
           return it;
         });

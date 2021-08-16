@@ -63,7 +63,7 @@
       </v-row>
 
       <v-row class="mb-6 ta-c">
-        <v-col cols="6" v-for="(it, i) in summaryList" :key="i">
+        <v-col cols="4" v-for="(it, i) in summaryList" :key="i">
           <div class="el-label-1">{{ it.title }}</div>
           <div class="fz-25 mt-1">{{ it.value }}</div>
         </v-col>
@@ -154,6 +154,10 @@ export default {
         {
           title: this.$tc(`dashboard.statistics.TotalUser`, 1),
           value: this.info.totalUsers,
+        },
+        {
+          title: 'Total PV',
+          value: this.info.totalPv || 0,
         },
         {
           title: this.$t(`dashboard.statistics.RetentionRate`),

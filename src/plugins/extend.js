@@ -1,4 +1,12 @@
-Date.prototype.format = function(format = "yy-mm-dd HH:ii:ss") {
+Date.prototype.format = function(format) {
+  if (format == "date") {
+    return this.toDateString().replace(/^\w+\s/, "");
+  }
+  if (!format) {
+    return this.toString()
+      .replace(/^\w+\s/, "")
+      .replace(/\sGMT.*$/, "");
+  }
   var o = {
     "y+": this.getFullYear(),
     "m+": this.getMonth() + 1,

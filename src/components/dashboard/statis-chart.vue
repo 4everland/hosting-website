@@ -87,13 +87,16 @@ export default {
         yAxis: {
           type: "value",
           // interval: 1,
+          minInterval: 1,
         },
         tooltip: {
           trigger: "axis",
           formatter: (params) => {
             const { dataIndex: idx } = params[0];
             const obj = this.list[idx];
-            return `${obj.time.format("y-m-d HH:ii")}<br><b>${obj.num}</b>`;
+            return `${obj.time.format().replace(/:00$/, "")}<br><b>${
+              obj.num
+            }</b>`;
           },
         },
         series: [
