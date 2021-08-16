@@ -84,7 +84,7 @@ const locale = {
   },
   new: {
     index: {
-      ImportGitRepositor: "Import Git Repositor",
+      ImportGitRepository: "Import Git Repository",
       AddGithub: "Connect To Git",
       Search: "Search",
       NoGitRepositoriesFound: "No Git Repositories Found",

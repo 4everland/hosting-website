@@ -23,7 +23,7 @@
           <v-card outlined :min-height="minHeight">
             <div class="pd-20">
               <div class="fz-20 fw-b mr-10">
-                {{ $t(`${locales}ImportGitRepositor`) }}
+                {{ $t(`${locales}ImportGitRepository`) }}
               </div>
               <div class="d-flex al-c mb-5 mt-1">
                 <v-btn small :loading="loading" @click="getList" class="mr-3">
