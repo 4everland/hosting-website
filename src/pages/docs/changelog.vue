@@ -24,7 +24,7 @@ export default {
     return {
       list: [
         {
-          time: "2021-8-16",
+          time: "2021-8-16".toDate().format("date"),
           con: `
 <p class="gray-3">4EVER-HOSTING is officially launched, you can deploy and host your website through "HOSTING" with one click. The specific features are as follows.</p>
 <ul>

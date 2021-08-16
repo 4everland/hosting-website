@@ -112,7 +112,7 @@ export default {
         { title: this.$t(`dashboard.statistics.PageView`), type: "PAGE_VIEW" },
       ],
       headers: [
-        { text: this.$t(`dashboard.statistics.Time`), value: "createAt" },
+        { text: this.$t(`dashboard.statistics.Time`), value: "date" },
         { text: this.$t(`dashboard.statistics.NewUsers`), value: "newUsers" },
         {
           text: this.$t(`dashboard.statistics.Day`, { num: "1" }),
@@ -156,7 +156,7 @@ export default {
           value: this.info.totalUsers,
         },
         {
-          title: 'Total PV',
+          title: "Total PV",
           value: this.info.totalPv || 0,
         },
         {
@@ -237,7 +237,10 @@ export default {
         const { data: list } = await this.$http.get(
           "/analytics/user/retention/project/" + this.appId
         );
-        this.tableList = list;
+        this.tableList = list.map((it) => {
+          it.date = it.createAt.toDate().format("date");
+          return it;
+        });
       } catch (error) {
         console.log(error);
       }

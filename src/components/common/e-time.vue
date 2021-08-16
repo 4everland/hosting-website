@@ -14,6 +14,7 @@ export default {
   props: {
     value: null,
     endAt: null,
+    format: String,
     pre: String,
     sub: String,
   },
@@ -46,9 +47,9 @@ export default {
       return time;
     },
     fullTime() {
-      let time = this.date.format();
+      let time = this.date.format(this.format);
       if (this.endDate) {
-        time += " ~ " + this.endDate.format();
+        time += " ~ " + this.endDate.format(this.format);
       }
       return time;
     },
