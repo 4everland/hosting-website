@@ -9,12 +9,12 @@ Date.prototype.format = function(format) {
   }
   var o = {
     "y+": this.getFullYear(),
-    "m+": this.getMonth() + 1,
+    "M+": this.getMonth() + 1,
     "d+": this.getDate(), //day
     "x+": "日一二三四五六".split("")[this.getDay()],
     "H+": this.getHours(),
     h: (this.getHours() > 12 ? "下午" : "上午") + (this.getHours() % 12),
-    "i+": this.getMinutes(),
+    "m+": this.getMinutes(),
     "s+": this.getSeconds(),
     S: this.getMilliseconds(),
   };
@@ -47,7 +47,7 @@ Date.prototype.getNextDay = function(gap = 1) {
   return date;
 };
 Date.prototype.getToday = function() {
-  return this.format("yy-mm-dd 00:00:00").toDate();
+  return this.format("yy-MM-dd 00:00:00").toDate();
 };
 Date.prototype.getDayEnd = function() {
   return new Date(this.getToday() * 1 + 86400e3 - 1e3);
@@ -83,10 +83,10 @@ Date.prototype.toNiceTime = function(now, mode = 11) {
       return Math.floor(second / 86400) + "d ago";
     }
   }
-  let datePart = date.format("yy-mm-dd");
+  let datePart = date.format("yy-MM-dd");
   const timePart = date.format("HH:ii");
   const today = now.format("y-m-d").toDate();
-  if (date.getFullYear() == now.getFullYear()) datePart = date.format("mm-dd");
+  if (date.getFullYear() == now.getFullYear()) datePart = date.format("MM-dd");
   if (mode == 2) {
     return datePart;
   }

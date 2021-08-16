@@ -61,7 +61,7 @@ export default {
         });
         this.list = list;
         for (const it of list) {
-          const fmt = /hour/i.test(this.timeLimit) ? "HH:ii" : "mm-dd";
+          const fmt = /hour/i.test(this.timeLimit) ? "HH:ii" : "MM-dd";
           xArr.push(it.time.format(fmt));
           // it.num = (Math.random() * 20) | 0;
           yArr.push(it.num);
