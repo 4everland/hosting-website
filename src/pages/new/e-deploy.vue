@@ -275,7 +275,7 @@ export default {
   },
   methods: {
     onFramework(val) {
-      const item = this.frameworks.filter((it) => it.slug == val)[0];
+      const item = this.frameworks.filter((it) => it.slug == val)[0] || {};
       const { buildCommand = {}, outputDirectory = {} } = item.settings || {};
       this.form.buildCommand = buildCommand.value || "";
       this.buildCommandHint = buildCommand.placeholder || "";
