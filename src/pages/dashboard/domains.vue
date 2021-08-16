@@ -48,7 +48,7 @@
                 <v-skeleton-loader type="article" />
               </div>
               <template v-else>
-                <div class="d-flex al-c">
+                <div class="d-flex al-c bdb-1">
                   <v-icon class="ml-4">mdi-magnify</v-icon>
                   <input
                     type="text"
@@ -58,20 +58,25 @@
                     style="height: 54px; outline: none"
                   />
                 </div>
-                <div
-                  class="d-flex al-c bdt-1 pd-15"
-                  v-for="(it, i) in projList"
-                  :key="i"
-                >
-                  <v-icon>mdi-folder-outline</v-icon>
-                  <span class="ml-2">{{ it.name }}</span>
-                  <v-btn
-                    small
-                    color="primary"
-                    class="ml-auto"
-                    @click="onSelect(it)"
-                    >{{ $t(`${locales}Select`) }}</v-btn
+                <div class="ov-a" style="max-height: 40vh">
+                  <div
+                    class="d-flex al-c pd-15"
+                    :class="{
+                      'bdt-1': i > 0,
+                    }"
+                    v-for="(it, i) in projList"
+                    :key="i"
                   >
+                    <v-icon>mdi-folder-outline</v-icon>
+                    <span class="ml-2">{{ it.name }}</span>
+                    <v-btn
+                      small
+                      color="primary"
+                      class="ml-auto"
+                      @click="onSelect(it)"
+                      >{{ $t(`${locales}Select`) }}</v-btn
+                    >
+                  </div>
                 </div>
                 <div class="d-flex al-c bdt-1 pd-15 gray fz-15">
                   <v-icon>mdi-folder-plus-outline</v-icon>
@@ -95,7 +100,9 @@
             </div>
             <div class="mt-5">
               <v-text-field
+                dense
                 outlined
+                autofocus
                 v-model="domain"
                 placeholder="mywebsite.com"
                 @keyup.enter="onAdd"
@@ -105,8 +112,11 @@
         </v-window>
 
         <div class="ta-c mt-8">
-          <v-btn @click="showPop = false">{{ $t(`${locales}Cancel`) }}</v-btn>
+          <v-btn @click="showPop = false" small>{{
+            $t(`${locales}Cancel`)
+          }}</v-btn>
           <v-btn
+            small
             color="primary"
             class="ml-6"
             v-if="curStep > 0"
