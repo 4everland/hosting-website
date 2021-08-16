@@ -15,7 +15,7 @@ const locale = {
   },
   home: {
     LoginToHosting: "Login to Hosting",
-    ContinuewithGithub: "Continue with Github",
+    ContinuewithGithub: "Connect with Github",
   },
   dashboard: {
     index: {
