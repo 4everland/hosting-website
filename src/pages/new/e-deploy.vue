@@ -297,11 +297,11 @@ export default {
         );
         this.form.framework = data.framework || null;
         this.onFramework(this.form.framework);
-        let { scripts = "" } = data;
-        if (scripts) {
-          const { build } = JSON.parse(scripts) || {};
-          if (build) this.form.buildCommand = build;
-        }
+        // let { scripts = "" } = data;
+        // if (scripts) {
+        //   const { build } = JSON.parse(scripts) || {};
+        //   if (build) this.form.buildCommand = build;
+        // }
       } catch (error) {
         console.log(error);
       }
