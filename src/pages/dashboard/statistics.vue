@@ -238,7 +238,7 @@ export default {
           "/analytics/user/retention/project/" + this.appId
         );
         this.tableList = list.map((it) => {
-          it.date = it.createAt.toDate().format("date");
+          it.date = new Date(it.createAt * 1e3).format("date");
           return it;
         });
       } catch (error) {

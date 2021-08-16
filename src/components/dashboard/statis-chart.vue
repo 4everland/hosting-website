@@ -52,7 +52,7 @@ export default {
         const yArr = [];
         for (const key in data) {
           list.push({
-            time: key.toDate(),
+            time: new Date(key * 1e3),
             num: data[key],
           });
         }
