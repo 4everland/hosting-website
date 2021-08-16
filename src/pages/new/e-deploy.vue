@@ -296,6 +296,7 @@ export default {
           "/project/detect-framework/" + this.importItem.id
         );
         this.form.framework = data.framework || null;
+        this.onFramework(this.form.framework);
         let { scripts = "" } = data;
         if (scripts) {
           const { build } = JSON.parse(scripts) || {};
@@ -367,9 +368,8 @@ export default {
       let framework = this.importItem.frameWorkAdvice || null;
       if (framework == "other") framework = null;
       this.form.framework = framework;
-      if (!framework) {
-        this.getFramework();
-      }
+      this.onFramework(framework);
+      this.getFramework();
       try {
         this.selecting = true;
         await this.getRepoDir();
