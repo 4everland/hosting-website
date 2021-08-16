@@ -76,11 +76,11 @@
               <p class="el-label-1">Type</p>
               <p class="mt-3">CNAME</p>
             </div>
-            <div class="flex-1">
+            <div class="flex-1 ml-5">
               <p class="el-label-1">Name</p>
               <p class="mt-3">{{ it.pre }}</p>
             </div>
-            <div class="flex-2">
+            <div class="flex-2 ml-5">
               <p class="el-label-1">Value</p>
               <p
                 class="mt-3 hover-1"

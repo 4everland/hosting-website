@@ -7,7 +7,7 @@
           If no index file is present within a directory, the directory contents
           will be displayed.
         </div>
-        <div class="mt-3">
+        <div class="mt-3 hide-msg">
           <v-switch
             v-model="directoryList"
             :label="directoryList ? 'Enabled' : 'Disabled'"

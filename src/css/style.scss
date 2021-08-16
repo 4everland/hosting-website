@@ -66,6 +66,9 @@ body {
     color: rgba(0, 0, 0, 0.6)!important;
   }
 }
+.hide-msg .v-messages {
+  display: none;
+}
 
 .shadow-1 {
   box-shadow: 0 1px 2px #f0f0f0;
