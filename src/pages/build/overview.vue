@@ -2,8 +2,13 @@
 .logs-wrap {
   div {
     padding: 6px 20px;
-    &.log-error,
-    &.log-warning {
+    &.log-error {
+      background: #fad4c5;
+      &:hover {
+        background: #fcc8b3;
+      }
+    }
+    &.log-warn {
       background: #ffefd1;
       &:hover {
         background: #ffe4b2;
