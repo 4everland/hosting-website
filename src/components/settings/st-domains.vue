@@ -65,16 +65,16 @@
           </div>
         </div>
         <div class="pd-20 bdt-1" v-if="!it.valid">
-          <div class="fz-14">
+          <!-- <div class="fz-14">
             <b>Nameservers</b>
-          </div>
-          <p class="gray mt-1 fz-13">
+          </div> -->
+          <p class="gray mt-1 fz-14">
             Set the following record on your DNS provider to continue:
           </p>
-          <div class="bg-f4 pd-10-20 fz-14 bd-1 d-flex mt-6">
+          <div class="bg-f4 pd-10-20 fz-14 bd-1 d-flex mt-3">
             <div class="flex-1">
               <p class="el-label-1">Type</p>
-              <p class="mt-3">CNAME</p>
+              <p class="mt-3">{{ it.isA ? 'A' : 'CNAME' }}</p>
             </div>
             <div class="flex-1 ml-5">
               <p class="el-label-1">Name</p>
@@ -84,10 +84,10 @@
               <p class="el-label-1">Value</p>
               <p
                 class="mt-3 hover-1"
-                v-clipboard="dnsName"
+                v-clipboard="it.isA ? dns.ip : dns.cname"
                 @success="$toast('Copied to clipboard !')"
               >
-                {{ dnsName }}
+                {{ it.isA ? dns.ip : dns.cname }}
                 <v-icon size="14" class="ml-1">mdi-content-copy</v-icon>
               </p>
             </div>
@@ -103,13 +103,15 @@ import { mapState } from "vuex";
 
 export default {
   data() {
+
     return {
       domain: "",
       list: null,
       adding: false,
-      dnsName: /xyz$/.test(process.env.VUE_APP_BASE_URL)
-        ? "cname.foreverland.xyz"
-        : "cname.4everland.app",
+      dns: {
+        cname: 'cname.4everland.app',
+        ip: '',
+      },
     };
   },
   computed: {
@@ -130,8 +132,8 @@ export default {
   methods: {
     async getDnsName() {
       try {
-        const { data } = await this.$http.get("/domain/cname");
-        this.dnsName = data;
+        const { data } = await this.$http.get("/domain/server");
+        this.dns = data;
       } catch (error) {
         //
       }
@@ -160,7 +162,8 @@ export default {
           const arr = it.domain.split(".");
           arr.pop();
           arr.pop();
-          it.pre = !arr.length ? "@" : arr.join(".");
+          it.isA = !arr.length
+          it.pre = it.isA ? "@" : arr.join(".");
           // it.valid = 1
           return it;
         });
