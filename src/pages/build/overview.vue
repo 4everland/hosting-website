@@ -203,7 +203,7 @@
               :key="i"
             >
               <span class="mr-6 gray time" v-if="it.timestamp">{{
-                new Date(it.timestamp).format("HH:ii:ss.S")
+                new Date(it.timestamp).format("HH:mm:ss.S")
               }}</span>
               <span>{{ it.content }}</span>
             </div>
@@ -247,7 +247,7 @@ export default {
     logText() {
       return this.logs
         .map((it) => {
-          return `${new Date(it.timestamp).format("HH:ii:ss.S")} ${it.content}`;
+          return `${new Date(it.timestamp).format("HH:mm:ss.S")} ${it.content}`;
         })
         .join("\n");
     },

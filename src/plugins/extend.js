@@ -53,7 +53,7 @@ Date.prototype.getDayEnd = function() {
   return new Date(this.getToday() * 1 + 86400e3 - 1e3);
 };
 Date.prototype.toISO8String = function() {
-  return this.format("y-m-d HH:ii:ss");
+  return this.format("y-m-d HH:mm:ss");
 };
 
 String.prototype.toDate = function() {
@@ -84,7 +84,7 @@ Date.prototype.toNiceTime = function(now, mode = 11) {
     }
   }
   let datePart = date.format("yy-MM-dd");
-  const timePart = date.format("HH:ii");
+  const timePart = date.format("HH:mm");
   const today = now.format("y-m-d").toDate();
   if (date.getFullYear() == now.getFullYear()) datePart = date.format("MM-dd");
   if (mode == 2) {
