@@ -80,7 +80,7 @@ export default {
         this.title = data ? data.label : "Feedback";
         let type = "FEEDBACK";
         if (/bug/i.test(this.title)) type = "BUG";
-        else if (/report/.test(this.title)) type = "REPORT";
+        else if (/report/i.test(this.title)) type = "REPORT";
         console.log(type);
         this.form.feedbackType = type;
       }
