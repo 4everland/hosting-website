@@ -33,7 +33,14 @@
           :items="list"
           :page.sync="page"
           :items-per-page.sync="pageSize"
-        ></v-data-table>
+        >
+          <template v-slot:item.domain="{ item }">
+            <v-chip :color="item.valid ? 'success' : 'error'" small 
+              :to="`/project/${item.projectId}/settings?tab=1`">
+              {{ item.domain }}
+            </v-chip>
+          </template>
+        </v-data-table>
       </div>
     </v-card>
 
