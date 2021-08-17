@@ -290,15 +290,14 @@ export default {
         await this.saveProject({
           name: this.name,
         });
-        this.$toast("Project renamed successfully");
+        this.$toast("Renamed successfully");
       } catch (error) {
         //
       }
       this.savingName = false;
     },
     onFramework(val, isInit) {
-      const item = this.frameworks.filter((it) => it.slug == val)[0];
-      if (!item) return;
+      const item = this.frameworks.filter((it) => it.slug == val)[0] || {};
       const { buildCommand = {}, outputDirectory = {} } = item.settings || {};
       if (!this.form.buildCommand && !isInit) {
         this.form.buildCommand = buildCommand.value || "";
