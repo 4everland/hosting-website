@@ -226,7 +226,7 @@ export default {
       try {
         if (!this.$regMap.domain.test(this.domain)) {
           return this.$alert(
-            `The specified value "${this.domain}” is not a fully qualified domain name.`
+            `The specified value “${this.domain}” is not a fully qualified domain name.`
           );
         }
         this.adding = true;
