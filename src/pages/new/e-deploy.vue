@@ -385,7 +385,7 @@ export default {
       if (item) {
         params.rootPath = item.id;
       }
-      let { data } = await this.$http.get("/repo/dir/" + this.importItem.name, {
+      let { data } = await this.$http.get(`/repo/${this.importItem.namespace}/dir/${this.importItem.name}`, {
         params,
       });
       data = data
