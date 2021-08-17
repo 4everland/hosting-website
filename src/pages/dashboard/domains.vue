@@ -230,14 +230,16 @@ export default {
           );
         }
         this.adding = true;
+        const projectId = this.chooseProj.id
         await this.$http.post("/domain", {
           domain: this.domain,
-          projectId: this.chooseProj.id,
+          projectId,
         });
         this.domain = "";
         this.$toast("domain added");
         this.showPop = false;
-        this.getList();
+        this.$router.push(`/project/${projectId}/settings?tab=1`)
+        // this.getList();
       } catch (error) {
         console.log(error);
       }
