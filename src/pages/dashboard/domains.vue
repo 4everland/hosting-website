@@ -243,7 +243,7 @@ export default {
           projectId,
         });
         this.domain = "";
-        this.$toast("domain added");
+        this.$toast("Added successfully");
         this.showPop = false;
         this.$router.push(`/project/${projectId}/settings?tab=1`)
         // this.getList();
