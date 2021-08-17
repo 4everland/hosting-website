@@ -86,7 +86,6 @@ export default {
         },
         yAxis: {
           type: "value",
-          // interval: 1,
           minInterval: 1,
         },
         tooltip: {
@@ -103,7 +102,12 @@ export default {
           {
             data: yArr,
             type: "line",
-            areaStyle: {},
+            areaStyle: {
+              color: 'rgba(52, 169, 255, 0.2)',
+            },
+            itemStyle: {
+              color: 'rgba(52, 169, 255, 0.2)',
+            },
           },
         ],
       };
