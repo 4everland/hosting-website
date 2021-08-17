@@ -47,7 +47,15 @@
       <v-row class="mb-6">
         <v-col cols="12" md="4" v-for="(row, i) in cardList" :key="i">
           <div class="pd-20 bdrs-5 white-0" :class="'bg-s' + i">
-            <div>{{ row.title }}</div>
+            <div>
+              <span>{{ row.title }}</span>
+              <e-tooltip right max-width="300" v-if="row.tip">
+                <v-icon slot="ref" color="#fff" size="14" class="pa-1 d-ib"
+                  >mdi-help-circle-outline</v-icon
+                >
+                <span>{{ row.tip }}</span>
+              </e-tooltip>
+            </div>
             <div class="fz-14 mt-5">
               <div>
                 <span class="op-7">{{ $t(`${locales}Today`) }}</span>
@@ -178,11 +186,15 @@ export default {
           title: "UV",
           today: info.todayUv,
           yesterday: info.yesterdayUv,
+          tip: `Unique Visitor. A computer client that visits the site as a
+                  Visitor. The same client is counted only once between 00:00
+                  and 24:00`,
         },
         {
           title: "PV",
           today: info.todayPv,
           yesterday: info.yesterdayPv,
+          tip: `Page Views. Page views or clicks are counted once per user visit.`,
         },
       ];
     },

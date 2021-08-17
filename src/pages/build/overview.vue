@@ -99,21 +99,19 @@
                 </div>
                 <div class="flex-1">
                   <div class="label-1">
-                    <v-tooltip max-width="300" left>
-                      <template v-slot:activator="{ on, attrs }">
-                        <span v-bind="attrs" v-on="on">
-                          <span>Duration</span>
-                          <v-icon size="14" class="ml-1">
-                            mdi-help-circle-outline
-                          </v-icon>
-                        </span>
-                      </template>
+                    <e-tooltip max-width="300" left>
+                      <span slot="ref">
+                        <span>Duration</span>
+                        <v-icon size="14" class="ml-1">
+                          mdi-help-circle-outline
+                        </v-icon>
+                      </span>
                       <span>
                         The total time it took to create and build your
                         deployment before it was accessible through our edge
                         network.
                       </span>
-                    </v-tooltip>
+                    </e-tooltip>
                   </div>
                   <div>
                     <e-time :endAt="info.endAt || nowDate">{{
