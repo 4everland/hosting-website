@@ -30,8 +30,15 @@
         </v-col>
         <v-col cols="12" md="7" v-if="fileName">
           <v-skeleton-loader type="article" v-if="loading" />
-          <div v-else-if="isImg">
-            <img :src="result" :alt="fileName" style="max-width: 100%" />
+          <div v-else-if="isMedia">
+            <img
+              v-if="isImg"
+              :src="result"
+              :alt="fileName"
+              style="max-width: 100%"
+            />
+            <audio v-else-if="isAudio" :src="result"></audio>
+            <video v-else :src="result" class="w100p" controls></video>
           </div>
           <div v-else class="fz-14 lh-2 ov-a" style="max-height: 80vh">
             {{ result }}
@@ -71,9 +78,20 @@ export default {
     };
   },
   computed: {
+    ftype() {
+      return /\.(\w+)$/.exec(this.fileName)[1];
+    },
     isImg() {
-      const ftype = /\.(\w+)$/.exec(this.fileName)[1];
-      return /ico|png|jpg|jpeg|gif|svg/.test(ftype);
+      return /ico|png|jpg|jpeg|gif|svg/.test(this.ftype);
+    },
+    isAudio() {
+      return /mp3|wav/.test(this.ftype);
+    },
+    isVideo() {
+      return /mp4|avi|rmvb|flv|mov/.test(this.ftype);
+    },
+    isMedia() {
+      return this.isImg || this.isAudio || this.isVideo;
     },
   },
   mounted() {
@@ -101,7 +119,7 @@ export default {
         this.loading = true;
         this.result = "";
         const url = `/artifact/deployment/${hash}/file/${name}`;
-        if (this.isImg) {
+        if (this.isMedia) {
           await this.$sleep(500);
           this.result =
             "//" + this.info.domain + "/" + dir + "/" + this.fileName;
