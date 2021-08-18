@@ -31,7 +31,8 @@ http.interceptors.response.use(
         Vue.prototype.$loading.close();
         // console.log(msg)
         if (data.code < 1e4) {
-          localStorage.clear();
+          localStorage.token = "";
+          delete localStorage.userInfo;
           localStorage.loginTo = location.hash;
           location.href = "index.html";
         } else if (!noTip) {

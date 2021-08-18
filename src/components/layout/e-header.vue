@@ -178,7 +178,8 @@ export default {
         });
       }
       if (name == "logout") {
-        localStorage.clear();
+        localStorage.token = "";
+        delete localStorage.userInfo;
         location.href = "index.html";
       } else if (name == "login") {
         const { path } = this.$route;
