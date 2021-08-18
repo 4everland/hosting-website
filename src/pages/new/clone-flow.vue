@@ -126,12 +126,12 @@ export default {
           params: {
             url: this.source,
           },
-          noTip: false,
+          // noTip: false,
         });
         this.info = data;
       } catch (error) {
-        // console.log(error)
-        this.errMsg = error.message;
+        console.log(error);
+        // this.errMsg = error.message;
       }
       this.loading = false;
     },
