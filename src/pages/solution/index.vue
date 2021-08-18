@@ -1,5 +1,6 @@
 <template>
   <div class="wrap-1">
+    <e-storage ref="stor"></e-storage>
     <div
       class="con-3 bg-white bd-1 bdrs-5 d-flex f-center al-c pos-r"
       style="min-height: 480px; height: 55vh"
@@ -13,7 +14,7 @@
           {{ info.solution }}
         </div>
         <div class="mt-8">
-          <v-btn color="primary" large :to="link">
+          <v-btn color="primary" large @click="onDeploy">
             <v-icon>mdi-play-outline</v-icon>
             <span class="ml-1">Deploy Free</span>
           </v-btn>
@@ -46,6 +47,13 @@ export default {
         `https://github.com/4everland/project-templates/tree/main/examples/` +
         this.name;
       return `/new/clone-flow?s=${encodeURIComponent(src)}&t=${this.info.name}`;
+    },
+  },
+  methods: {
+    async onDeploy() {
+      const needCheck = await this.$refs.stor.checkStorage();
+      if (needCheck) return;
+      this.$router.push(this.link);
     },
   },
 };
