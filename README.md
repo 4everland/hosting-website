@@ -1,4 +1,7 @@
-# land-host
+# 4ever-hosting
+
+Site: https://hosting.4everland.org
+Docs: https://docs.hosting.4everland.org
 
 ## Project setup
 ```
