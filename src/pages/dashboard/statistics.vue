@@ -8,6 +8,9 @@
 .bg-s2 {
   background: #be80e0;
 }
+.v-menu__content {
+  z-index: 120!important;
+}
 </style>
 
 <template>
