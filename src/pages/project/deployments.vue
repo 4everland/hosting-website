@@ -59,7 +59,12 @@
             </div>
             <div class="d-flex al-c flex-1">
               <div class="flex-1 mr-5 shrink-1" v-if="it.commits">
-                <div class="line-1" style="max-width: 220px">
+                <div
+                  class="line-1"
+                  :style="{
+                    'max-width': asMobile ? '220px' : '300px',
+                  }"
+                >
                   <e-commit :info="it.commits"></e-commit>
                 </div>
                 <div class="fz-14 mt-1">
@@ -70,7 +75,7 @@
               <span class="gray fz-13 shrink-0" v-show="!asMobile">
                 <e-time
                   :value="it.createAt"
-                  :sub="'by ' + userInfo.username"
+                  :sub1="'by ' + userInfo.username"
                 ></e-time>
               </span>
               <v-menu>
