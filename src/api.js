@@ -30,7 +30,7 @@ http.interceptors.response.use(
         let msg = data.message || `${data.code} error`;
         Vue.prototype.$loading.close();
         // console.log(msg)
-        if (data.code == 401 || [10024, 10023, 10008].includes(data.code)) {
+        if (data.code < 1e4) {
           localStorage.clear();
           localStorage.loginTo = location.hash;
           location.href = "index.html";
