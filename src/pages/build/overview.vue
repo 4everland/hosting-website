@@ -303,6 +303,12 @@ export default {
         }
       }
     },
+    state() {
+      let sta = "running";
+      if (this.isSuccess) sta = "success";
+      else if (this.state == "failure") sta = "error";
+      this.$setIcon(`img/icon/favicon-${sta}.png`);
+    },
   },
   mounted() {
     this.initData();

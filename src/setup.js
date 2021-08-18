@@ -25,6 +25,10 @@ Vue.prototype.$navTo = (url) => {
   }
 };
 
+Vue.prototype.$setIcon = function(url = "favicon.ico") {
+  document.querySelector('link[rel="icon"]').href = url;
+};
+
 Vue.prototype.$getImgSrc = function(src) {
   if (!src) src = "img/proj-bg-def.png";
   else if (!/^http/.test(src)) src = process.env.VUE_APP_BASE_URL + src;

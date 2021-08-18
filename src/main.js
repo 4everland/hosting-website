@@ -24,8 +24,11 @@ new Vue({
     this.onInit();
   },
   watch: {
-    "$route.path"() {
+    "$route.path"(val) {
       window.scrollTo(0, 0);
+      if (!/^\/build\//.test(val)) {
+        this.$setIcon();
+      }
       this.$loading.close();
     },
     token(val) {
