@@ -9,7 +9,7 @@
   background: #be80e0;
 }
 .v-menu__content {
-  z-index: 120!important;
+  z-index: 120 !important;
 }
 </style>
 
@@ -50,7 +50,7 @@
       <v-row class="mb-6">
         <v-col cols="12" md="4" v-for="(row, i) in cardList" :key="i">
           <div class="pd-20 bdrs-5 white-0" :class="'bg-s' + i">
-            <div>
+            <div class="d-flex al-c">
               <span>{{ row.title }}</span>
               <e-tooltip right max-width="300" v-if="row.tip">
                 <v-icon slot="ref" color="#fff" size="14" class="pa-1 d-ib"
