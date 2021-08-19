@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Axios from "axios";
-import router from "./router";
+// import router from "./router";
 
 const http = Axios.create({
   baseURL: process.env.VUE_APP_BASE_URL,
@@ -21,6 +21,13 @@ http.interceptors.request.use(
   }
 );
 
+function goLogin() {
+  localStorage.token = "";
+  delete localStorage.userInfo;
+  localStorage.loginTo = location.hash;
+  location.href = "index.html";
+}
+
 http.interceptors.response.use(
   (res) => {
     const data = res.data;
@@ -31,10 +38,7 @@ http.interceptors.response.use(
         Vue.prototype.$loading.close();
         // console.log(msg)
         if (data.code < 1e4) {
-          localStorage.token = "";
-          delete localStorage.userInfo;
-          localStorage.loginTo = location.hash;
-          location.href = "index.html";
+          goLogin();
         } else if (!noTip) {
           setTimeout(() => {
             Vue.prototype.$alert(msg);
@@ -60,9 +64,8 @@ http.interceptors.response.use(
         "A network error has occurred. Please check your connections and try again.";
     }
     if (status == 401) {
-      router.replace("/");
-    }
-    if (msg) {
+      goLogin();
+    } else if (msg) {
       Vue.prototype.$alert(msg);
     }
     return Promise.reject(error);
