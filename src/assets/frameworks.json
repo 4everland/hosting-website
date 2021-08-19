@@ -18,6 +18,7 @@
       "placeholder": "`yarn install` or `npm install`"
     },
     "buildCommand": {
+      "value": "next build",
       "placeholder": "`npm run build` or `next build`"
     },
     "devCommand": {
