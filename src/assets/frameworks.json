@@ -26,6 +26,7 @@
       "placeholder": "next"
     },
     "outputDirectory": {
+      "value": "out",
       "placeholder": "Next.js default"
     }
   },
