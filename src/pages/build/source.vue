@@ -79,7 +79,7 @@ export default {
   },
   computed: {
     ftype() {
-      return /\.(\w+)$/.exec(this.fileName)[1];
+      return this.getFtype(this.fileName);
     },
     isImg() {
       return /ico|png|jpg|jpeg|gif|svg/.test(this.ftype);
@@ -98,6 +98,10 @@ export default {
     this.initData();
   },
   methods: {
+    getFtype(name) {
+      const mat = /\.(\w+)$/.exec(name);
+      return mat ? mat[1] : "";
+    },
     async initData() {
       try {
         const { data } = await this.$http.get(
@@ -151,7 +155,7 @@ export default {
           it.children = [];
           it.dir = it.name;
         } else {
-          it.ftype = /\.(\w+)$/.exec(it.name)[1];
+          it.ftype = this.getFtype(it.name);
           it.dir = "";
         }
         if (item) {
