@@ -58,6 +58,7 @@
                 v-model="inputVal"
                 autofocus
                 dense
+                autocomplete="off"
                 v-bind="alertInfo.inputAttrs"
                 @keyup.enter="hideAlert(1)"
               ></v-text-field>
@@ -67,6 +68,7 @@
                 v-if="alertInfo.input2Attrs"
                 v-model="inputVal2"
                 dense
+                autocomplete="off"
                 v-bind="alertInfo.input2Attrs"
                 @keyup.enter="hideAlert(1)"
               ></v-text-field>
