@@ -37,11 +37,11 @@
           :items="apps"
           item-text="projectName"
           item-value="projectId"
-          menu-props="auto"
           label="All Dapps"
           hide-details
           prepend-icon="mdi-apps"
           single-line
+          :menu-props="{ offsetY: true }"
         ></v-select>
       </div>
       <v-row class="mb-6">
