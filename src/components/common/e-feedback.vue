@@ -85,8 +85,12 @@ export default {
         this.form.feedbackType = type;
       }
     },
-    showPop() {
-      this.form.email = this.userInfo.email;
+    showPop(val) {
+      if (val) {
+        this.form.email = this.userInfo.email;
+        this.form.description = "";
+        this.files = [];
+      }
     },
   },
   methods: {
@@ -114,10 +118,8 @@ export default {
       try {
         this.loading = true;
         await this.$http.post("/feedback/upload", form);
-        this.showPop = false;
         this.$toast("Your feedback is received.", 1);
-        this.form.description = "";
-        this.files = [];
+        this.showPop = false;
       } catch (error) {
         //
       }
