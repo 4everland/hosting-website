@@ -131,7 +131,7 @@ export default {
         this.info = data;
       } catch (error) {
         console.log(error);
-        // this.errMsg = error.message;
+        this.errMsg = error.message;
       }
       this.loading = false;
     },
