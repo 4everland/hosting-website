@@ -26,7 +26,7 @@
     </div>
     <v-row v-else>
       <!-- :md="6"  -->
-      <v-col cols="12" :md="6" :lg="4" v-for="(it, i) in list" :key="i">
+      <v-col cols="12" :md="6" :lg="4" v-for="(it) in list" :key="it.id">
         <v-card outlined class="hover-c1 trans-200 ov-h">
           <a :href="`#/project/${it.id}/overview`">
             <v-img

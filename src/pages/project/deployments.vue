@@ -23,7 +23,7 @@
               'd-flex al-c flex-wrap': !asMobile,
             }"
             v-for="(it, i) in list"
-            :key="i"
+            :key="it.taskId"
           >
             <div
               class="d-flex"
