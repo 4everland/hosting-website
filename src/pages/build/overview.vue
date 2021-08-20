@@ -205,7 +205,7 @@
               v-for="(it, i) in logs"
               :key="i"
             >
-              <span class="mr-6 gray time" v-if="it.timestamp">{{
+              <span class="mr-6 gray time shrink-0" v-if="it.timestamp">{{
                 new Date(it.timestamp).format("HH:mm:ss.S")
               }}</span>
               <span>{{ it.content }}</span>
