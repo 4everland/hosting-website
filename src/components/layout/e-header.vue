@@ -51,7 +51,14 @@
               v-on="on"
               :class="it.outlined ? '' : 'op-6'"
             >
-              <v-icon size="16" class="mr-1" v-if="it.icon"
+              <v-img
+                v-if="it.img"
+                :src="it.img"
+                width="16"
+                height="16"
+                class="bdrs-100 mr-1"
+              ></v-img>
+              <v-icon size="16" class="mr-1" v-else-if="it.icon"
                 >mdi-{{ it.icon }}</v-icon
               >
               <span class="">{{ it.label }}</span>
@@ -100,7 +107,7 @@ export default {
           href: "https://docs.hosting.4everland.org/guide/",
         },
       ];
-      const { username } = this.userInfo;
+      const { username, avatar } = this.userInfo;
       if (username) {
         let feedback = {
           label: "Contact",
@@ -144,6 +151,7 @@ export default {
           links.push({
             label: username,
             icon: "github",
+            img: avatar,
             color: "#4A96FA",
             outlined: true,
             subs,
