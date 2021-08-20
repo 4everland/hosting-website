@@ -44,7 +44,9 @@ http.interceptors.response.use(
             Vue.prototype.$alert(msg);
           }, 10);
         }
-        throw new Error(msg);
+        const error = new Error(msg);
+        error.code = data.code;
+        throw error;
       }
       if ("data" in data) {
         return data;

@@ -60,6 +60,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   data() {
     const { s, b } = this.$route.query;
@@ -76,6 +78,9 @@ export default {
     };
   },
   computed: {
+    ...mapState({
+      isFocus: (s) => s.isFocus,
+    }),
     metaList() {
       const info = this.info;
       return [
@@ -90,6 +95,14 @@ export default {
           link: `${info.url}/tree/${info.defaultBranch}${info.dir}`,
         },
       ];
+    },
+  },
+  watch: {
+    isFocus(val) {
+      if (val && this.isAddClick) {
+        this.isAddClick = false;
+        this.onCreate();
+      }
     },
   },
   mounted() {
@@ -108,15 +121,36 @@ export default {
             isPrivate: this.isPrivate,
           },
         });
-        const { data } = await this.$http.post("/template/clone-push", {
-          pushUrl,
-          ...this.info,
-        });
+        const { data } = await this.$http.post(
+          "/template/clone-push",
+          {
+            pushUrl,
+            ...this.info,
+          },
+          {
+            noTip: true,
+          }
+        );
         this.$router.replace("/new?c=" + data);
+      } catch (error) {
+        if (error.code == 10026) {
+          this.setGithub();
+        } else {
+          this.$alert(error.message);
+        }
+      }
+      this.creating = false;
+    },
+    async setGithub() {
+      this.isAddClick = true;
+      try {
+        this.$loading();
+        const { data } = await this.$http.get("/githubapp/install");
+        this.$openWindow(data.installUrl);
       } catch (error) {
         //
       }
-      this.creating = false;
+      this.$loading.close();
     },
     async getInfo() {
       try {
