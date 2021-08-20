@@ -71,7 +71,7 @@
                   <e-branch :info="it"></e-branch>
                 </div>
               </div>
-              <span class="ml-a"></span>
+              <span class="ml-auto"></span>
               <span class="gray fz-13 shrink-0" v-show="!asMobile">
                 <e-time
                   :value="it.createAt"
