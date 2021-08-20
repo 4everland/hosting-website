@@ -359,7 +359,7 @@ Are you sure you want to continue?
       const { data } = await this.$http.get(
         `/project/task/${this.info.projectId}/all`
       );
-      let html = "You just deployed a new Project to 4everland.";
+      let html = "You just deployed a new project to 4EVERLAND.";
       if (data.length > 1) {
         html = "Redeployed successfully.";
       }
