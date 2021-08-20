@@ -65,7 +65,7 @@
                 <h3>{{ $t(`${locales}NoResultsFound`) }}</h3>
               </div>
               <div class="bd-1 bdrs-5 ov-a" style="max-height: 355px" v-else>
-                <div v-for="(it, i) in repoList" :key="i">
+                <div v-for="(it, i) in repoList" :key="it.id">
                   <div class="pd-20 d-flex al-c">
                     <!-- <v-icon class="mr-5">mdi-wallet</v-icon> -->
                     <img :src="it.fwImg" style="width: 22px" class="mr-2" />
