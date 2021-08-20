@@ -113,7 +113,7 @@ const locale = {
       OutputDirectory: "Output Directory",
       EnvironmentVariables: "Environment Variables",
       Name: "Name",
-      Value: "Value( Will Be Encrypted )",
+      Value: "Value",
       Add: "Add",
       Back: "Back",
       Deploy: "Deploy",

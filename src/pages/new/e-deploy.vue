@@ -160,7 +160,7 @@
                       persistent-placeholder
                       v-model="envForm.value"
                       :label="$t(`${locales}Value`)"
-                      placeholder="i9ju23nf39"
+                      placeholder="Variable_Value"
                       class="ml-5"
                     />
                     <v-btn small color="primary" class="ml-5" @click="addEnv">{{
@@ -283,7 +283,7 @@ export default {
     },
     addEnv() {
       const { key } = this.envForm;
-      if (!key) return this.$alert("Invalid Name");
+      if (!key) return this.$toast("Invalid Name");
       this.envList.push(this.envForm);
       this.envForm = {
         key: "",
@@ -385,9 +385,12 @@ export default {
       if (item) {
         params.rootPath = item.id;
       }
-      let { data } = await this.$http.get(`/repo/${this.importItem.namespace}/dir/${this.importItem.name}`, {
-        params,
-      });
+      let { data } = await this.$http.get(
+        `/repo/${this.importItem.namespace}/dir/${this.importItem.name}`,
+        {
+          params,
+        }
+      );
       data = data
         .map((it) => {
           it.id = it.fullPath;
