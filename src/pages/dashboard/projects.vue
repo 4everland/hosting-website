@@ -110,6 +110,7 @@ export default {
       locales: "dashboard.projects.",
       list: null,
       loading: false,
+      lastState: "",
     };
   },
   computed: {
@@ -119,8 +120,12 @@ export default {
     }),
   },
   watch: {
-    buildInfo({ state }) {
-      if (state != "RUNNING") this.getList();
+    buildInfo({ data }) {
+      // console.log(data.state);
+      if (data.state != this.lastState) {
+        this.lastState = data.state;
+        this.getList();
+      }
     },
   },
   mounted() {
