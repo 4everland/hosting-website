@@ -120,21 +120,18 @@ export default {
             name: this.name,
             isPrivate: this.isPrivate,
           },
+          noTip: true,
         });
-        const { data } = await this.$http.post(
-          "/template/clone-push",
-          {
-            pushUrl,
-            ...this.info,
-          },
-          {
-            noTip: true,
-          }
-        );
+        const { data } = await this.$http.post("/template/clone-push", {
+          pushUrl,
+          ...this.info,
+        });
         this.$router.replace("/new?c=" + data);
       } catch (error) {
         if (error.code == 10026) {
-          this.setGithub();
+          this.$confirm(error.message).then(() => {
+            this.setGithub();
+          });
         } else {
           this.$alert(error.message);
         }
