@@ -50,7 +50,7 @@ const locale = {
       CreateAt: "CreateAt",
     },
     statistics: {
-      NoAppDeployed: "No App Deployed",
+      NoAppDeployed: "No deployments.",
       projectName: "projectName",
       Today: "Today",
       Yesterday: "Yesterday",
