@@ -730,7 +730,7 @@
 }, {
   "name": "Other",
   "slug": null,
-  "logo": "img/github.png",
+  "logo": "img/logos/github.png",
   "description": "No framework or a unoptimized framework.",
   "settings": {
     "installCommand": {

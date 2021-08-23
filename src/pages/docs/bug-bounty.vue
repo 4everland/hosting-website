@@ -12,7 +12,7 @@
   <div class="wrap-1 bug-bounty">
     <div class="con-3 bg-white bd-1">
       <img
-        src="img/bg/bug-bounty-bg.png"
+        src="img/bg/bug-bounty.png"
         class="wh100p d-b hover-1"
         @click="onReport"
       />

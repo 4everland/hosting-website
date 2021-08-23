@@ -31,7 +31,7 @@
           <a :href="`#/project/${it.id}/overview`">
             <v-img
               :src="$getImgSrc(it.production.screenshot)"
-              lazy-src="img/proj-bg-def.png"
+              lazy-src="img/bg/cover-1.png"
               height="155"
             ></v-img>
           </a>

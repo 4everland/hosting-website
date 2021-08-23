@@ -8,7 +8,7 @@
             <v-skeleton-loader type="article" />
           </template>
           <div class="ta-c" v-else-if="errMsg">
-            <img src="img/bill-empty.svg" style="height: 180px" />
+            <img src="img/empty/bill.svg" style="height: 180px" />
             <div class="mt-3 red-1">
               {{ errMsg }}
             </div>

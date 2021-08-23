@@ -22,7 +22,7 @@
     </div>
 
     <div v-else-if="!apps.length" class="ta-c pd-20 mt-8 mb-8">
-      <img src="img/bill-empty.svg" style="height: 200px" />
+      <img src="img/empty/bill.svg" style="height: 200px" />
       <div class="gray mt-4">
         {{ $t(`${locales}NoAppDeployed`) }}
       </div>

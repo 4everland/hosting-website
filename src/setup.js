@@ -30,7 +30,7 @@ Vue.prototype.$setIcon = function(url = "favicon.ico") {
 };
 
 Vue.prototype.$getImgSrc = function(src) {
-  if (!src) src = "img/proj-bg-def.png";
+  if (!src) src = "img/bg/cover-1.png";
   else if (!/^http/.test(src)) src = process.env.VUE_APP_BASE_URL + src;
   return src;
 };

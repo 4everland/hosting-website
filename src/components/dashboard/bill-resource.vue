@@ -4,7 +4,7 @@
   </div>
   <div v-else>
     <div class="mt-6 ta-c" v-if="!info.total">
-      <img src="img/bill-empty.svg" style="height: 180px" />
+      <img src="img/empty/bill.svg" style="height: 180px" />
       <div class="mt-3 gray">{{ $t(`${locales}NoResource`) }}</div>
 
       <div class="pd-20 bd-1 mt-5">
