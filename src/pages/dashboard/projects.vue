@@ -16,7 +16,7 @@
       class="ta-c bg-white bdrs-5"
       style="padding: 50px 0"
     >
-      <v-img src="img/empty/no-proj.png" max-width="220" class="m-auto"></v-img>
+      <v-img src="img/empty/proj.png" max-width="220" class="m-auto"></v-img>
       <div class="gray mt-10">{{ $t(`${locales}NoDeployments`) }}</div>
       <div class="mt-6">
         <v-btn outlined color="primary" @click="addNew" :loading="loading">{{
