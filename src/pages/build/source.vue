@@ -1,7 +1,7 @@
 <template>
   <v-card outlined>
     <div class="pd-20">
-      <div class="pd-20 ta-c" v-if="isError">
+      <div class="pd-20 ta-c" v-if="isEmpty">
         <v-img src="img/empty/source.svg" width="200" class="m-auto"></v-img>
         <p class="mt-5 gray">No Output.</p>
       </div>
@@ -55,7 +55,7 @@ export default {
     const { taskId } = this.$route.params;
     return {
       initLoading: true,
-      isError: false,
+      isEmpty: false,
       taskId,
       dirList: [],
       files: {
@@ -78,6 +78,9 @@ export default {
     };
   },
   computed: {
+    buildInfo() {
+      return this.$store.state.buildInfo;
+    },
     ftype() {
       return this.getFtype(this.fileName);
     },
@@ -92,6 +95,17 @@ export default {
     },
     isMedia() {
       return this.isImg || this.isAudio || this.isVideo;
+    },
+  },
+  watch: {
+    buildInfo({ data }) {
+      const { taskId } = this.$route.params;
+      if (data.taskId == taskId && data.state == "SUCCESS") {
+        this.taskId = taskId;
+        this.initLoading = true;
+        this.isEmpty = false;
+        this.initData();
+      }
     },
   },
   mounted() {
@@ -113,7 +127,7 @@ export default {
         this.info = data.task;
         await this.getFiles();
       } catch (error) {
-        this.isError = true;
+        this.isEmpty = true;
       }
     },
     async onActive(it) {

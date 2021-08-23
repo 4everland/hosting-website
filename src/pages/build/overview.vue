@@ -404,6 +404,9 @@ Are you sure you want to continue?
           `/project/${this.taskId}/redeploy`
         );
         this.$router.replace(`/build/${this.projName}/${data.taskId}/overview`);
+        setTimeout(() => {
+          location.reload();
+        }, 800);
       } catch (error) {
         console.log(error, "build err");
       }
