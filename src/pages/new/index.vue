@@ -9,12 +9,12 @@
           <v-icon>mdi-close</v-icon>
         </div>
       </div>
-      <e-deploy
+      <new-deploy
         :value="showSelect"
         :clone="!!isClone"
         :importItem="importItem"
         @close="showSelect = false"
-      ></e-deploy>
+      />
     </v-dialog>
 
     <div class="con-1">
@@ -95,41 +95,7 @@
           </v-card>
         </v-col>
         <v-col cols="12" md="6">
-          <v-card outlined :min-height="minHeight">
-            <div class="pd-20">
-              <div class="fz-20 fw-b mr-10">
-                {{ $t(`${locales}CloneTemplate`) }}
-              </div>
-              <div class="mt-6 gray fz-15">
-                {{ $t(`${locales}GetStartedwithTemplate`) }}
-              </div>
-              <v-row class="mt-6">
-                <v-col cols="6" v-for="(it, i) in tplList" :key="i">
-                  <a
-                    class="bd-1 d-b hover-1 pos-r pd-20"
-                    style="height: 166px"
-                    :style="{
-                      background: `-webkit-linear-gradient(-65deg, ${it.bg1}, #fff 50%)`,
-                    }"
-                    :href="getTplLink(it)"
-                    v-ripple
-                  >
-                    <h2 class="gray-3 fz-16 mb-2">{{ it.name }}</h2>
-                    <p class="gray" :class="asMobile ? 'fz-12' : 'fz-14'">
-                      {{ it.solution }}
-                    </p>
-                    <img
-                      :src="it.logo"
-                      class="pos-a right-0 btm-0 pa-3"
-                      :style="{
-                        height: asMobile ? '55px' : '70px',
-                      }"
-                    />
-                  </a>
-                </v-col>
-              </v-row>
-            </div>
-          </v-card>
+          <new-tpl :minHeight="minHeight" />
         </v-col>
       </v-row>
     </div>
@@ -138,19 +104,15 @@
 
 <script>
 import { mapState } from "vuex";
-import eDeploy from "./e-deploy.vue";
 
 export default {
-  components: {
-    eDeploy,
-  },
   data() {
     const { c } = this.$route.query;
     return {
       locales: "new.index.",
+      minHeight: 520,
       cloneDir: c,
       isClone: false,
-      minHeight: 520,
       list: null,
       loading: false,
       showSelect: false,
@@ -163,19 +125,10 @@ export default {
     ...mapState({
       isFocus: (s) => s.isFocus,
     }),
-    asMobile() {
-      return this.$vuetify.breakpoint.smAndDown;
-    },
     repoList() {
       return this.list.filter((it) => {
         if (!this.keyword.trim()) return true;
         return new RegExp(this.keyword, "i").test(it.name);
-      });
-    },
-    tplList() {
-      const arr = ["vue", "create-react-app", "nextjs", "nuxtjs"];
-      return arr.map((name) => {
-        return this.$getFramework(name);
       });
     },
   },
@@ -206,12 +159,6 @@ export default {
         clearInterval(this.timing);
         this.timing = null;
       }
-    },
-    getTplLink(it) {
-      const src =
-        "https://github.com/4everland/project-templates/tree/main/examples/" +
-        it.slug;
-      return `#/new/clone-flow?s=${encodeURIComponent(src)}&t=${it.name}`;
     },
     onImport(it) {
       this.importItem = it;
