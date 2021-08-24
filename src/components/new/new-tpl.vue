@@ -7,11 +7,11 @@
       <div class="mt-6 gray fz-15">
         {{ $t(`${locales}GetStartedwithTemplate`) }}
       </div>
-      <v-row class="mt-6">
+      <v-row class="mt-4">
         <v-col cols="6" v-for="(it, i) in tplList" :key="i">
           <a
             class="bd-1 d-b hover-1 pos-r pd-20"
-            style="height: 166px"
+            style="height: 188px"
             :style="{
               background: `-webkit-linear-gradient(-65deg, ${it.bg1}, #fff 50%)`,
             }"

@@ -25,7 +25,7 @@
               <div class="fz-20 fw-b mr-10">
                 {{ $t(`${locales}ImportGitRepository`) }}
               </div>
-              <div class="d-flex al-c mb-5 mt-1">
+              <div class="d-flex al-c mb-3 mt-1">
                 <v-btn small :loading="loading" @click="getList" class="mr-3">
                   <v-icon>mdi-refresh</v-icon>
                 </v-btn>
@@ -138,6 +138,7 @@
                     :length="pageLen"
                     prev-icon="mdi-menu-left"
                     next-icon="mdi-menu-right"
+                    :total-visible="7"
                   ></v-pagination>
                 </div>
               </div>
