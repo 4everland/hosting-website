@@ -72,8 +72,8 @@
                 <v-text-field
                   v-model="keyword"
                   clearable
-                  @blur="getList"
-                  @keyup.enter="getList"
+                  @blur="onKeyword"
+                  @keyup.enter="onKeyword"
                   prepend-icon="mdi-magnify"
                   style="margin-top: 14px"
                   :placeholder="$t(`${locales}Search`)"
@@ -238,6 +238,12 @@ export default {
       }
       this.$loading.close();
     },
+    onKeyword() {
+      if (this.keyword == this.usedKeyword) return;
+      this.page = 1;
+      this.list = null;
+      this.getList();
+    },
     onPage() {
       this.getList();
     },
@@ -291,6 +297,7 @@ export default {
         const { data } = await this.$http.get("/repo/refresh/list", {
           params,
         });
+        this.usedKeyword = this.keyword;
         this.pageLen = Math.max(1, Math.ceil(data.totalCount / 5));
         this.list = (data.repoList || []).map((it) => {
           it.fwImg = this.$getFramework(it.frameWorkAdvice).logo;
