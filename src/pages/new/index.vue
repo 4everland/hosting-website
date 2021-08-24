@@ -170,7 +170,7 @@ export default {
       keyword: "",
       timing: null, // after select git, auto refresh
       accountList: [],
-      chooseGithubId: localStorage.chooseGithubId || "",
+      chooseGithubId: "", //localStorage.chooseGithubId ||
       page: 1,
       pageLen: 1,
     };

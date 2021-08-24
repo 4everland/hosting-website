@@ -119,11 +119,11 @@
                       :disabled="!isOverBuild"
                       :placeholder="buildCommandHint"
                     />
-                    <v-switch
+                    <!-- <v-switch
                       v-model="isOverBuild"
                       :label="$t(`${locales}Override`)"
                       class="ml-5"
-                    ></v-switch>
+                    ></v-switch> -->
                   </div>
                   <div class="d-flex al-c">
                     <v-text-field
@@ -133,11 +133,11 @@
                       :disabled="!isOverOutput"
                       placeholder="`dist` if it exists, or `. `"
                     />
-                    <v-switch
+                    <!-- <v-switch
                       v-model="isOverOutput"
                       :label="$t(`${locales}Override`)"
                       class="ml-5"
-                    ></v-switch>
+                    ></v-switch> -->
                   </div>
                 </v-expansion-panel-content>
               </v-expansion-panel>
