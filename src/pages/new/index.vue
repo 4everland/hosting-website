@@ -29,9 +29,47 @@
                 <v-btn small :loading="loading" @click="getList" class="mr-3">
                   <v-icon>mdi-refresh</v-icon>
                 </v-btn>
-                <v-btn color="primary" class="mr-3" @click="addNew" small>
-                  {{ $t(`${locales}AddGithub`) }}</v-btn
-                >
+                <v-menu offset-y open-on-hover>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      color="primary"
+                      class="mr-3"
+                      @click="addNew"
+                      small
+                      v-bind="attrs"
+                      v-on="on"
+                    >
+                      <v-icon size="18" class="mr-1">mdi-github</v-icon>
+                      <span>{{ selectLabel }}</span>
+                    </v-btn>
+                  </template>
+                  <v-list v-if="accountList.length">
+                    <v-list-item
+                      link
+                      v-for="it in accountList"
+                      :key="it.githubId"
+                    >
+                      <v-list-item-title
+                        @click="onChooseAccount(it)"
+                        class="d-flex al-c"
+                      >
+                        <v-icon size="18" class="mr-1">
+                          mdi-{{
+                            it.ownerType == "Organization"
+                              ? "account-group-outline"
+                              : "account-outline"
+                          }}
+                        </v-icon>
+                        <span
+                          :class="{
+                            'fw-b': it.githubId == chooseGithubId,
+                          }"
+                          >{{ it.name }}</span
+                        >
+                      </v-list-item-title>
+                    </v-list-item>
+                  </v-list>
+                </v-menu>
 
                 <v-text-field
                   v-model="keyword"
@@ -61,34 +99,45 @@
                   />
                 </div>
               </div>
-              <div class="ta-c mt-8" v-else-if="!repoList.length">
+              <!-- <div class="ta-c mt-8">
                 <h3>{{ $t(`${locales}NoResultsFound`) }}</h3>
-              </div>
-              <div class="bd-1 bdrs-5 ov-a" style="max-height: 355px" v-else>
-                <div v-for="(it, i) in repoList" :key="it.id">
-                  <div class="pd-20 d-flex al-c">
-                    <!-- <v-icon class="mr-5">mdi-wallet</v-icon> -->
-                    <img :src="it.fwImg" style="width: 22px" class="mr-2" />
-                    <span class="fz-17 line-1 mr-1">{{ it.name }}</span>
-                    <v-icon
-                      v-if="it.private"
-                      color="#999"
-                      size="16"
-                      class="ml-1"
-                      >mdi-lock-outline</v-icon
-                    >
-                    <span class="ml-2 mr-3 gray fz-13 shrink-0">
-                      <e-time>{{ it.updateAt }}</e-time>
-                    </span>
-                    <v-btn
-                      class="ml-auto"
-                      color="primary"
-                      small
-                      @click="onImport(it)"
-                      >{{ $t(`${locales}Import`) }}</v-btn
-                    >
+              </div> -->
+              <div v-else>
+                <div class="bd-1 bdrs-5 ov-a" style="max-height: 355px">
+                  <div v-for="(it, i) in list" :key="it.id">
+                    <div class="pd-20 d-flex al-c">
+                      <!-- <v-icon class="mr-5">mdi-wallet</v-icon> -->
+                      <img :src="it.fwImg" style="width: 22px" class="mr-2" />
+                      <span class="fz-17 line-1 mr-1">{{ it.name }}</span>
+                      <v-icon
+                        v-if="it.private"
+                        color="#999"
+                        size="16"
+                        class="ml-1"
+                        >mdi-lock-outline</v-icon
+                      >
+                      <span class="ml-2 mr-3 gray fz-13 shrink-0">
+                        <e-time>{{ it.updateAt }}</e-time>
+                      </span>
+                      <v-btn
+                        class="ml-auto"
+                        color="primary"
+                        small
+                        @click="onImport(it)"
+                        >{{ $t(`${locales}Import`) }}</v-btn
+                      >
+                    </div>
+                    <v-divider v-if="i < list.length - 1"></v-divider>
                   </div>
-                  <v-divider v-if="i < repoList.length - 1"></v-divider>
+                </div>
+                <div class="mt-3">
+                  <v-pagination
+                    @input="onPage"
+                    v-model="page"
+                    :length="pageLen"
+                    prev-icon="mdi-menu-left"
+                    next-icon="mdi-menu-right"
+                  ></v-pagination>
                 </div>
               </div>
             </div>
@@ -119,30 +168,39 @@ export default {
       importItem: null,
       keyword: "",
       timing: null, // after select git, auto refresh
+      accountList: [],
+      chooseGithubId: localStorage.chooseGithubId || "",
+      page: 1,
+      pageLen: 1,
     };
   },
   computed: {
     ...mapState({
       isFocus: (s) => s.isFocus,
     }),
-    repoList() {
-      return this.list.filter((it) => {
-        if (!this.keyword.trim()) return true;
-        return new RegExp(this.keyword, "i").test(it.name);
-      });
+    chooseAccount() {
+      return this.accountList.filter(
+        (it) => it.githubId == this.chooseGithubId
+      )[0];
+    },
+    selectLabel() {
+      if (this.chooseAccount) return this.chooseAccount.name;
+      return "Connect To Git";
     },
   },
   watch: {
     isFocus(val) {
       if (val && this.isAddClick) {
         this.isAddClick = false;
-        this.getList();
+        this.getAccounts();
         let times = 0;
         this.clearTiming();
         this.timing = setInterval(() => {
-          this.getList();
-          times += this.list.length ? 3 : 1;
-          if (times > 4) this.clearTiming();
+          if (!this.accountList.length) {
+            this.getAccounts();
+            times += 1;
+            if (times > 4) this.clearTiming();
+          }
         }, 5e3);
       }
     },
@@ -151,7 +209,7 @@ export default {
     },
   },
   mounted() {
-    this.getList();
+    this.getAccounts();
   },
   methods: {
     clearTiming() {
@@ -175,11 +233,36 @@ export default {
       }
       this.$loading.close();
     },
+    onPage() {
+      this.getList();
+    },
+    onChooseAccount(it) {
+      this.chooseGithubId = it.githubId;
+      this.list = null;
+      this.page = 1;
+      this.getList();
+    },
+    async getAccounts() {
+      const { data } = await this.$http.get("/user/git-namespaces");
+      if (data.length) {
+        this.accountList = data.reverse();
+        if (!this.chooseAccount) {
+          this.chooseGithubId = localStorage.chooseGithubId = data[0].githubId;
+        }
+        this.getList();
+      }
+    },
     async getList() {
       try {
         this.loading = true;
-        const { data } = await this.$http.get("/repo/list");
-        this.list = data.map((it) => {
+        const { data } = await this.$http.get("/repo/refresh/list", {
+          params: {
+            githubId: this.chooseGithubId,
+            page: this.page - 1,
+          },
+        });
+        this.pageLen = Math.max(1, Math.ceil(data.totalCount / 5));
+        this.list = (data.repoList || []).map((it) => {
           it.fwImg = this.$getFramework(it.frameWorkAdvice).logo;
           return it;
         });
