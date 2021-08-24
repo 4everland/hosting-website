@@ -45,14 +45,12 @@
                   </template>
                   <v-list v-if="accountList.length">
                     <v-list-item
+                      @click="onChooseAccount(it)"
                       link
                       v-for="it in accountList"
                       :key="it.githubId"
                     >
-                      <v-list-item-title
-                        @click="onChooseAccount(it)"
-                        class="d-flex al-c"
-                      >
+                      <v-list-item-title class="d-flex al-c">
                         <v-icon size="18" class="mr-1">
                           mdi-{{
                             it.ownerType == "Organization"
