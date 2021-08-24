@@ -43,7 +43,7 @@
                       <span>{{ selectLabel }}</span>
                     </v-btn>
                   </template>
-                  <v-list v-if="accountList.length">
+                  <v-list v-if="accountList.length > 1">
                     <v-list-item
                       @click="onChooseAccount(it)"
                       link
@@ -171,7 +171,7 @@ export default {
       keyword: "",
       timing: null, // after select git, auto refresh
       accountList: [],
-      chooseGithubId: "", //localStorage.chooseGithubId ||
+      chooseGithubId: !c ? localStorage.chooseGithubId || "" : "",
       page: 1,
       pageLen: 1,
     };
@@ -243,6 +243,7 @@ export default {
     },
     onChooseAccount(it) {
       this.chooseGithubId = it.githubId;
+      localStorage.chooseGithubId = this.chooseGithubId;
       this.list = null;
       this.page = 1;
       this.getList();
@@ -250,14 +251,36 @@ export default {
     async getAccounts() {
       const { data } = await this.$http.get("/user/git-namespaces");
       if (data.length) {
-        this.accountList = data.reverse();
-        if (!this.chooseAccount) {
-          this.chooseGithubId = localStorage.chooseGithubId = data[0].githubId;
+        data.sort((a, b) => {
+          if (a.ownerType == "User" && b) return -1;
+          return 0;
+        });
+        if (
+          this.isAddClick === false &&
+          data.length == this.accountList.length + 1
+        ) {
+          this.isAddClick = 0;
+          const newItem = data.filter((it) => {
+            return (
+              this.accountList.filter((row) => row.githubId == it.githubId)
+                .length == 0
+            );
+          })[0];
+          if (newItem) this.chooseGithubId = newItem.githubId;
         }
-        this.getList();
+        this.accountList = data;
+        if (!this.chooseAccount) {
+          this.chooseGithubId = data[0].githubId;
+        }
       }
+      this.page = 1;
+      this.getList();
     },
     async getList() {
+      if (!this.chooseAccount) {
+        this.list = [];
+        return;
+      }
       try {
         this.loading = true;
         const params = {
