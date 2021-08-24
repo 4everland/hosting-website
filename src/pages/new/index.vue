@@ -73,6 +73,9 @@
 
                 <v-text-field
                   v-model="keyword"
+                  clearable
+                  @blur="getList"
+                  @keyup.enter="getList"
                   prepend-icon="mdi-magnify"
                   style="margin-top: 14px"
                   :placeholder="$t(`${locales}Search`)"
@@ -87,7 +90,10 @@
                 style="min-height: 355px"
                 v-else-if="!list.length"
               >
-                <div>
+                <div class="ta-c mt-8" v-if="keyword">
+                  <h3>{{ $t(`${locales}NoResultsFound`) }}</h3>
+                </div>
+                <div v-else>
                   <div>{{ $t(`${locales}NoGitRepositoriesFound`) }}</div>
                   <div class="gray fz-14 mt-3">
                     <p>{{ $t(`${locales}TrySelectingDifferentGit`) }}</p>
@@ -99,9 +105,6 @@
                   />
                 </div>
               </div>
-              <!-- <div class="ta-c mt-8">
-                <h3>{{ $t(`${locales}NoResultsFound`) }}</h3>
-              </div> -->
               <div v-else>
                 <div class="bd-1 bdrs-5 ov-a" style="max-height: 355px">
                   <div v-for="(it, i) in list" :key="it.id">
@@ -207,6 +210,9 @@ export default {
     showSelect(val) {
       if (!val) this.getList();
     },
+    keyword(val) {
+      if (!val) this.getList();
+    },
   },
   mounted() {
     this.getAccounts();
@@ -255,11 +261,13 @@ export default {
     async getList() {
       try {
         this.loading = true;
+        const params = {
+          githubId: this.chooseGithubId,
+          page: this.page - 1,
+        };
+        if (this.keyword) params.word = this.keyword;
         const { data } = await this.$http.get("/repo/refresh/list", {
-          params: {
-            githubId: this.chooseGithubId,
-            page: this.page - 1,
-          },
+          params,
         });
         this.pageLen = Math.max(1, Math.ceil(data.totalCount / 5));
         this.list = (data.repoList || []).map((it) => {
