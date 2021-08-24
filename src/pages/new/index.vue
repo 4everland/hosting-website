@@ -161,7 +161,7 @@ export default {
     const { c } = this.$route.query;
     return {
       locales: "new.index.",
-      minHeight: 520,
+      minHeight: 546,
       cloneDir: c,
       isClone: false,
       list: null,
