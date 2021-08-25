@@ -90,7 +90,7 @@
                   <e-domain :val="info.domains[i].domain"></e-domain>
                   <v-menu v-if="info.domains.length > 1" offset-y open-on-hover>
                     <template v-slot:activator="{ attrs, on }">
-                      <span v-bind="attrs" v-on="on" class="ml-5">
+                      <span v-bind="attrs" v-on="on" class="ml-5 pa-1 pr-3">
                         +{{ info.domains.length - 1 }}
                       </span>
                     </template>
