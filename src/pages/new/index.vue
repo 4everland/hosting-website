@@ -29,7 +29,11 @@
                 <v-btn small :loading="loading" @click="getList" class="mr-3">
                   <v-icon>mdi-refresh</v-icon>
                 </v-btn>
-                <v-menu offset-y open-on-hover>
+                <v-menu
+                  offset-y
+                  :open-on-hover="!isTouch"
+                  v-model="popAccounts"
+                >
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
                       color="primary"
@@ -43,7 +47,7 @@
                       <span>{{ selectLabel }}</span>
                     </v-btn>
                   </template>
-                  <v-list v-if="accountList.length > 1">
+                  <v-list dense v-if="accountList.length > 0">
                     <v-list-item
                       @click="onChooseAccount(it)"
                       link
@@ -51,7 +55,13 @@
                       :key="it.githubId"
                     >
                       <v-list-item-title class="d-flex al-c">
-                        <v-icon size="18" class="mr-1">
+                        <v-icon
+                          size="18"
+                          class="mr-1"
+                          :color="
+                            it.githubId == chooseGithubId ? '#4A96FA' : null
+                          "
+                        >
                           mdi-{{
                             it.ownerType == "Organization"
                               ? "account-group-outline"
@@ -60,10 +70,17 @@
                         </v-icon>
                         <span
                           :class="{
-                            'fw-b': it.githubId == chooseGithubId,
+                            'fw-b color-1': it.githubId == chooseGithubId,
                           }"
                           >{{ it.name }}</span
                         >
+                      </v-list-item-title>
+                    </v-list-item>
+                    <v-divider></v-divider>
+                    <v-list-item link @click="addNew">
+                      <v-list-item-title class="d-flex al-c">
+                        <v-icon size="18" class="mr-1">mdi-plus</v-icon>
+                        <span>Add account</span>
                       </v-list-item-title>
                     </v-list-item>
                   </v-list>
@@ -172,6 +189,7 @@ export default {
       timing: null, // after select git, auto refresh
       accountList: [],
       chooseGithubId: !c ? localStorage.chooseGithubId || "" : "",
+      popAccounts: false,
       page: 1,
       pageLen: 1,
     };
@@ -179,6 +197,7 @@ export default {
   computed: {
     ...mapState({
       isFocus: (s) => s.isFocus,
+      isTouch: (s) => s.isTouch,
     }),
     chooseAccount() {
       return this.accountList.filter(
@@ -228,6 +247,10 @@ export default {
       this.showSelect = true;
     },
     async addNew() {
+      if (this.isTouch && !this.popAccounts) {
+        this.popAccounts = true;
+        return;
+      }
       this.isAddClick = true;
       try {
         this.$loading();
@@ -255,32 +278,38 @@ export default {
       this.getList();
     },
     async getAccounts() {
-      const { data } = await this.$http.get("/user/git-namespaces");
-      if (data.length) {
-        data.sort((a, b) => {
-          if (a.ownerType == "User" && b) return -1;
-          return 0;
-        });
-        if (
-          this.isAddClick === false &&
-          data.length == this.accountList.length + 1
-        ) {
-          this.isAddClick = 0;
-          const newItem = data.filter((it) => {
-            return (
-              this.accountList.filter((row) => row.githubId == it.githubId)
-                .length == 0
-            );
-          })[0];
-          if (newItem) this.chooseGithubId = newItem.githubId;
+      try {
+        this.loading = true;
+        const { data } = await this.$http.get("/user/git-namespaces");
+        if (data.length) {
+          data.sort((a, b) => {
+            if (a.ownerType == "User" && b) return -1;
+            return 0;
+          });
+          if (
+            this.isAddClick === false &&
+            data.length == this.accountList.length + 1
+          ) {
+            this.isAddClick = 0;
+            const newItem = data.filter((it) => {
+              return (
+                this.accountList.filter((row) => row.githubId == it.githubId)
+                  .length == 0
+              );
+            })[0];
+            if (newItem) this.chooseGithubId = newItem.githubId;
+          }
+          this.accountList = data;
+          if (!this.chooseAccount) {
+            this.chooseGithubId = data[0].githubId;
+          }
         }
-        this.accountList = data;
-        if (!this.chooseAccount) {
-          this.chooseGithubId = data[0].githubId;
-        }
+        this.page = 1;
+        this.getList();
+      } catch (error) {
+        //
       }
-      this.page = 1;
-      this.getList();
+      this.loading = false;
     },
     async getList() {
       if (!this.chooseAccount) {
