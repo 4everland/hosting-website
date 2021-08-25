@@ -73,7 +73,7 @@
                 <v-img
                   class="bd-1 bdrs-5"
                   :src="$getImgSrc(info.screenshot)"
-                  lazy-src="img/bg/cover-1.png"
+                  lazy-src="img/empty/cover.jpg"
                   :height="asMobile ? 160 : 300"
                 ></v-img>
               </e-link>

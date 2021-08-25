@@ -47,7 +47,7 @@
               <e-link :href="visitUrl">
                 <v-img
                   :src="$getImgSrc(info.screenshotPath)"
-                  lazy-src="img/bg/cover-1.png"
+                  lazy-src="img/empty/cover.jpg"
                   height="220px"
                 ></v-img>
               </e-link>
