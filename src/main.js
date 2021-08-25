@@ -72,7 +72,7 @@ new Vue({
         path: "/socket.io",
         query: "token=" + this.token,
         withCredentials: false,
-        transports: ["websocket"],
+        transports: ["websocket", "polling"],
       });
       this.socket.on("error", (err) => {
         console.log("socket error", err, this.socket);

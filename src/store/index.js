@@ -74,8 +74,10 @@ window.onblur = () => {
   });
 };
 window.onfocus = () => {
+  const isTouch = "ontouchstart" in window;
   setState({
     isFocus: true,
+    isTouch,
   });
 };
 
