@@ -80,7 +80,7 @@
                     <v-list-item link @click="addNew">
                       <v-list-item-title class="d-flex al-c">
                         <v-icon size="18" class="mr-1">mdi-plus</v-icon>
-                        <span>Add account</span>
+                        <span>Add Org or Account</span>
                       </v-list-item-title>
                     </v-list-item>
                   </v-list>
