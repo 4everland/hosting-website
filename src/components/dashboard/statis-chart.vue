@@ -87,6 +87,9 @@ export default {
         yAxis: {
           type: "value",
           minInterval: 1,
+          splitLine: {
+            show: false,
+          },
         },
         tooltip: {
           trigger: "axis",
@@ -102,11 +105,12 @@ export default {
           {
             data: yArr,
             type: "line",
+            symbol: "none",
             areaStyle: {
-              color: 'rgba(52, 169, 255, 0.2)',
+              color: "rgba(52, 169, 255, 0.2)",
             },
             itemStyle: {
-              color: 'rgba(52, 169, 255, 0.2)',
+              color: "rgba(52, 169, 255, 0.2)",
             },
           },
         ],
