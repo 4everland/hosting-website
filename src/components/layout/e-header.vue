@@ -5,6 +5,14 @@
         <e-logo class="d-b"></e-logo>
         <!-- <img src="img/icon.svg" style="height: 30px" class="d-b" /> -->
       </a>
+
+      <a
+        class="fz-17 ml-5 white-8 line-1"
+        :href="titleInfo.link"
+        v-if="titleInfo.name"
+        >{{ titleInfo.name }}</a
+      >
+
       <v-spacer></v-spacer>
       <template v-if="asMobile">
         <v-menu class="z-1000" offset-y min-width="130">
@@ -88,13 +96,16 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   computed: {
+    ...mapState({
+      userInfo: (s) => s.userInfo,
+      noticeMsg: (s) => s.noticeMsg,
+    }),
     asMobile() {
       return this.$vuetify.breakpoint.smAndDown;
-    },
-    userInfo() {
-      return this.$store.state.userInfo;
     },
     links() {
       let links = [
@@ -172,7 +183,16 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      titleInfo: {},
+    };
+  },
+  watch: {
+    noticeMsg({ name, data }) {
+      if (name == "setTitle") {
+        this.titleInfo = data || {};
+      }
+    },
   },
   methods: {
     onMenu(it) {

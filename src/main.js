@@ -28,6 +28,9 @@ new Vue({
       window.scrollTo(0, 0);
       if (!/^\/build\//.test(val)) {
         this.$setIcon();
+        this.$setState({
+          noticeMsg: { name: "setTitle" },
+        });
       }
       this.$loading.close();
     },

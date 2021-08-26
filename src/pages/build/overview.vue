@@ -140,7 +140,7 @@
               </div>
             </div>
 
-            <v-menu v-if="info.taskId">
+            <v-menu v-if="info.taskId" offset-y>
               <template v-slot:activator="{ attrs, on }">
                 <v-btn
                   icon
@@ -380,6 +380,16 @@ Are you sure you want to continue?
         // if(this.info.projectId != this.projInfo.id) {
         //   await this.$store.dispatch('getProjectInfo', this.info.projectId)
         // }
+        const { name, projectId } = this.info.buildConfig;
+        this.$setState({
+          noticeMsg: {
+            name: "setTitle",
+            data: {
+              name,
+              link: `#/project/${projectId}/overview`,
+            },
+          },
+        });
       } catch (error) {
         console.log(error);
       }
