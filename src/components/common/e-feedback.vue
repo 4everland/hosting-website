@@ -27,7 +27,7 @@
           v-model="form.description"
           rows="4"
           label="Description"
-          placeholder="Your feedback..."
+          :placeholder="descHint"
         />
         <!-- <v-file-input
           v-model="files"
@@ -71,6 +71,7 @@ export default {
       files: [],
       fileList: [],
       loading: false,
+      descHint: "",
     };
   },
   watch: {
@@ -79,10 +80,17 @@ export default {
         this.showPop = true;
         this.title = data ? data.label : "Feedback";
         let type = "FEEDBACK";
-        if (/bug/i.test(this.title)) type = "BUG";
-        else if (/report/i.test(this.title)) type = "REPORT";
-        console.log(type);
+        let hint = "Your feedback";
+        if (/bug/i.test(this.title)) {
+          type = "BUG";
+          hint = "Your report for bug";
+        } else if (/report/i.test(this.title)) {
+          type = "REPORT";
+          hint = "Your report";
+        }
+        // console.log(type);
         this.form.feedbackType = type;
+        this.descHint = hint + " ...";
       }
     },
     showPop(val) {
