@@ -46,7 +46,7 @@ const locale = {
       Project: "Project",
       EnterTheDomain: "Enter the domain that you would like to add:",
       Domain: "Domain",
-      Nameservers: "Nameservers",
+      Nameservers: "NameServers",
       CreateAt: "CreateAt",
     },
     statistics: {

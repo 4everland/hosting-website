@@ -84,7 +84,7 @@ export default {
       headers: [
         { text: "Name", value: "key" },
         { text: "Value", value: "value" },
-        { text: "Created", value: "time" },
+        { text: "CreateAt", value: "time" },
       ],
       list: [],
       selected: [],

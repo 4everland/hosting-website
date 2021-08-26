@@ -183,18 +183,18 @@ export default {
           yesterday: "+" + info.yesterdayNewUser,
         },
         {
-          title: "UV",
+          title: "Unique Visitor",
           today: info.todayUv,
           yesterday: info.yesterdayUv,
-          tip: `Unique Visitor. A computer client that visits the site as a
+          tip: `A computer client that visits the site as a
                   Visitor. The same client is counted only once between 00:00
                   and 24:00.`,
         },
         {
-          title: "PV",
+          title: "Page Views",
           today: info.todayPv,
           yesterday: info.yesterdayPv,
-          tip: `Page Views. Page views or clicks are counted once per user visit.`,
+          tip: `Page views or clicks are counted once per user visit.`,
         },
       ];
     },
