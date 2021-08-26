@@ -95,6 +95,7 @@
                   style="margin-top: 14px"
                   :placeholder="$t(`${locales}Search`)"
                   dense
+                  autocomplete="off"
                 ></v-text-field>
               </div>
 
@@ -229,7 +230,7 @@ export default {
       if (!val) this.getList();
     },
     keyword(val) {
-      if (!val) this.getList();
+      if (!val) this.onKeyword();
     },
   },
   mounted() {

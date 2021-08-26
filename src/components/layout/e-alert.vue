@@ -52,7 +52,7 @@
         <v-card-text>
           <div class="fz-16" v-html="alertInfo.content"></div>
           <div class="mt-8" v-if="alertInfo.showInput">
-            <v-form ref="form" lazy-validation>
+            <v-form ref="form" lazy-validation @submit.native.prevent>
               <v-text-field
                 persistent-placeholder
                 v-model="inputVal"
