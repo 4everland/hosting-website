@@ -222,7 +222,7 @@
               >{{
                 newLogNum > 0
                   ? `${newLogNum} new log${newLogNum > 1 ? "s" : ""}`
-                  : "Go to end"
+                  : "Go to last line"
               }}</v-chip
             >
           </div>
@@ -269,8 +269,11 @@ export default {
         })
         .join("\n");
     },
+    showCancel() {
+      return this.isRunning || this.state == "queued";
+    },
     btn1Txt() {
-      if (this.isRunning) return "Cancel";
+      if (this.showCancel) return "Cancel";
       return "Redeploy";
     },
   },
@@ -321,11 +324,14 @@ export default {
         }
       }
     },
-    state() {
+    state(val) {
       let sta = "running";
       if (this.isSuccess) sta = "success";
-      else if (this.state == "failure") sta = "error";
+      else if (["failure", "cancelled"].includes(val)) sta = "error";
       this.$setIcon(`img/icon/favicon-${sta}.png`);
+    },
+    isAtEnd(val) {
+      if (val) this.newLogNum = 0;
     },
   },
   mounted() {
@@ -349,7 +355,7 @@ Are you sure you want to continue?`;
         this.$loading();
         await this.$http.post(`/project/${this.taskId}/cancel`);
         this.$toast("Cancelled successfully.");
-        this.$router.back();
+        this.initData();
       } catch (error) {
         //
       }
@@ -416,7 +422,7 @@ Are you sure you want to continue?
       this.$toast("Copied to clipboard !");
     },
     onBtn1() {
-      if (this.isRunning) this.onCancel();
+      if (this.showCancel) this.onCancel();
       else this.onDeploy();
     },
     async onDeploy() {
@@ -455,7 +461,6 @@ Are you sure you want to continue?
           }
           el.scrollTo(0, el.scrollHeight);
           this.isAtEnd = true;
-          this.newLogNum = 0;
         }
       });
     },

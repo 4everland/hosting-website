@@ -145,7 +145,7 @@ $bdcolor: #E6E8EB;
   &.c-success {
     background: #69C07E;
   }
-  &.c-failure, &.c-error {
+  &.c-failure, &.c-error, &.c-cancelled {
     background: #E43D3D;
   }
 }

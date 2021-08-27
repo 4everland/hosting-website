@@ -1,7 +1,7 @@
 <template>
-  <div v-if="val">
-    <span class="dot-1" :class="'c-' + state"></span>
-    <span class="sta-1" :class="'c-' + state">{{ state.capitalize() }}</span>
+  <div v-if="val" class="line-1" style="max-width: 110px">
+    <span class="dot-1" :class="staCls"></span>
+    <span class="sta-1" :class="staCls">{{ state.capitalize() }}</span>
   </div>
 </template>
 
@@ -13,6 +13,12 @@ export default {
   computed: {
     state() {
       return this.val.toLowerCase();
+    },
+    staCls() {
+      let cls = "";
+      if (this.state == "success") cls = "c-success";
+      else if (["failure", "cancelled"].includes(this.state)) cls = "c-error";
+      return cls;
     },
   },
 };
