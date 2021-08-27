@@ -48,12 +48,14 @@
             v-model="form.key"
             label="Name"
             placeholder="Example_Name"
+            autocomplte="off"
           />
           <v-text-field
             persistent-placeholder
             v-model="form.value"
             label="Value"
-            placeholder="19JU23NF3898FUUH"
+            placeholder="Example_Value"
+            autocomplte="off"
           />
         </div>
         <div class="mt-5 ta-r">

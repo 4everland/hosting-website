@@ -25,9 +25,9 @@
       <div class="mr-8">
         <h3>Your Statistics</h3>
         <div class="gray mt-1 fz-14">
-          We will display your DApps statistics on the 4EVERLAND website. If you
-          don't want to display it, close the button and will hide DApps
-          statistics, but all your data is still visible to yourself.
+          DApps statistics are displayed on the 4EVERLAND website. If you don't
+          want to display it, close the button to hide DApps statistics, but all
+          your data is still visible.
         </div>
       </div>
       <v-switch class="ml-auto" v-model="isStatis" disabled></v-switch>
@@ -37,8 +37,8 @@
       <div class="pd-20">
         <h3>Delete Project</h3>
         <div class="gray mt-1 fz-14">
-          The project will be permanently deleted,including its deployments and
-          domains. This action is irreversible can not be undone.
+          The project will be deleted permanently including deployments and
+          domains. You can't undo this action.
         </div>
       </div>
       <div class="pd-10-20 bdt-1 bg-f8 d-flex">

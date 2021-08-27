@@ -36,6 +36,7 @@
                 hide-details
                 dense
                 persistent-placeholder
+                autofocus
                 autocomplete="off"
               ></v-text-field>
               <v-checkbox
