@@ -29,7 +29,6 @@ new Vue({
       window.scrollTo(0, 0);
       if (!/^\/build\//.test(val)) {
         this.$setIcon();
-        console.log(this.$docTitle);
         document.title = this.$docTitle;
         this.$setState({
           noticeMsg: { name: "setTitle" },

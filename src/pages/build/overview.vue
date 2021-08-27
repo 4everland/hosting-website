@@ -192,24 +192,39 @@
         <div class="pd-20" v-if="!logs.length">
           <v-skeleton-loader type="card" />
         </div>
-        <div
-          v-else
-          class="bd-1 bdrs-5 bg-f5 mt-5 fz-13 gray-6 ov-a"
-          ref="con"
-          style="max-height: 72vh"
-        >
-          <div class="mt-5 mb-5 logs-wrap">
-            <div
-              class="d-flex"
-              :class="'log-' + it.type"
-              v-for="(it, i) in logs"
-              :key="i"
-            >
-              <span class="mr-6 gray time shrink-0" v-if="it.timestamp">{{
-                new Date(it.timestamp).format("HH:mm:ss.S")
-              }}</span>
-              <span>{{ it.content }}</span>
+        <div class="pos-r" v-else>
+          <div
+            class="bd-1 bdrs-5 bg-f5 mt-5 fz-13 gray-6 ov-a"
+            ref="con"
+            style="max-height: 72vh"
+          >
+            <div class="mt-5 mb-5 logs-wrap">
+              <div
+                class="d-flex"
+                :class="'log-' + it.type"
+                v-for="(it, i) in logs"
+                :key="i"
+              >
+                <span class="mr-6 gray time shrink-0" v-if="it.timestamp">{{
+                  new Date(it.timestamp).format("HH:mm:ss.S")
+                }}</span>
+                <span class="wb-all">{{ it.content }}</span>
+              </div>
             </div>
+          </div>
+          <div class="pos-a btm-0 right-0 z-10 pa-2" v-if="!isAtEnd">
+            <v-chip
+              small
+              outlined
+              :color="newLogNum > 0 ? 'success' : 'primary'"
+              style="background: #fff !important"
+              @click="goLogEnd(true)"
+              >{{
+                newLogNum > 0
+                  ? `${newLogNum} new log${newLogNum > 1 ? "s" : ""}`
+                  : "Go to end"
+              }}</v-chip
+            >
           </div>
         </div>
       </div>
@@ -263,6 +278,8 @@ export default {
     return {
       info: {},
       logs: [],
+      isAtEnd: 0,
+      newLogNum: 0,
       deploying: false,
       state: "",
       optList: [
@@ -299,6 +316,7 @@ export default {
           this.initData();
         } else if (last && last.content != data.content) {
           this.logs.push(data);
+          if (!this.isAtEnd) this.newLogNum++;
           this.goLogEnd();
         }
       }
@@ -423,10 +441,22 @@ Are you sure you want to continue?
       this.deploying = false;
     },
 
-    goLogEnd() {
+    goLogEnd(force) {
+      if (this.isAtEnd === false && !force) {
+        return;
+      }
       this.$nextTick(() => {
         const el = this.$refs.con;
-        if (el) el.scrollTo(0, el.scrollHeight);
+        if (el) {
+          if (!el.onscroll) {
+            el.onscroll = () => {
+              this.isAtEnd = el.scrollHeight - el.scrollTop < 500;
+            };
+          }
+          el.scrollTo(0, el.scrollHeight);
+          this.isAtEnd = true;
+          this.newLogNum = 0;
+        }
       });
     },
     scrollToLog() {
