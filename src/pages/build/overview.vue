@@ -385,7 +385,7 @@ Are you sure you want to continue?
           noticeMsg: {
             name: "setTitle",
             data: {
-              name,
+              title: name,
               link: `#/project/${projectId}/overview`,
             },
           },

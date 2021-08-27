@@ -9,8 +9,8 @@
       <a
         class="fz-17 ml-5 white-8 line-1"
         :href="titleInfo.link"
-        v-if="titleInfo.name"
-        >{{ titleInfo.name }}</a
+        v-if="titleInfo.title"
+        >{{ titleInfo.title }}</a
       >
 
       <v-spacer></v-spacer>
@@ -188,9 +188,12 @@ export default {
     };
   },
   watch: {
-    noticeMsg({ name, data }) {
+    noticeMsg({ name, data = {} }) {
       if (name == "setTitle") {
-        this.titleInfo = data || {};
+        this.titleInfo = data;
+        if (data.title) {
+          document.title = `${data.title} · ${this.$docTitle}`;
+        }
       }
     },
   },
