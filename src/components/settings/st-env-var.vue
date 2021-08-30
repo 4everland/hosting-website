@@ -40,8 +40,8 @@
     </div>
 
     <v-dialog v-model="showPop" max-width="500">
-      <div class="pd-20">
-        <h3>Add New</h3>
+      <div class="pd-30">
+        <h2>Add Environment Variable</h2>
         <div class="mt-5">
           <v-text-field
             persistent-placeholder
@@ -58,7 +58,7 @@
             autocomplte="off"
           />
         </div>
-        <div class="mt-5 ta-r">
+        <div class="mt-5 ta-c">
           <v-btn small @click="showPop = false"> Cancel </v-btn>
           <v-btn
             small

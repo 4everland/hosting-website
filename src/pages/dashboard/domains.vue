@@ -46,7 +46,7 @@
 
     <v-dialog v-model="showPop" max-width="600">
       <div class="pd-30">
-        <h2 class="ta-c">{{ $t(`${locales}AddDomain`) }}</h2>
+        <h2>{{ $t(`${locales}AddDomain`) }}</h2>
         <v-window v-model="curStep">
           <v-window-item :value="0">
             <div class="gray mt-2">{{ $t(`${locales}SelectProjectAdd`) }}</div>
