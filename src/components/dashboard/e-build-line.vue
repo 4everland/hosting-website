@@ -19,7 +19,7 @@
       >
         {{ info.domain }}
       </a>
-      <span class="bd-1 bg-f8 ml-3 mr-3 pl-2 pr-2 bdrs-5 fz-12">
+      <span class="bd-1 bg-f8 ml-3 mr-3 pl-2 pr-2 bdrs-5 fz-12 shrink-0">
         {{ type }}
       </span>
       <span class="gray shrink-0">
