@@ -105,7 +105,7 @@
                 <img :src="chooseFramework.logo" style="width: 20px" />
               </template>
             </v-select>
-            <v-expansion-panels>
+            <v-expansion-panels v-model="pan0Idx">
               <v-expansion-panel>
                 <v-expansion-panel-header>
                   {{ $t(`${locales}BuildOutputSettings`) }}
@@ -113,31 +113,40 @@
                 <v-expansion-panel-content>
                   <div class="d-flex al-c">
                     <v-text-field
+                      v-if="!cmdItems.length"
                       persistent-placeholder
                       v-model="form.buildCommand"
                       :label="$t(`${locales}BuildCommand`)"
-                      :disabled="!isOverBuild"
                       :placeholder="buildCommandHint"
                     />
-                    <!-- <v-switch
-                      v-model="isOverBuild"
-                      :label="$t(`${locales}Override`)"
-                      class="ml-5"
-                    ></v-switch> -->
+                    <v-select
+                      v-else
+                      persistent-placeholder
+                      :menu-props="{ offsetY: true }"
+                      :label="$t(`${locales}BuildCommand`)"
+                      :items="cmdItems"
+                      item-text="text"
+                      item-value="value"
+                      v-model="form.buildCommand"
+                    >
+                      <template #item="{ item }">
+                        <span>{{ item.key }}</span>
+                        <span class="gray ml-1 mr-2">:</span>
+                        <span
+                          class="gray fz-13 line-1"
+                          style="max-width: 400px"
+                          >{{ item.script }}</span
+                        >
+                      </template>
+                    </v-select>
                   </div>
                   <div class="d-flex al-c">
                     <v-text-field
                       persistent-placeholder
                       v-model="form.outputDirectory"
                       :label="$t(`${locales}OutputDirectory`)"
-                      :disabled="!isOverOutput"
                       placeholder="`dist` if it exists, or `. `"
                     />
-                    <!-- <v-switch
-                      v-model="isOverOutput"
-                      :label="$t(`${locales}Override`)"
-                      class="ml-5"
-                    ></v-switch> -->
                   </div>
                 </v-expansion-panel-content>
               </v-expansion-panel>
@@ -220,8 +229,7 @@ export default {
       initSrcDir: srcDir,
       frameworks,
       presetList: ["vue", "React"],
-      isOverBuild: true,
-      isOverOutput: true,
+      pan0Idx: 0,
       buildCommandHint: "`npm run build`",
       form: {
         name: "",
@@ -229,6 +237,7 @@ export default {
         buildCommand: "",
         outputDirectory: "",
       },
+      scripts: null,
       envHeaders: [
         { text: "Name", value: "key" },
         { text: "Value", value: "value" },
@@ -256,6 +265,24 @@ export default {
     chooseFramework() {
       return this.frameworks.filter((it) => it.slug == this.form.framework)[0];
     },
+    cmdItems() {
+      let res = [];
+      if (this.scripts) {
+        for (const key in this.scripts) {
+          const method = /build/.test(key) ? "unshift" : "push";
+          let value = "npm run " + key;
+          const script = this.scripts[key];
+          if (script == "next build") value = script;
+          res[method]({
+            key,
+            text: value,
+            value,
+            script,
+          });
+        }
+      }
+      return res;
+    },
   },
   mounted() {
     if (this.clone) {
@@ -265,12 +292,6 @@ export default {
   watch: {
     value() {
       this.curStep = 0;
-    },
-    isOverBuild() {
-      this.form.buildCommand = "";
-    },
-    isOverOutput() {
-      this.form.outputDirectory = "";
     },
   },
   methods: {
@@ -292,19 +313,25 @@ export default {
     },
     async getFramework() {
       try {
+        this.scripts = null;
+        this.form.buildCommand = "";
         const { data } = await this.$http.get(
           "/project/detect-framework/" + this.importItem.id
         );
-        this.form.framework = data.framework || null;
+        let { scripts, framework } = data;
+        this.form.framework = framework || null;
         this.onFramework(this.form.framework);
-        if (!data.scripts && !data.framework) {
-          this.form.outputDirectory = "./";
+        if (scripts) {
+          this.scripts = JSON.parse(scripts);
+          const { build } = this.scripts;
+          if (build && framework != "nextjs") {
+            this.form.buildCommand = "npm run build";
+            this.$set(this.form, "buildCommand", "npm run build");
+          }
+          console.log(this.form);
+        } else {
+          if (!framework) this.form.outputDirectory = "./";
         }
-        // let { scripts = "" } = data;
-        // if (scripts) {
-        //   const { build } = JSON.parse(scripts) || {};
-        //   if (build) this.form.buildCommand = build;
-        // }
       } catch (error) {
         console.log(error);
       }
@@ -323,13 +350,10 @@ export default {
         env: this.envList,
       };
       if (!body.buildCommand) {
-        if (this.buildCommandHint) {
-          const arr = this.buildCommandHint.split(" or ");
-          body.buildCommand =
-            arr.length > 1 ? arr[0].trim() : this.buildCommandHint;
-        } else body.buildCommand = "npm run build";
+        if (body.framework || this.cmdItems.length) {
+          this.$toast("Build Command must not be empty");
+        } else if (!body.framework) body.buildCommand = " ";
       }
-      body.buildCommand = body.buildCommand.replace(/`/g, "");
       if (!body.outputDirectory) {
         body.outputDirectory = "dist";
       }

@@ -149,7 +149,7 @@
                     <v-divider v-if="i < list.length - 1"></v-divider>
                   </div>
                 </div>
-                <div class="mt-3">
+                <div class="mt-3" v-show="pageLen > 1">
                   <v-pagination
                     @input="onPage"
                     v-model="page"
