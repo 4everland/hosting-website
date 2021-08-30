@@ -297,6 +297,9 @@ export default {
         );
         this.form.framework = data.framework || null;
         this.onFramework(this.form.framework);
+        if (!data.scripts && !data.framework) {
+          this.form.outputDirectory = "./";
+        }
         // let { scripts = "" } = data;
         // if (scripts) {
         //   const { build } = JSON.parse(scripts) || {};
