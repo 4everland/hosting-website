@@ -129,6 +129,13 @@ export default {
     },
     async onDelete() {
       try {
+        const suffix = this.selected.length > 1 ? "s" : "";
+        let html = `The following Environment Variable${suffix} will be permanently deleted. Are you sure you want to continue?<ul class='mt-4'>`;
+        for (const row of this.selected) {
+          html += "<li>" + row.key + "</li>";
+        }
+        html += "</ul>";
+        await this.$confirm(html, "Remove Environment Variable" + suffix);
         this.deleting = true;
         for (const row of this.selected) {
           await this.$http.delete("/project/env?id=" + row.id);
