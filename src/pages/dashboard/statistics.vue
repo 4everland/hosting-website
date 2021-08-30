@@ -188,7 +188,7 @@ export default {
           yesterday: info.yesterdayUv,
           tip: `A computer client that visits the site as a
                   Visitor. The same client is counted only once between 00:00
-                  and 24:00.`,
+                  and 24:00 (UTC).`,
         },
         {
           title: "Page Views",
