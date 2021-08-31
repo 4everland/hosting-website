@@ -109,7 +109,7 @@ export default {
       info: null,
       chartList: [
         {
-          title: this.$tc(`dashboard.statistics.TotalUser`, 2),
+          title: this.$tc(`dashboard.statistics.TotalUser`),
           type: "TOTAL_USERS",
         },
         { title: this.$t(`dashboard.statistics.NewUsers`), type: "NEW_USERS" },
@@ -160,7 +160,7 @@ export default {
       if (!this.info) return [];
       return [
         {
-          title: this.$tc(`dashboard.statistics.TotalUser`, 1),
+          title: this.$tc(`dashboard.statistics.TotalUser`),
           value: this.info.totalUsers,
         },
         {

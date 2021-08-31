@@ -54,7 +54,7 @@ const locale = {
       projectName: "projectName",
       Today: "Today",
       Yesterday: "Yesterday",
-      TotalUser: "Total User | Total Users",
+      TotalUser: "Total Users",
       NewUsers: "New Users",
       UniqueVisitor: "Unique Visitor",
       PageView: "Page View",
