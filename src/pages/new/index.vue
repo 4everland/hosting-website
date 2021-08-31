@@ -89,8 +89,7 @@
                 <v-text-field
                   v-model="keyword"
                   clearable
-                  @blur="onKeyword"
-                  @keyup.enter="onKeyword"
+                  @keyup="onSearch"
                   prepend-icon="mdi-magnify"
                   style="margin-top: 14px"
                   :placeholder="$t(`${locales}Search`)"
@@ -173,6 +172,7 @@
 
 <script>
 import { mapState } from "vuex";
+import debounce from "../../plugins/debounce";
 
 export default {
   data() {
@@ -229,9 +229,6 @@ export default {
     showSelect(val) {
       if (!val) this.getList();
     },
-    keyword(val) {
-      if (!val) this.onKeyword();
-    },
   },
   mounted() {
     this.getAccounts();
@@ -267,6 +264,9 @@ export default {
       this.page = 1;
       this.list = null;
       this.getList();
+    },
+    onSearch() {
+      debounce(this.onKeyword);
     },
     onPage() {
       this.getList();
