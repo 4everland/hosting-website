@@ -229,6 +229,9 @@ export default {
     showSelect(val) {
       if (!val) this.getList();
     },
+    keyword(val) {
+      if (!val) this.getList();
+    },
   },
   mounted() {
     this.getAccounts();
@@ -266,7 +269,9 @@ export default {
       this.getList();
     },
     onSearch() {
-      debounce(this.onKeyword);
+      if (this.keyword) {
+        debounce(this.onKeyword);
+      }
     },
     onPage() {
       this.getList();
