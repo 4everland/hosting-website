@@ -282,6 +282,7 @@ export default {
       info: {},
       logs: [],
       isAtEnd: 0,
+      endGap: 0,
       newLogNum: 0,
       deploying: false,
       state: "",
@@ -456,17 +457,24 @@ Are you sure you want to continue?
         if (el) {
           if (!el.onscroll) {
             el.onscroll = () => {
-              this.isAtEnd = el.scrollHeight - el.scrollTop < 500;
+              if (this.endGap)
+                this.isAtEnd =
+                  el.scrollHeight - el.scrollTop <= this.endGap + 5;
             };
           }
           el.scrollTo(0, el.scrollHeight);
           this.isAtEnd = true;
+          setTimeout(() => {
+            this.endGap = el.scrollHeight - el.scrollTop;
+          }, 10);
         }
       });
     },
     scrollToLog() {
       const el = this.$refs.con;
-      if (el) window.scrollTo(0, el.offsetTop);
+      if (el) {
+        window.scrollTo(0, el.offsetTop);
+      }
       this.goLogEnd();
     },
   },
