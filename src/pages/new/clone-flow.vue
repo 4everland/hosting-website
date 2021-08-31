@@ -17,29 +17,27 @@
             <div class="gray mt-5 fz-14">
               {{ $t(`${locales}CreateGitRepositoryTips`) }}
             </div>
-            <v-row class="mt-8">
-              <v-col
-                cols="12"
-                :md="it.span || 5"
+
+            <div class="d-flex mt-6 flex-wrap">
+              <div
+                class="d-flex al-c fz-15 mr-6 mt-2"
                 v-for="(it, i) in metaList"
                 :key="i"
               >
-                <div class="d-flex al-c fz-15">
-                  <v-icon size="20">{{ it.icon }}</v-icon>
-                  <a
-                    v-if="it.link"
-                    :href="it.link"
-                    target="_blank"
-                    class="b u ml-1"
-                  >
-                    {{ it.title }}
-                  </a>
-                  <span v-else class="gray-6 ml-1">
-                    {{ it.title }}
-                  </span>
-                </div>
-              </v-col>
-            </v-row>
+                <v-icon size="20">{{ it.icon }}</v-icon>
+                <a
+                  v-if="it.link"
+                  :href="it.link"
+                  target="_blank"
+                  class="b u ml-1"
+                >
+                  {{ it.title }}
+                </a>
+                <span v-else class="gray-6 ml-1">
+                  {{ it.title }}
+                </span>
+              </div>
+            </div>
 
             <div class="mt-8 d-flex al-c">
               <v-text-field
