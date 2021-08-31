@@ -61,98 +61,57 @@
             </v-tooltip>
           </template>
         </v-select>
-        <div class="d-flex al-c">
-          <v-text-field
-            persistent-placeholder
-            v-model="form.buildCommand"
-            label="Build command"
-            :disabled="!overForm.buildCommand"
-            :placeholder="buildCommandHint"
-          >
-            <template v-slot:prepend>
-              <v-tooltip bottom max-width="300">
-                <template v-slot:activator="{ on }">
-                  <v-icon v-on="on" size="15"> mdi-help-circle-outline </v-icon>
-                </template>
-                <p>
-                  The command your frontend framework provides for compiling
-                  your code.
-                </p>
-                <p>
-                  If your frontend does not require a build, leave this field
-                  empty.
-                </p>
-              </v-tooltip>
-            </template>
-          </v-text-field>
-          <v-switch
-            v-model="overForm.buildCommand"
-            @change="onSwith('buildCommand')"
-            label="Override"
-            class="ml-5"
-          ></v-switch>
-        </div>
+
+        <e-build-cmd
+          v-model="form.buildCommand"
+          :placeholder="buildCommandHint"
+          :options="[]"
+          :scripts="scripts"
+        ></e-build-cmd>
+
         <div class="d-flex al-c">
           <v-text-field
             persistent-placeholder
             v-model="form.outputDirectory"
             label="Output Directory"
-            :disabled="!overForm.outputDirectory"
             :placeholder="outputDirHint"
-          >
-            <template v-slot:prepend>
-              <v-tooltip bottom max-width="300">
-                <template v-slot:activator="{ on }">
-                  <v-icon v-on="on" size="15"> mdi-help-circle-outline </v-icon>
-                </template>
-                <p>
-                  The directory in which your compiled frontend will be located.
-                </p>
-                <p>
-                  If you want to serve everything instead of a sub directory,
-                  leave this field empty.
-                </p>
-              </v-tooltip>
+          ></v-text-field>
+          <e-tooltip bottom max-width="300">
+            <template #ref>
+              <v-icon size="15" class="ml-2"> mdi-help-circle-outline </v-icon>
             </template>
-          </v-text-field>
-          <v-switch
-            v-model="overForm.outputDirectory"
-            @change="onSwith('outputDirectory')"
-            label="Override"
-            class="ml-5"
-          ></v-switch>
+            <p>
+              The directory in which your compiled frontend will be located.
+            </p>
+            <p>
+              If you want to serve everything instead of a sub directory, leave
+              this field empty.
+            </p>
+          </e-tooltip>
         </div>
+
         <div class="d-flex al-c">
           <v-text-field
             persistent-placeholder
             v-model="form.installCommand"
             label="Install Command"
-            :disabled="!overForm.installCommand"
             placeholder="‘yarn install’ or ‘npm install’"
-          >
-            <template v-slot:prepend>
-              <v-tooltip bottom max-width="300">
-                <template v-slot:activator="{ on }">
-                  <v-icon v-on="on" size="15"> mdi-help-circle-outline </v-icon>
-                </template>
-                <p>
-                  The command that is used to install your Project's software
-                  dependencies.
-                </p>
-                <p>
-                  If you don't need to install dependencies, override this field
-                  and leave it empty.
-                </p>
-              </v-tooltip>
+          ></v-text-field>
+          <e-tooltip bottom max-width="300">
+            <template #ref>
+              <v-icon class="ml-2" size="15"> mdi-help-circle-outline </v-icon>
             </template>
-          </v-text-field>
-          <v-switch
-            v-model="overForm.installCommand"
-            @change="onSwith('installCommand')"
-            label="Override"
-            class="ml-5"
-          ></v-switch>
+            <p>
+              The command that is used to install your Project's software
+              dependencies.
+            </p>
+            <p>
+              If you don't need to install dependencies, override this field and
+              leave it empty.
+            </p>
+          </e-tooltip>
         </div>
+
         <div class="ta-r mt-3">
           <v-btn
             :disabled="!isCmdChange"
@@ -234,6 +193,7 @@ export default {
       form,
       overForm,
       frameworks,
+      scripts: null,
       buildCommandHint: "",
       outputDirHint: "",
       isOverBuild: false,
@@ -246,8 +206,23 @@ export default {
   },
   mounted() {
     this.onFramework(this.form.framework, true);
+    this.getScripts();
   },
   methods: {
+    async getScripts() {
+      try {
+        const {
+          data: { scripts },
+        } = await this.$http.get(
+          "/project/detect-framework/" + this.info.repo.id
+        );
+        if (scripts) {
+          this.scripts = JSON.parse(scripts);
+        }
+      } catch (error) {
+        //
+      }
+    },
     onSwith(key) {
       const isOver = this.overForm[key];
       // console.log(key)

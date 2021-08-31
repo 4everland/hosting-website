@@ -111,35 +111,13 @@
                   {{ $t(`${locales}BuildOutputSettings`) }}
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
-                  <div class="d-flex al-c">
-                    <v-text-field
-                      v-if="!cmdItems.length"
-                      persistent-placeholder
-                      v-model="form.buildCommand"
-                      :label="$t(`${locales}BuildCommand`)"
-                      :placeholder="buildCommandHint"
-                    />
-                    <v-select
-                      v-else
-                      persistent-placeholder
-                      :menu-props="{ offsetY: true }"
-                      :label="$t(`${locales}BuildCommand`)"
-                      :items="cmdItems"
-                      item-text="text"
-                      item-value="value"
-                      v-model="form.buildCommand"
-                    >
-                      <template #item="{ item }">
-                        <span>{{ item.key }}</span>
-                        <span class="gray ml-1 mr-2">:</span>
-                        <span
-                          class="gray fz-13 line-1"
-                          style="max-width: 400px"
-                          >{{ item.script }}</span
-                        >
-                      </template>
-                    </v-select>
-                  </div>
+                  <e-build-cmd
+                    ref="buildCmd"
+                    v-model="form.buildCommand"
+                    :placeholder="buildCommandHint"
+                    :scripts="scripts"
+                  ></e-build-cmd>
+
                   <div class="d-flex al-c">
                     <v-text-field
                       persistent-placeholder
@@ -147,6 +125,21 @@
                       :label="$t(`${locales}OutputDirectory`)"
                       placeholder="`dist` if it exists, or `. `"
                     />
+                    <e-tooltip bottom max-width="300">
+                      <template #ref>
+                        <v-icon size="15" class="ml-2">
+                          mdi-help-circle-outline
+                        </v-icon>
+                      </template>
+                      <p>
+                        The directory in which your compiled frontend will be
+                        located.
+                      </p>
+                      <p>
+                        If you want to serve everything instead of a sub
+                        directory, leave this field empty.
+                      </p>
+                    </e-tooltip>
                   </div>
                 </v-expansion-panel-content>
               </v-expansion-panel>
@@ -265,24 +258,6 @@ export default {
     chooseFramework() {
       return this.frameworks.filter((it) => it.slug == this.form.framework)[0];
     },
-    cmdItems() {
-      let res = [];
-      if (this.scripts) {
-        for (const key in this.scripts) {
-          const method = /build/.test(key) ? "unshift" : "push";
-          let value = "npm run " + key;
-          const script = this.scripts[key];
-          if (script == "next build") value = script;
-          res[method]({
-            key,
-            text: value,
-            value,
-            script,
-          });
-        }
-      }
-      return res;
-    },
   },
   mounted() {
     if (this.clone) {
@@ -350,7 +325,7 @@ export default {
         env: this.envList,
       };
       if (!body.buildCommand) {
-        if (body.framework || this.cmdItems.length) {
+        if (body.framework || this.scripts) {
           this.$toast("Build Command must not be empty");
         } else if (!body.framework) body.buildCommand = " ";
       }
