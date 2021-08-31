@@ -106,13 +106,14 @@ export default {
         {
           icon: "mdi-source-branch",
           title: info.defaultBranch,
+          link: `${info.url}/tree/${info.defaultBranch}`,
           span: 2,
         },
         {
           icon: "mdi-folder-outline",
           title: `${info.dir}`,
           link: `${info.url}/tree/${info.defaultBranch}${info.dir}`,
-          span: 3,
+          span: 5,
         },
       ];
     },
