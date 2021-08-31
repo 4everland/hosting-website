@@ -18,12 +18,25 @@
               {{ $t(`${locales}CreateGitRepositoryTips`) }}
             </div>
             <v-row class="mt-8">
-              <v-col cols="12" md="5" v-for="(it, i) in metaList" :key="i">
-                <div class="d-flex al-c">
+              <v-col
+                cols="12"
+                :md="it.span || 5"
+                v-for="(it, i) in metaList"
+                :key="i"
+              >
+                <div class="d-flex al-c fz-15">
                   <v-icon size="20">{{ it.icon }}</v-icon>
-                  <a :href="it.link" target="_blank" class="b u ml-2">
+                  <a
+                    v-if="it.link"
+                    :href="it.link"
+                    target="_blank"
+                    class="b u ml-1"
+                  >
                     {{ it.title }}
                   </a>
+                  <span v-else class="gray-6 ml-1">
+                    {{ it.title }}
+                  </span>
                 </div>
               </v-col>
             </v-row>
@@ -91,9 +104,15 @@ export default {
           link: info.url,
         },
         {
+          icon: "mdi-source-branch",
+          title: info.defaultBranch,
+          span: 2,
+        },
+        {
           icon: "mdi-folder-outline",
           title: `${info.dir}`,
           link: `${info.url}/tree/${info.defaultBranch}${info.dir}`,
+          span: 3,
         },
       ];
     },
