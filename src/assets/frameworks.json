@@ -736,9 +736,7 @@
     "installCommand": {
       "placeholder": "`yarn install` or `npm install`"
     },
-    "buildCommand": {
-      "value": " "
-    },
+    "buildCommand": {},
     "devCommand": {
       "placeholder": "None"
     },
