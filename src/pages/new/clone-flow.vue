@@ -20,22 +20,14 @@
 
             <div class="d-flex mt-6 flex-wrap">
               <div
-                class="d-flex al-c fz-15 mr-6 mt-2"
+                class="d-flex al-c fz-15 mr-8 mt-2"
                 v-for="(it, i) in metaList"
                 :key="i"
               >
                 <v-icon size="20">{{ it.icon }}</v-icon>
-                <a
-                  v-if="it.link"
-                  :href="it.link"
-                  target="_blank"
-                  class="b u ml-1"
-                >
+                <a :href="it.link" target="_blank" class="b u ml-1">
                   {{ it.title }}
                 </a>
-                <span v-else class="gray-6 ml-1">
-                  {{ it.title }}
-                </span>
               </div>
             </div>
 
