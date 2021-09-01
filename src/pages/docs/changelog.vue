@@ -7,7 +7,7 @@
             <v-timeline-item small v-for="(it, i) in list" :key="i">
               <v-img
                 :src="it.img"
-                class="w100p mb-4 bdrs-3 bd-1"
+                class="w100p mb-4 bdrs-10 bd-1"
                 max-height="380"
                 v-if="it.img"
               />
