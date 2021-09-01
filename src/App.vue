@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <e-header></e-header>
-    <v-main style="min-height: 71vh">
+    <v-main style="min-height: 70vh">
       <router-view></router-view>
     </v-main>
 
