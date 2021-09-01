@@ -32,7 +32,7 @@
         </v-list-item-group>
       </v-list>
     </div>
-    <div class="flex-1 pd-20" v-if="info.id">
+    <div class="flex-1 pd-20" style="min-height: 60vh" v-if="info.id">
       <component
         :is="it.comp"
         :info="info"
