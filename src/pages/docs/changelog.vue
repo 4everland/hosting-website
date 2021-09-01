@@ -31,7 +31,7 @@ export default {
       list: [
         {
           time: "August 31, 2021",
-          img: "img/log/2021-8-31.jpeg",
+          img: "img/log/2021-8-31.jpg",
           con: `<h3>We have done more functional support and detailed optimization for 4EVER-HOSTING, as follows:</h3>
 <ul>
 <li>Support multiple GitHub accounts login and also org Github accounts. </li>
