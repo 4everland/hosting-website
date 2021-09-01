@@ -20,7 +20,7 @@
       <template #item="{ item }">
         <span>{{ item.key }}</span>
         <span class="gray ml-1 mr-2">:</span>
-        <span class="gray fz-13 line-1" style="max-width: 400px">{{
+        <span class="gray fz-13 line-1" style="max-width: 390px">{{
           item.script
         }}</span>
       </template>
