@@ -171,6 +171,11 @@ export default {
           // noTip: false,
         });
         this.info = data;
+        let name = data.name.replace(/\./g, '-');
+        if(data.dir != '/') {
+          name = /\/([^/]*)$/.exec(data.dir)[1] + '-project'
+        }
+        this.name = name
       } catch (error) {
         console.log(error);
         this.errMsg = error.message;
