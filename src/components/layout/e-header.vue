@@ -131,11 +131,6 @@ export default {
               icon: "bug-outline",
             },
             {
-              label: "Feedback",
-              name: "feedback",
-              icon: "comment-quote-outline",
-            },
-            {
               label: "Report",
               name: "feedback",
               icon: "alert-octagon-outline",
@@ -143,7 +138,7 @@ export default {
           ],
         };
         if (this.asMobile) {
-          feedback = feedback.subs.slice(0, 2);
+          feedback = feedback.subs;
           links = feedback.concat(links);
         } else links.unshift(feedback);
         const subs = [
