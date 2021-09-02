@@ -31,12 +31,22 @@
     </div>
     <template v-else>
       <div class="bd-1 mb-6 mt-3" v-for="(it, i) in list" :key="i">
-        <div class="pd-20">
-          <div class="d-flex al-c">
+        <div class="pd-20 d-flex al-c flex-wrap">
+          <div class="mr-auto">
             <h3 class="mr-auto">{{ it.domain }}</h3>
-            <!-- <v-chip small color="#E09975" class="ml-3">
-            <span class="white-0">production</span>
-          </v-chip> -->
+            <div class="d-flex al-c mt-2">
+              <v-icon :color="it.valid ? 'success' : 'error'" size="18">
+                mdi-{{ it.valid ? "check-circle" : "information" }}
+              </v-icon>
+              <span
+                class="ml-1 fz-13"
+                :class="it.valid ? 'color-suc' : 'red-1'"
+              >
+                {{ it.valid ? "Valid Configuration" : "Invalid Configuration" }}
+              </span>
+            </div>
+          </div>
+          <div class="mt-2">
             <v-btn
               v-if="!it.valid"
               small
@@ -44,7 +54,7 @@
               @click="onRefresh(it)"
               :loading="it.refreshing"
             >
-              Refresh
+              <v-icon>mdi-refresh</v-icon>
             </v-btn>
             <v-btn
               small
@@ -54,14 +64,6 @@
             >
               Remove
             </v-btn>
-          </div>
-          <div class="d-flex al-c mt-2">
-            <v-icon :color="it.valid ? 'success' : 'error'" size="18">
-              mdi-{{ it.valid ? "check-circle" : "information" }}
-            </v-icon>
-            <span class="ml-1 fz-13" :class="it.valid ? 'color-suc' : 'red-1'">
-              {{ it.valid ? "Valid Configuration" : "Invalid Configuration" }}
-            </span>
           </div>
         </div>
         <div class="pd-20 bdt-1" v-if="!it.valid">
@@ -74,7 +76,7 @@
           <div class="bg-f4 pd-10-20 fz-14 bd-1 d-flex mt-3">
             <div class="flex-1">
               <p class="el-label-1">Type</p>
-              <p class="mt-3">{{ it.isA ? 'A' : 'CNAME' }}</p>
+              <p class="mt-3">{{ it.isA ? "A" : "CNAME" }}</p>
             </div>
             <div class="flex-1 ml-5">
               <p class="el-label-1">Name</p>
@@ -83,7 +85,7 @@
             <div class="flex-2 ml-5">
               <p class="el-label-1">Value</p>
               <p
-                class="mt-3 hover-1"
+                class="mt-3 hover-1 wb-all"
                 v-clipboard="it.isA ? dns.ip : dns.cname"
                 @success="$toast('Copied to clipboard !')"
               >
@@ -103,14 +105,13 @@ import { mapState } from "vuex";
 
 export default {
   data() {
-
     return {
       domain: "",
       list: null,
       adding: false,
       dns: {
-        cname: 'cname.4everland.app',
-        ip: '',
+        cname: "-",
+        ip: "",
       },
     };
   },
@@ -162,7 +163,7 @@ export default {
           const arr = it.domain.split(".");
           arr.pop();
           arr.pop();
-          it.isA = !arr.length
+          it.isA = !arr.length;
           it.pre = it.isA ? "@" : arr.join(".");
           // it.valid = 1
           return it;
@@ -222,7 +223,9 @@ export default {
     async onRefresh(it) {
       try {
         this.$set(it, "refreshing", true);
-        const { data } = await this.$http.get("/domain/verify/" + it.domainId);
+        const { data } = await this.$http.get("/domain/verify/" + it.domainId, {
+          noTip: true,
+        });
         if (data.success) {
           await this.getList();
           this.$toast(it.domain + " is valid now");
