@@ -14,50 +14,45 @@
         <a class="ml-2 b u" :href="importItem.cloneUrl" target="_blank">{{
           importItem.name
         }}</a>
-        <v-icon size="16" class="ml-5">mdi-source-branch</v-icon>
-        <a
-          class="ml-2 b u"
-          :href="
-            importItem.cloneUrl.replace(
-              '.git',
-              '/tree/' + importItem.defaultBranch
-            )
-          "
-          target="_blank"
-        >
-          {{ importItem.defaultBranch }}
-        </a>
+        <template v-if="form.currentBranch">
+          <v-icon size="16" class="ml-5">mdi-source-branch</v-icon>
+          <a
+            class="ml-2 b u"
+            :href="
+              importItem.cloneUrl.replace('.git', '/tree/' + form.currentBranch)
+            "
+            target="_blank"
+          >
+            {{ form.currentBranch }}
+          </a>
+        </template>
       </div>
     </v-card-text>
-    <div
-      class="pd-20 ov-a"
-      style="max-height: 55vh"
-      :class="{
-        'bdt-1': curStep > 0,
-      }"
-    >
+    <div class="pd-20 ov-a bdt-1" style="max-height: 55vh">
       <v-window v-model="curStep">
         <v-window-item :value="0">
-          <div class="mb-8">
-            <div class="bd-1 pd-20 d-flex al-c">
-              <img
-                :src="userInfo.avatar"
-                style="width: 40px; height: 40px"
-                class="bdrs-100 bg-f8"
-              />
-              <span class="fz-18 ml-5">{{ importItem.namespace }}</span>
-              <v-btn
-                color="primary"
-                class="ml-auto"
-                small
-                @click="onSelect"
-                :loading="selecting"
-                >{{ $t(`${locales}Select`) }}</v-btn
+          <div class="pd-20 pt-0">
+            <div class="gray-6 fz-15">You can deploy by branch</div>
+            <v-radio-group v-model="form.currentBranch" v-if="branchList">
+              <div
+                class="d-flex al-c mb-2"
+                v-for="branch in branchList"
+                :key="branch"
               >
-            </div>
-            <!-- <div class="fz-14 gray mt-5">
-            Now that you've selected a Git repository to import, you can either create a new 4everland Team and deploy theGit repository to it, or deploy it your existing Personal Account.
-          </div> -->
+                <v-radio :label="branch" :value="branch">
+                  <template #label>
+                    <v-icon size="16">mdi-source-branch</v-icon>
+                  </template>
+                </v-radio>
+                <a
+                  class="ml-2 b u fz-15 mb-2"
+                  :href="importItem.cloneUrl.replace('.git', '/tree/' + branch)"
+                  target="_blank"
+                  >{{ branch }}</a
+                >
+              </div>
+            </v-radio-group>
+            <v-skeleton-loader v-else type="article" />
           </div>
         </v-window-item>
 
@@ -191,8 +186,8 @@
         small
         color="primary"
         class="ml-auto"
-        v-if="curStep"
-        :loading="creating"
+        v-if="branchList"
+        :loading="creating || selecting"
         @click="onDeploy"
       >
         {{ $t(`${locales}Deploy`) }}
@@ -204,7 +199,6 @@
 <script>
 import frameworks from "../../assets/frameworks.json";
 const srcDir = "./";
-// console.log(frameworks)
 
 export default {
   props: {
@@ -221,15 +215,16 @@ export default {
       srcDir,
       initSrcDir: srcDir,
       frameworks,
-      presetList: ["vue", "React"],
       pan0Idx: 0,
-      buildCommandHint: "`npm run build`",
+      buildCommandHint: "",
       form: {
         name: "",
         framework: "",
         buildCommand: "",
         outputDirectory: "",
+        currentBranch: "",
       },
+      branchList: null,
       scripts: null,
       envHeaders: [
         { text: "Name", value: "key" },
@@ -267,9 +262,23 @@ export default {
   watch: {
     value() {
       this.curStep = 0;
+      this.getBranchList();
     },
   },
   methods: {
+    async getBranchList() {
+      this.form.currentBranch = "";
+      this.branchList = null;
+      try {
+        const { data } = await this.$http.get(
+          "/project/branch/repo/" + this.importItem.id
+        );
+        this.branchList = data;
+        this.form.currentBranch = data[0];
+      } catch (error) {
+        //
+      }
+    },
     onFramework(val) {
       const item = this.frameworks.filter((it) => it.slug == val)[0] || {};
       const { buildCommand = {}, outputDirectory = {} } = item.settings || {};
@@ -312,9 +321,10 @@ export default {
       }
     },
     async onDeploy() {
-      if (this.curStep < 2) {
-        this.curStep += 1;
-        this.envList = [];
+      if (this.curStep == 0) {
+        return this.onBranch();
+      } else if (this.curStep == 1) {
+        this.curStep = 2;
         return;
       }
       const { id: repoId } = this.importItem;
@@ -368,7 +378,11 @@ export default {
       }
       this.creating = false;
     },
-    async onSelect() {
+    async onBranch() {
+      if (!this.form.currentBranch) {
+        return this.$toast("Branch must be choosen.");
+      }
+      this.envList = [];
       this.form.name = this.importItem.name;
       let framework = this.importItem.frameWorkAdvice || null;
       if (framework == "other") framework = null;
@@ -391,7 +405,7 @@ export default {
         params.rootPath = item.id;
       }
       let { data } = await this.$http.get(
-        `/repo/${this.importItem.namespace}/dir/${this.importItem.name}`,
+        `/repo/${this.importItem.namespace}/dir/${this.importItem.name}/${this.form.currentBranch}`,
         {
           params,
         }
