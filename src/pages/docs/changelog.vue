@@ -2,13 +2,14 @@
   <div class="wrap-1">
     <div class="con-3">
       <v-card outlined>
-        <div class="pd-20">
+        <div :class="asMobile ? 'pd-15' : 'pd-20 pr-10'">
           <v-timeline dense align-top>
             <v-timeline-item small v-for="(it, i) in list" :key="i">
               <v-img
                 :src="it.img"
                 class="w100p mb-4 bdrs-10 bd-1"
-                max-height="380"
+                max-height="360"
+                min-height="300"
                 v-if="it.img"
               />
               <div class="color-1 fw-b">{{ it.time }}</div>
@@ -26,6 +27,11 @@
 
 <script>
 export default {
+  computed: {
+    asMobile() {
+      return this.$vuetify.breakpoint.smAndDown;
+    },
+  },
   data() {
     return {
       list: [
