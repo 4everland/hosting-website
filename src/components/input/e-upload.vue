@@ -47,7 +47,8 @@
         </div>
         <div class="item add-img pos-r" v-if="files.length < limit">
           <v-icon size="30" class="pos-center">mdi-plus-thick</v-icon>
-          <input ref="file"
+          <input
+            ref="file"
             multiple
             type="file"
             :accept="accept"
@@ -131,7 +132,12 @@ export default {
       }
       if (this.files.length) {
         this.$setState({
-          noticeMsg: { name: "report" },
+          noticeMsg: {
+            name: "feedback",
+            data: {
+              label: "Report",
+            },
+          },
         });
       }
       this.$emit("input", this.files);
