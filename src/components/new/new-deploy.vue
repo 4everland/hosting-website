@@ -32,7 +32,7 @@
       <v-window v-model="curStep">
         <v-window-item :value="0">
           <div class="pd-20 pt-0">
-            <div class="gray-6 fz-15">You can deploy by branch</div>
+            <div class="gray-6 fz-15">{{ $t(`${locales}deployByBranch`) }}</div>
             <v-radio-group v-model="form.currentBranch" v-if="branchList">
               <div
                 class="d-flex al-c mb-2"

@@ -102,6 +102,7 @@ const locale = {
       Create: "Create",
       SelectScope: "Select 4everland Scope",
       importing: "importing",
+      deployByBranch: 'You can deploy by branch',
       Select: "Select",
       SelectTips:
         "Please select the directory within Git repository that contains your project's source code",
