@@ -131,7 +131,7 @@ export default {
       }
       if (this.files.length) {
         this.$setState({
-          noticeMsg: { name: "feedback" },
+          noticeMsg: { name: "report" },
         });
       }
       this.$emit("input", this.files);
