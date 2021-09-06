@@ -258,10 +258,13 @@ export default {
     if (this.clone) {
       this.onSelect();
     }
+    this.getBranchList();
   },
   watch: {
     value() {
       this.curStep = 0;
+    },
+    importItem() {
       this.getBranchList();
     },
   },
@@ -404,8 +407,9 @@ export default {
       if (item) {
         params.rootPath = item.id;
       }
+      params.ref = this.form.currentBranch;
       let { data } = await this.$http.get(
-        `/repo/${this.importItem.namespace}/dir/${this.importItem.name}/${this.form.currentBranch}`,
+        `/repo/${this.importItem.namespace}/dir/${this.importItem.name}/ref`,
         {
           params,
         }
