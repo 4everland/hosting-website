@@ -119,7 +119,7 @@ export default {
       if (this.loading) {
         this.page += 1;
       } else {
-        this.page = 1;
+        this.page = 0;
         this.finished = false;
         this.refreshing = true;
       }
@@ -132,7 +132,7 @@ export default {
           },
         });
         this.finished = data.length < 20;
-        const list = this.page == 1 ? [] : [...this.list];
+        const list = this.page == 0 ? [] : [...this.list];
         for (const row of data) {
           row.date = new Date(row.date);
           const date = row.date.format("date");
