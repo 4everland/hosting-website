@@ -5,11 +5,14 @@
         A list of commits in
         <span class="white-9">{{ info.name || "project" }}</span>
       </div>
+      <template #right>
+        <v-btn :loading="refreshing" @click="getList" small> Refresh </v-btn>
+      </template>
     </e-card-head-1>
     <div class="pd-15" v-if="!list">
       <v-skeleton-loader type="article" />
     </div>
-    <div class="pr-6" v-else>
+    <div class="pr-6 pos-r" v-else>
       <v-timeline dense align-top>
         <v-timeline-item small v-for="(it, i) in list" :key="i">
           <div class="color-1 fw-b">{{ it.date }}</div>
@@ -37,6 +40,17 @@
           <!-- <v-divider></v-divider> -->
         </v-timeline-item>
       </v-timeline>
+      <div
+        v-if="list && !finished"
+        class="pd-20 gray ta-c fz-18 mt-5"
+        :class="{
+          'hover-1': !loading,
+        }"
+        @click="onLoad"
+        v-intersect="onLoad"
+      >
+        {{ loading ? "Loading..." : "Load More" }}
+      </div>
     </div>
   </v-card>
 </template>
@@ -60,6 +74,9 @@ export default {
       id,
       page: 1,
       list: null,
+      finished: false,
+      loading: false,
+      refreshing: false,
     };
   },
   watch: {
@@ -91,9 +108,21 @@ export default {
         //
       }
     },
+    onLoad() {
+      if (this.loading) return;
+      this.loading = true;
+      this.getList();
+    },
     async getList() {
       const { repo, config } = this.info;
       if (!repo) return;
+      if (this.loading) {
+        this.page += 1;
+      } else {
+        this.page = 1;
+        this.finished = false;
+        this.refreshing = true;
+      }
       try {
         const { data } = await this.$http.get(`/repo/commits/${repo.id}`, {
           params: {
@@ -102,7 +131,8 @@ export default {
             size: 20,
           },
         });
-        const list = this.list || [];
+        this.finished = data.length < 20;
+        const list = this.page == 1 ? [] : [...this.list];
         for (const row of data) {
           row.date = new Date(row.date);
           const date = row.date.format("date");
@@ -123,6 +153,10 @@ export default {
       } catch (error) {
         console.log(error);
       }
+      this.refreshing = false;
+      setTimeout(() => {
+        this.loading = false;
+      }, 100);
     },
   },
 };
