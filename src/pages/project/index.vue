@@ -49,6 +49,10 @@ export default {
           path: "deployments",
         },
         {
+          title: "Commits",
+          path: "commits",
+        },
+        {
           title: "Settings",
           path: "settings",
         },

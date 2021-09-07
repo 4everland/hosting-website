@@ -1,6 +1,6 @@
 <template>
   <a v-if="info && href" :href="href" target="_blank" class="b u">
-    {{ info.hash.substr(0, 6) }} — {{ info.message }}
+    {{ (info.hash || info.sha).substr(0, 6) }} — {{ info.message }}
   </a>
 </template>
 
@@ -14,7 +14,8 @@ export default {
       return this.$store.state.projectInfo;
     },
     href() {
-      const { url, prefix, hash } = this.info || {};
+      let { htmlUrl, url, prefix, hash } = this.info || {};
+      if (htmlUrl) return htmlUrl;
       if (url) return url;
       if (prefix) return prefix + "commit/" + hash;
       const { namespace, name } = this.projInfo.repo || {};
