@@ -311,10 +311,9 @@ export default {
     buildInfo({ name, data }) {
       if (data.taskId == this.taskId) {
         console.log(this.taskId, name);
-        this.state = data.state.toLowerCase();
         const last = this.logs[this.logs.length - 1];
         if (name != "log") {
-          if (data.state == "SUCCESS") {
+          if (data.state == "SUCCESS" && !this.isSuccess) {
             this.onBuildSuc();
           }
           this.initData();
@@ -323,6 +322,7 @@ export default {
           if (!this.isAtEnd) this.newLogNum++;
           this.goLogEnd();
         }
+        this.state = data.state.toLowerCase();
       }
     },
     state(val) {
