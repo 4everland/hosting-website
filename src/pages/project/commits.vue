@@ -1,9 +1,8 @@
 <template>
   <v-card outlined>
-    <e-card-head-1 :title="info.config ? info.config.name : '*'">
+    <e-card-head-1 title="Git Commits">
       <div class="d-flex al-c">
-        <!-- <span>A list of commits in</span>
-        <span class="white-9">{{ info.name || "project" }}</span> -->
+        <span class="white-5 mr-3">{{ info.name || "project" }}</span>
         <e-branch
           slot="ref"
           v-if="info.name"
