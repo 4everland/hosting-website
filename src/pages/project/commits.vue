@@ -1,9 +1,15 @@
 <template>
   <v-card outlined>
-    <e-card-head-1 title=" Git Commits">
-      <div>
-        A list of commits in
-        <span class="white-9">{{ info.name || "project" }}</span>
+    <e-card-head-1 :title="info.config ? info.config.name : '*'">
+      <div class="d-flex al-c">
+        <!-- <span>A list of commits in</span>
+        <span class="white-9">{{ info.name || "project" }}</span> -->
+        <e-branch
+          slot="ref"
+          v-if="info.name"
+          color="#eee"
+          icon="mdi-source-branch"
+        ></e-branch>
       </div>
       <template #right>
         <v-btn :loading="refreshing" @click="getList" small> Refresh </v-btn>
