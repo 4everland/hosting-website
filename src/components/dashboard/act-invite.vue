@@ -51,24 +51,40 @@
 
 <script>
 export default {
+  computed: {
+    userInfo() {
+      return this.$store.state.userInfo;
+    },
+    inviteUrl() {
+      if (!this.code) return "";
+      return location.origin + "/#/?invite=" + this.code;
+    },
+  },
   data() {
     return {
-      inviteUrl: "",
+      code: null,
       list: [],
       loading: false,
     };
   },
   created() {
-    this.getInviteUrl();
+    this.getCode();
     this.getList();
+  },
+  watch: {
+    userInfo() {
+      this.getCode();
+    },
   },
   methods: {
     onCopied() {
       this.$toast("Invite Link copied.");
     },
-    async getInviteUrl() {
+    async getCode() {
+      this.code = this.userInfo.inviteCode;
+      if (this.code) return;
       const { data } = await this.$http.get("/invite/code");
-      this.inviteUrl = location.origin + "/#/?invite=" + data;
+      this.code = data;
     },
     async getList() {
       try {
