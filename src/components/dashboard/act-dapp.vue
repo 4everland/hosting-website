@@ -18,12 +18,14 @@
             <td>Created</td>
           </tr>
         </thead>
-        <tbody>
+        <tbody class="op-9">
           <tr v-for="(it, i) in list" :key="it.projectId">
             <td>{{ 1 + i }}</td>
             <td>{{ it.projectName }}</td>
             <td class="ta-l">
-              <a class="u" :href="it.domain">{{ it.domain }}</a>
+              <a style="color: white" class="u" :href="it.domain">{{
+                it.domain
+              }}</a>
             </td>
             <td>{{ it.totalUsers }}</td>
             <td>{{ it.percentage }}%</td>

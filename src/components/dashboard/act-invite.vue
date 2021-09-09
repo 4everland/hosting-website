@@ -2,8 +2,18 @@
   <div>
     <div class="mt-10 d-flex al-c">
       <h3 class="pd-20 pr-2">My Invites</h3>
-      <v-btn plain color="white" small :loading="loading" @click="getList">
+      <v-btn plain small color="white" :loading="loading" @click="getList">
         <v-icon>mdi-refresh</v-icon>
+      </v-btn>
+      <v-btn
+        plain
+        small
+        color="white"
+        v-clipboard="inviteUrl"
+        @success="onCopied"
+        v-if="inviteUrl && list.length > 0"
+      >
+        <v-icon>mdi-plus</v-icon>
       </v-btn>
     </div>
     <div class="ov-a bdrs-10 bd-1b ov-h">
@@ -16,12 +26,19 @@
             <td>Deployed</td>
           </tr>
         </thead>
-        <tbody>
+        <tbody class="op-9">
           <tr v-for="(it, i) in list" :key="i">
             <td>{{ 1 + i }}</td>
             <td>{{ it.email }}</td>
-            <td>test</td>
-            <td>test</td>
+            <td>{{ new Date(it.inviteAt).format() }}</td>
+            <td>
+              <a
+                style="color: white"
+                class="u"
+                :href="'https://' + it.domain"
+                >{{ it.domain }}</a
+              >
+            </td>
           </tr>
         </tbody>
       </table>
