@@ -2,9 +2,9 @@
   <div>
     <div class="mt-10 d-flex al-c">
       <h3 class="pd-20 pr-2">My Dapps</h3>
-      <v-btn plain color="white" small :loading="loading" @click="getList">
+      <!-- <v-btn plain color="white" small :loading="loading" @click="getList">
         <v-icon>mdi-refresh</v-icon>
-      </v-btn>
+      </v-btn> -->
     </div>
     <div class="ov-a bdrs-10 bd-1b ov-h">
       <table class="w100p ta-c" style="min-width: 560px">
@@ -30,6 +30,17 @@
                 target="_blank"
                 >{{ it.domain.replace("https://", "") }}</a
               >
+              <v-icon
+                size="14"
+                class="pa-1 hover-1"
+                :class="{
+                  'anim-shine': isTipCopy,
+                }"
+                v-clipboard="it.domain"
+                @success="$toast('Copied to clipboard !')"
+                color="white"
+                >mdi-content-copy</v-icon
+              >
             </td>
             <td>{{ it.totalUsers }}</td>
             <td>{{ it.percentage }}%</td>
@@ -50,12 +61,19 @@ export default {
     return {
       list: [],
       loading: false,
+      isTipCopy: false,
     };
   },
   created() {
     this.getList();
   },
   methods: {
+    async setTipCopy() {
+      await this.$sleep(100);
+      this.isTipCopy = true;
+      await this.$sleep(1000);
+      this.isTipCopy = false;
+    },
     async getList() {
       this.loading = true;
       try {

@@ -1,19 +1,35 @@
 <template>
   <div>
+    <v-dialog v-model="popInvite" max-width="450">
+      <div class="pd-20">
+        <div>
+          <span>{{ sharePre }}</span>
+          <a :href="shareUrl" target="_blank">{{ shareUrl }}</a>
+          <!-- <v-icon
+            size="14"
+            class="pa-1 hover-1 ml-2"
+            >mdi-content-copy</v-icon
+          > -->
+        </div>
+        <!-- <div class="pos-r mt-3" ref="imgWrap">
+          <img src="img/bg/act-invite.png" style="width: 240px" class="bd-1" />
+        </div> -->
+
+        <div class="mt-10 ta-c">
+          <v-btn
+            color="primary"
+            v-clipboard="sharePre + shareUrl"
+            @success="onCopied"
+            >Copy</v-btn
+          >
+        </div>
+      </div>
+    </v-dialog>
     <div class="mt-10 d-flex al-c">
       <h3 class="pd-20 pr-2">My Invites</h3>
-      <v-btn plain small color="white" :loading="loading" @click="getList">
+      <!-- <v-btn plain small color="white" :loading="loading" @click="getList">
         <v-icon>mdi-refresh</v-icon>
-      </v-btn>
-      <v-btn
-        plain
-        small
-        color="white"
-        @click="onInvite"
-        v-if="code && list.length > 0"
-      >
-        <v-icon>mdi-account-plus-outline</v-icon>
-      </v-btn>
+      </v-btn> -->
     </div>
     <div class="ov-a bdrs-10 bd-1b ov-h">
       <table class="w100p ta-c" style="min-width: 260px">
@@ -67,10 +83,15 @@
 </template>
 
 <script>
+import html2canvas from "html2canvas";
+
 export default {
   computed: {
     userInfo() {
       return this.$store.state.userInfo;
+    },
+    shareUrl() {
+      return location.origin + "/#/?invite=" + this.code;
     },
   },
   data() {
@@ -79,6 +100,8 @@ export default {
       list: [],
       loading: false,
       popInvite: false,
+      sharePre:
+        "I am participating in 4EVERLAND the FirstLanding campaign. Successfully deploying projects to win your share of 50 million 4EVER, come and join here: ",
     };
   },
   created() {
@@ -91,20 +114,25 @@ export default {
     },
   },
   methods: {
+    onCopied() {
+      this.$toast("Copied to clipboard !");
+      this.popInvite = false;
+    },
+    async onSaveImg() {
+      // window.open("img/bg/act-invite.png");
+      try {
+        const canvas = await html2canvas(this.$refs.imgWrap);
+        console.log(canvas);
+        // this.$refs.imgWrap.appendChild(canvas);
+        const uri = canvas.toDataURL();
+        window.open(uri);
+      } catch (error) {
+        this.$toast("fail to generate share image");
+      }
+    },
     async onInvite() {
       if (!this.code) return;
-      const url = location.origin + "/#/?invite=" + this.code;
-      const txt = `I am participating in 4EVERLAND the BIG BANG campaign. Successfully deploying projects to win your share of 50 million 4EVER, come and join here: `;
-      await this.$alert(
-        txt + `<a href="${url}" target="_blank">${url}</a>`,
-        "Invite",
-        {
-          copyText: txt + url,
-          hideConfirm: true,
-          hideTitle: true,
-        }
-      );
-      this.$toast("Copied to clipboard !");
+      this.popInvite = true;
     },
     async getCode() {
       this.code = this.userInfo.inviteCode;

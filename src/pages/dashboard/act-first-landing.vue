@@ -10,6 +10,10 @@
   .reward-item {
     min-width: 156px;
     height: 150px;
+    &.done {
+      background: #fff url(/img/icon/act-checked.png) right bottom no-repeat;
+      background-size: 36px;
+    }
   }
 }
 .act-wrap1 {
@@ -51,7 +55,13 @@
       <div class="pd-20 pl-0 pr-0">
         <div class="ml-5 d-flex al-c">
           <h3 class="mr-2">My Rewards</h3>
-          <v-btn plain color="white" small :loading="loading" @click="getList">
+          <v-btn
+            plain
+            color="white"
+            small
+            :loading="loading"
+            @click="onRefresh"
+          >
             <v-icon>mdi-refresh</v-icon>
           </v-btn>
         </div>
@@ -59,13 +69,19 @@
           <div class="ml-5 nowrap d-flex">
             <div
               class="bg-white bdrs-5 pt-5 pb-5 d-ib reward-item mr-6 flex-1"
+              :class="{
+                done: it.done,
+              }"
               v-for="it in list"
               :key="it.type"
               v-show="!it.hide || it.done"
               @click="onClick(it)"
             >
               <div v-if="it.loaded">
-                <p class="fw-b">{{ it.reward || "*" }} T-4EVER</p>
+                <p class="fw-b">
+                  {{ numberComma(it.reward) }}
+                  <span class="fz-12">T-4EVER</span>
+                </p>
                 <p class="gray fz-12 mt-1">{{ it.title }}</p>
                 <div class="mt-8">
                   <v-btn
@@ -99,7 +115,7 @@
       </div>
     </div>
 
-    <act-dapp />
+    <act-dapp ref="dapp" />
 
     <act-invite ref="invite" />
   </div>
@@ -139,6 +155,7 @@ export default {
           type: "BIND_DOMAIN",
           title: "Domain rewards",
           txt: "Add Domain",
+          txt2: "Domain Added",
           link: "/dashboard/domains",
         },
         {
@@ -148,28 +165,49 @@ export default {
         },
         {
           type: "VIEWER_REWARD",
-          title: "Viewer  rewards",
+          title: "Viewer rewards",
           txt: "Copy Domain",
-          link: "/dashboard/domains",
         },
       ],
     };
   },
   watch: {
     isFocus(val) {
-      if (val) this.getList();
+      if (val) {
+        this.onRefresh();
+      }
     },
   },
   created() {
     this.getList();
   },
   methods: {
+    numberComma(source, length = 3) {
+      source = String(source).split(".");
+      source[0] = source[0].replace(
+        new RegExp("(\\d)(?=(\\d{" + length + "})+$)", "ig"),
+        "$1,"
+      );
+      return source.join(".");
+    },
+    async onRefresh() {
+      await this.getList();
+      this.$refs.dapp.getList();
+      this.$refs.invite.getList();
+    },
     onClick(row) {
-      const { type, link } = row;
+      let { type, link } = row;
       console.log(type);
+      const dapp = this.$refs.dapp;
+      if (type != "INVITE_REWARD" && !dapp.list.length) {
+        link = "/new";
+      }
       if (link) this.$navTo(link);
       else if (type == "INVITE_REWARD") {
         this.$refs.invite.onInvite();
+      } else if (type == "VIEWER_REWARD") {
+        window.scrollTo(0, dapp.$el.offsetTop);
+        dapp.setTipCopy();
       }
     },
     async getList() {
@@ -181,6 +219,7 @@ export default {
           if (!item) continue;
           row.loaded = true;
           row.btnTxt = item.txt;
+          row.done = true;
           if (row.done && item.txt2) {
             row.btnTxt = item.txt2;
             row.disabled = true;
