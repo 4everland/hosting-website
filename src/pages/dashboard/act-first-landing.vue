@@ -219,7 +219,6 @@ export default {
           if (!item) continue;
           row.loaded = true;
           row.btnTxt = item.txt;
-          row.done = true;
           if (row.done && item.txt2) {
             row.btnTxt = item.txt2;
             row.disabled = true;
