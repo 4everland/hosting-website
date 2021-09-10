@@ -9,11 +9,10 @@
         plain
         small
         color="white"
-        v-clipboard="inviteUrl"
-        @success="onCopied"
-        v-if="inviteUrl && list.length > 0"
+        @click="onInvite"
+        v-if="code && list.length > 0"
       >
-        <v-icon>mdi-plus</v-icon>
+        <v-icon>mdi-account-plus-outline</v-icon>
       </v-btn>
     </div>
     <div class="ov-a bdrs-10 bd-1b ov-h">
@@ -33,10 +32,12 @@
             <td>{{ new Date(it.inviteAt).format() }}</td>
             <td>
               <a
+                v-if="it.domain"
                 style="color: white"
                 class="u"
-                :href="'https://' + it.domain"
-                >{{ it.domain }}</a
+                :href="it.domain"
+                target="_blank"
+                >{{ it.domain.replace("https://", "") }}</a
               >
             </td>
           </tr>
@@ -53,10 +54,9 @@
         <v-btn
           color="primary"
           rounded
-          :loading="!inviteUrl"
+          :loading="!code"
           class="pl-6 pr-6 mt-5"
-          v-clipboard="inviteUrl"
-          @success="onCopied"
+          @click="onInvite"
         >
           <v-icon size="18" class="mr-2">mdi-account-plus-outline</v-icon>
           <span>Invite Developers now</span>
@@ -72,16 +72,13 @@ export default {
     userInfo() {
       return this.$store.state.userInfo;
     },
-    inviteUrl() {
-      if (!this.code) return "";
-      return location.origin + "/#/?invite=" + this.code;
-    },
   },
   data() {
     return {
       code: null,
       list: [],
       loading: false,
+      popInvite: false,
     };
   },
   created() {
@@ -94,8 +91,20 @@ export default {
     },
   },
   methods: {
-    onCopied() {
-      this.$toast("Invite Link copied.");
+    async onInvite() {
+      if (!this.code) return;
+      const url = location.origin + "/#/?invite=" + this.code;
+      const txt = `I am participating in 4EVERLAND the BIG BANG campaign. Successfully deploying projects to win your share of 50 million 4EVER, come and join here: `;
+      await this.$alert(
+        txt + `<a href="${url}" target="_blank">${url}</a>`,
+        "Invite",
+        {
+          copyText: txt + url,
+          hideConfirm: true,
+          hideTitle: true,
+        }
+      );
+      this.$toast("Copied to clipboard !");
     },
     async getCode() {
       this.code = this.userInfo.inviteCode;

@@ -4,6 +4,7 @@ import "./components";
 import "./api";
 import VueClipboards from "vue-clipboards";
 import frameworks from "./assets/frameworks.json";
+import router from "./router";
 
 Vue.use(VueClipboards);
 
@@ -21,7 +22,7 @@ Vue.prototype.$navTo = (url) => {
   } else if (/:/.test(url)) {
     location.href = url;
   } else {
-    Vue.prototype.$router.push(url);
+    router.push(url);
   }
 };
 

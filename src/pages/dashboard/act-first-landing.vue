@@ -8,7 +8,7 @@
     width: 300px;
   }
   .reward-item {
-    width: 156px;
+    min-width: 156px;
     height: 150px;
   }
 }
@@ -49,24 +49,45 @@
         :style="asMobile ? 'width: 240px;top:-100px;' : ''"
       />
       <div class="pd-20 pl-0 pr-0">
-        <h3 class="ml-5">My Rewards</h3>
+        <div class="ml-5 d-flex al-c">
+          <h3 class="mr-2">My Rewards</h3>
+          <v-btn plain color="white" small :loading="loading" @click="getList">
+            <v-icon>mdi-refresh</v-icon>
+          </v-btn>
+        </div>
         <div class="ov-a mt-5 gray-3 ta-c">
-          <div class="ml-5 nowrap">
+          <div class="ml-5 nowrap d-flex">
             <div
-              class="bg-white bdrs-5 pd-20 d-ib reward-item mr-6"
-              v-for="i in 5"
-              :key="i"
+              class="bg-white bdrs-5 pt-5 pb-5 d-ib reward-item mr-6 flex-1"
+              v-for="it in list"
+              :key="it.type"
+              v-show="!it.hide || it.done"
+              @click="onClick(it)"
             >
-              <p class="fw-b">10,000 4EVER</p>
-              <p class="gray fz-12 mt-1">Domain rewards</p>
-              <div class="mt-8">
-                <v-btn color="primary" small>Add Domain</v-btn>
+              <div v-if="it.loaded">
+                <p class="fw-b">{{ it.reward || "*" }} T-4EVER</p>
+                <p class="gray fz-12 mt-1">{{ it.title }}</p>
+                <div class="mt-8">
+                  <v-btn
+                    color="primary"
+                    small
+                    :disabled="it.disabled"
+                    v-if="it.btnTxt"
+                    >{{ it.btnTxt }}</v-btn
+                  >
+                </div>
+              </div>
+              <div v-else>
+                <v-skeleton-loader
+                  type="card-heading, list-item-two-line"
+                ></v-skeleton-loader>
               </div>
             </div>
           </div>
         </div>
         <div class="ta-c mt-10">
           <v-btn
+            @click="$toast('dev')"
             rounded
             style="background: linear-gradient(90deg, #fa4adc 0%, #de4343 100%)"
           >
@@ -80,7 +101,7 @@
 
     <act-dapp />
 
-    <act-invite />
+    <act-invite ref="invite" />
   </div>
 </template>
 
@@ -92,6 +113,84 @@ export default {
     },
     userInfo() {
       return this.$store.state.userInfo;
+    },
+    isFocus() {
+      return this.$store.state.isFocus;
+    },
+  },
+  data() {
+    return {
+      loading: false,
+      list: [
+        {
+          type: "OLD_USER_DEPLOY",
+          title: "Loyal follower rewards",
+          hide: true,
+          txt2: "Deployed",
+        },
+        {
+          type: "DEPLOY",
+          title: "Deploy rewards",
+          txt: "Deploy",
+          txt2: "Deployed",
+          link: "/new",
+        },
+        {
+          type: "BIND_DOMAIN",
+          title: "Domain rewards",
+          txt: "Add Domain",
+          link: "/dashboard/domains",
+        },
+        {
+          type: "INVITE_REWARD",
+          title: "Invite rewards",
+          txt: "Invite",
+        },
+        {
+          type: "VIEWER_REWARD",
+          title: "Viewer  rewards",
+          txt: "Copy Domain",
+          link: "/dashboard/domains",
+        },
+      ],
+    };
+  },
+  watch: {
+    isFocus(val) {
+      if (val) this.getList();
+    },
+  },
+  created() {
+    this.getList();
+  },
+  methods: {
+    onClick(row) {
+      const { type, link } = row;
+      console.log(type);
+      if (link) this.$navTo(link);
+      else if (type == "INVITE_REWARD") {
+        this.$refs.invite.onInvite();
+      }
+    },
+    async getList() {
+      try {
+        this.loading = true;
+        const { data } = await this.$http.get("/activity/rewards");
+        for (const row of data) {
+          const item = this.list.filter((it) => it.type == row.type)[0];
+          if (!item) continue;
+          row.loaded = true;
+          row.btnTxt = item.txt;
+          if (row.done && item.txt2) {
+            row.btnTxt = item.txt2;
+            row.disabled = true;
+          }
+          Object.assign(item, row);
+        }
+      } catch (error) {
+        //
+      }
+      this.loading = false;
     },
   },
 };

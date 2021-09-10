@@ -23,9 +23,13 @@
             <td>{{ 1 + i }}</td>
             <td>{{ it.projectName }}</td>
             <td class="ta-l">
-              <a style="color: white" class="u" :href="it.domain">{{
-                it.domain
-              }}</a>
+              <a
+                style="color: white"
+                class="u"
+                :href="it.domain"
+                target="_blank"
+                >{{ it.domain.replace("https://", "") }}</a
+              >
             </td>
             <td>{{ it.totalUsers }}</td>
             <td>{{ it.percentage }}%</td>
@@ -57,7 +61,6 @@ export default {
       try {
         await this.$sleep(300);
         const { data } = await this.$http.get("/project/bigbang/projects");
-        console.log(data);
         this.list = data;
       } catch (error) {
         //
