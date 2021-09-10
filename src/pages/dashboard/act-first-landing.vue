@@ -75,7 +75,6 @@
               v-for="it in list"
               :key="it.type"
               v-show="!it.hide || it.done"
-              @click="onClick(it)"
             >
               <div v-if="it.loaded">
                 <p class="fw-b">
@@ -85,6 +84,7 @@
                 <p class="gray fz-12 mt-1">{{ it.title }}</p>
                 <div class="mt-8">
                   <v-btn
+                    @click="onClick(it)"
                     color="primary"
                     small
                     :disabled="it.disabled"
