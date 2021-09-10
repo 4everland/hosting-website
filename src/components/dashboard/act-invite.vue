@@ -83,7 +83,7 @@
 </template>
 
 <script>
-import html2canvas from "html2canvas";
+// import html2canvas from "html2canvas";
 
 export default {
   computed: {
@@ -121,7 +121,7 @@ export default {
     async onSaveImg() {
       // window.open("img/bg/act-invite.png");
       try {
-        const canvas = await html2canvas(this.$refs.imgWrap);
+        const canvas = ""; //await html2canvas(this.$refs.imgWrap);
         console.log(canvas);
         // this.$refs.imgWrap.appendChild(canvas);
         const uri = canvas.toDataURL();
