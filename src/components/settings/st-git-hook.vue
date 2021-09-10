@@ -2,10 +2,10 @@
   <div class="bd-1 mt-5">
     <div class="pd-20">
       <h3>Deploy Hooks</h3>
-      <div class="gray mt-1 fz-14">
+      <!-- <div class="gray mt-1 fz-14">
         Deploy hooks are unique URLs that allow you to trigger a deployment of a
         given branch. This project does not have any deploy hooks.
-      </div>
+      </div> -->
 
       <div class="mt-5 ta-r">
         <v-btn small color="primary" @click="showPop = true"> Add </v-btn>

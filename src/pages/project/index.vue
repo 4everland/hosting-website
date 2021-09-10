@@ -32,6 +32,7 @@ export default {
     ...mapState({
       info: (s) => s.projectInfo,
       noticeMsg: (s) => s.noticeMsg,
+      buildInfo: (s) => s.buildInfo,
     }),
   },
   data() {
@@ -63,6 +64,14 @@ export default {
     noticeMsg({ name }) {
       if (name == "updateProject") this.getInfo();
     },
+    buildInfo({ data }) {
+      console.log("project", data.state);
+      const { taskId } = this.info.latest || {};
+      if (data.state != this.lastState && data.taskId == taskId) {
+        this.lastState = data.state;
+        this.getInfo();
+      }
+    },
   },
   mounted() {
     this.getInfo();
@@ -72,6 +81,7 @@ export default {
       try {
         if (this.info.id != this.id) this.$loading();
         await this.$store.dispatch("getProjectInfo", this.id);
+        // console.log(this.info);
       } catch (error) {
         this.$confirm(error.message, "", {
           confirmText: "Retry",

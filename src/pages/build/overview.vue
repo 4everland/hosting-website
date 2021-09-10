@@ -285,6 +285,7 @@ export default {
       endGap: 0,
       newLogNum: 0,
       deploying: false,
+      popSuc: false,
       state: "",
       optList: [
         {
@@ -313,7 +314,8 @@ export default {
         console.log(this.taskId, name);
         const last = this.logs[this.logs.length - 1];
         if (name != "log") {
-          if (data.state == "SUCCESS" && !this.isSuccess) {
+          if (data.state == "SUCCESS" && !this.popSuc) {
+            this.popSuc = true;
             this.onBuildSuc();
           }
           this.initData();
