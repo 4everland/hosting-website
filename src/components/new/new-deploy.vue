@@ -256,7 +256,7 @@ export default {
   },
   mounted() {
     if (this.clone) {
-      this.onSelect();
+      this.onBranch();
     }
     this.getBranchList();
   },
