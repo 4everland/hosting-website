@@ -88,19 +88,32 @@
                 >{{ $t(`${locales}Edit`) }}</v-btn
               >
             </div>
-            <v-select
-              v-model="form.framework"
-              @input="onFramework"
-              :items="frameworks"
-              item-text="name"
-              item-value="slug"
-              :label="$t(`${locales}FrameworkPreset`)"
-            >
-              <template #prepend v-if="chooseFramework">
-                <img :src="chooseFramework.logo" style="width: 20px" />
-              </template>
-            </v-select>
-            <v-expansion-panels v-model="pan0Idx">
+
+            <div class="d-flex">
+              <v-select
+                v-model="form.framework"
+                @input="onFramework"
+                :items="frameworks"
+                item-text="name"
+                item-value="slug"
+                :label="$t(`${locales}FrameworkPreset`)"
+              >
+                <template #prepend v-if="chooseFramework">
+                  <img :src="chooseFramework.logo" style="width: 20px" />
+                </template>
+              </v-select>
+
+              <div class="ml-10 shrink-0">
+                <div class="fz-14 op-6">Web Hook</div>
+                <v-switch
+                  class="mt-1"
+                  v-model="form.hookSwitch"
+                  dense
+                ></v-switch>
+              </div>
+            </div>
+
+            <v-expansion-panels class="mt-3" v-model="pan0Idx">
               <v-expansion-panel>
                 <v-expansion-panel-header>
                   {{ $t(`${locales}BuildOutputSettings`) }}
@@ -223,6 +236,7 @@ export default {
         buildCommand: "",
         outputDirectory: "",
         currentBranch: "",
+        hookSwitch: false,
       },
       branchList: null,
       scripts: null,
