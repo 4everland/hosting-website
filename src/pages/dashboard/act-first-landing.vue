@@ -81,7 +81,15 @@
                   {{ numberComma(it.reward) }}
                   <span class="fz-12">T-4EVER</span>
                 </p>
-                <p class="gray fz-12 mt-1">{{ it.title }}</p>
+                <div class="gray fz-12 mt-1 d-flex al-c flex-center">
+                  <span>{{ it.title }}</span>
+                  <e-tooltip right max-width="300" v-if="it.tip">
+                    <v-icon slot="ref" color="#999" size="14" class="pa-1 d-ib"
+                      >mdi-help-circle-outline</v-icon
+                    >
+                    <span>{{ it.tip }}</span>
+                  </e-tooltip>
+                </div>
                 <div class="mt-8">
                   <v-btn
                     @click="onClick(it)"
@@ -143,6 +151,7 @@ export default {
           title: "Loyal follower rewards",
           hide: true,
           txt2: "Deployed",
+          tip: "Loyal follower rewards are to those who deployed one or more projects before First Landing start in 4EVERLAND.",
         },
         {
           type: "DEPLOY",
@@ -150,6 +159,7 @@ export default {
           txt: "Deploy",
           txt2: "Deployed",
           link: "/new",
+          tip: "Deploy rewards are to those who deploy one or more projects during First Landing to win deploy rewards. They might run out so hurry up!",
         },
         {
           type: "BIND_DOMAIN",
@@ -157,16 +167,19 @@ export default {
           txt: "Add Domain",
           txt2: "Domain Added",
           link: "/dashboard/domains",
+          tip: "Domain rewards are to those who customise their project domain name.",
         },
         {
           type: "INVITE_REWARD",
           title: "Invite rewards",
           txt: "Invite",
+          tip: "Invitation rewards are to those who invite new developers to 4EVERLAND.",
         },
         {
           type: "VIEWER_REWARD",
           title: "Viewer rewards",
           txt: "Copy Domain",
+          tip: "All projects that meet the deployment criteria will be eligible to win a share of the total credit pool calculated on the projects users divided by the total number over users across all projects.",
         },
       ],
     };
