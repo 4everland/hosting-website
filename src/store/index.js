@@ -22,6 +22,7 @@ const store = new Vuex.Store({
     alertInfo: {},
     projectInfo: {},
     buildInfo: {},
+    actStatus: 0,
   },
   mutations: {
     [SET_DATA](state, data) {

@@ -109,6 +109,9 @@ export default {
       try {
         const { data: status } = await this.$http.get("/activity/status");
         this.actStatus = status;
+        this.$setState({
+          actStatus: status,
+        });
       } catch (error) {
         //
       }

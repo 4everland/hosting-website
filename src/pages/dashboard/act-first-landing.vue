@@ -177,12 +177,14 @@ export default {
           title: "Invite rewards",
           txt: "Invite",
           tip: "Invitation rewards are to those who invite new developers to 4EVERLAND.",
+          isMore: true,
         },
         {
           type: "VIEWER_REWARD",
           title: "Viewer rewards",
           txt: "Copy Domain",
           tip: "All projects that meet the deployment criteria will be eligible to win a share of the total credit pool calculated on the projects users divided by the total number over users across all projects.",
+          isMore: true,
         },
       ],
     };
@@ -252,6 +254,9 @@ export default {
         const { data: status } = await this.$http.get("/activity/status");
         console.log(status);
         this.actStatus = status;
+        this.$setState({
+          actStatus: status,
+        });
         const {
           data: { myRewards: rows, poolD2E: rest },
         } = await this.$http.get("/activity/rewards");
@@ -269,8 +274,9 @@ export default {
               row.disabled = true;
             }
           }
-          if (rest <= 0 || status == 2) {
+          if ((rest <= 0 && !item.isMore) || status == 2) {
             row.disabled = true;
+            row.btnTxt = "Finished";
           }
           Object.assign(item, row);
         }

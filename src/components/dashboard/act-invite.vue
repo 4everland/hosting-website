@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-dialog v-model="popInvite" max-width="450">
+    <v-dialog v-model="popInvite" max-width="450" v-if="code">
       <div class="pd-20">
         <div>
           <span>{{ sharePre }}</span>
@@ -15,11 +15,8 @@
           <img src="img/bg/act-invite.png" style="width: 240px" class="bd-1" />
         </div> -->
 
-        <div class="mt-10 ta-c">
-          <v-btn
-            color="primary"
-            v-clipboard="sharePre + shareUrl"
-            @success="onCopied"
+        <div class="mt-10 ta-c" v-if="copyTxt">
+          <v-btn color="primary" v-clipboard="copyTxt" @success="onCopied"
             >Copy</v-btn
           >
         </div>
@@ -102,6 +99,7 @@ export default {
       popInvite: false,
       sharePre:
         "I am participating in 4EVERLAND the FirstLanding campaign. Successfully deploying projects to win your share of 50 million 4EVER, come and join here: ",
+      copyTxt: "",
     };
   },
   created() {
@@ -111,6 +109,9 @@ export default {
   watch: {
     userInfo() {
       this.getCode();
+    },
+    code() {
+      this.copyTxt = this.sharePre + this.shareUrl;
     },
   },
   methods: {
