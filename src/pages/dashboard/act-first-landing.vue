@@ -207,12 +207,12 @@ export default {
     async onClaim() {
       if (Date) {
         return this.$alert(
-          "It is only available at the end of the FIrstLanding, please claim at the end of the BIG BANG."
+          "It is only available at the end of the FirstLanding, please claim at the end of the FirstLanding."
         );
       }
       try {
         const tip =
-          "Submit your ETH Adress,rewards available at the end of the 4EVERLAND FIrstLanding";
+          "Submit your ETH Adress,rewards available at the end of the 4EVERLAND FirstLanding";
         const { data } = await this.$prompt(tip);
         console.log(data);
       } catch (error) {
@@ -242,6 +242,9 @@ export default {
     async getList() {
       try {
         this.loading = true;
+        const { data: status } = await this.$http.get("/activity/status");
+        console.log(status);
+        this.actStatus = status;
         const {
           data: { myRewards: rows, poolD2E: rest },
         } = await this.$http.get("/activity/rewards");

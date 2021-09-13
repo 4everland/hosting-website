@@ -236,7 +236,7 @@ export default {
         buildCommand: "",
         outputDirectory: "",
         currentBranch: "",
-        hookSwitch: false,
+        hookSwitch: true,
       },
       branchList: null,
       scripts: null,
