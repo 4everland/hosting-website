@@ -13,10 +13,16 @@
     </v-row>
     <div
       v-else-if="!list.length"
-      class="ta-c bg-white bdrs-5"
-      style="padding: 50px 0"
+      class="pb-10 ta-c bg-white bdrs-5 ov-h m-auto shadow-1"
+      style="max-width: 750px"
     >
-      <v-img src="img/empty/act-deploy.png" class="m-auto w100p"></v-img>
+      <v-img
+        src="img/empty/proj.png"
+        class="m-auto mt-10"
+        max-width="220"
+        v-if="actStatus == 0"
+      ></v-img>
+      <img src="img/empty/act-proj.png" class="m-auto w100p" v-else />
       <div class="gray mt-10">{{ $t(`${locales}NoDeployments`) }}</div>
       <div class="mt-6">
         <v-btn outlined color="primary" @click="addNew" :loading="loading">{{
@@ -117,6 +123,7 @@ export default {
     ...mapState({
       isFocus: (s) => s.isFocus,
       buildInfo: (s) => s.buildInfo,
+      actStatus: (s) => s.actStatus,
     }),
   },
   watch: {
