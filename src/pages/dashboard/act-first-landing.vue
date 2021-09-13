@@ -246,7 +246,7 @@ export default {
             required: true,
           },
         });
-        if (val == this.ethAddr) {
+        if (value == this.ethAddr) {
           return;
         }
         console.log(value);
@@ -255,7 +255,7 @@ export default {
         this.$loading.close();
         this.$toast(`${!this.ethAddr ? "Added" : "Updated"} successfully`);
       } catch (error) {
-        //
+        console.log(error);
       }
     },
     async onClaim() {
