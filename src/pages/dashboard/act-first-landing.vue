@@ -259,15 +259,16 @@ export default {
       }
     },
     async onClaim() {
+      if (!this.ethAddr) {
+        this.setAddr();
+        return;
+      }
       if (this.actStatus != 2) {
         return this.$alert(
           "It is only available at the end of the FirstLanding, please claim at the end of the FirstLanding."
         );
       }
-      if (!this.ethAddr) {
-        this.setAddr();
-        return;
-      }
+
       this.$toast("dev");
     },
     async onRefresh() {
