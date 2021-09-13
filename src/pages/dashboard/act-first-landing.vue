@@ -269,7 +269,7 @@ export default {
               row.disabled = true;
             }
           }
-          if (rest <= 0) {
+          if (rest <= 0 || status == 3) {
             row.disabled = true;
           }
           Object.assign(item, row);
