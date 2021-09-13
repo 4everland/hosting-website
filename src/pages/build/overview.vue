@@ -383,10 +383,6 @@ Are you sure you want to continue?
       this.$loading.close();
     },
     async onBuildSuc() {
-      if (this.$store.state.actStatus > 0) {
-        this.$replace(this.$route.path.replace("/overview", "/success"));
-        return;
-      }
       const { data } = await this.$http.get(
         `/project/task/${this.info.projectId}/all`
       );
@@ -395,9 +391,12 @@ Are you sure you want to continue?
         html = "Redeployed successfully.";
       }
       html += `<div class="mt-5 ta-c"><img src="img/bg/party.gif" style="height: 200px;" /></div>`;
-      this.$alert(html, "Congratulations!", {
+      await this.$alert(html, "Congratulations!", {
         type: "success",
       });
+      if (this.$store.state.actStatus > 0) {
+        this.$replace(this.$route.path.replace("/overview", "/success"));
+      }
     },
     async initData() {
       try {
