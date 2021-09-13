@@ -144,7 +144,7 @@ export default {
       try {
         this.loading = true;
         const { data } = await this.$http.get("/activity/invites");
-        console.log(data);
+        // console.log(data);
         this.list = data.page || [];
       } catch (error) {
         //

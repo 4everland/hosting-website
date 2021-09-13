@@ -111,12 +111,12 @@
         </div>
         <div class="ta-c mt-10">
           <v-btn
-            @click="$toast('dev')"
+            @click="onClaim"
             rounded
             style="background: linear-gradient(90deg, #fa4adc 0%, #de4343 100%)"
           >
             <span class="white-0 d-ib pl-3 pr-3"
-              >Available claim : 100,000 4EVER</span
+              >Available claim : {{ numberComma(totalReward) }} T-4EVER</span
             >
           </v-btn>
         </div>
@@ -145,13 +145,14 @@ export default {
   data() {
     return {
       loading: false,
+      totalReward: 0,
       list: [
         {
           type: "OLD_USER_DEPLOY",
-          title: "Loyal follower rewards",
+          title: "Early adopter",
           hide: true,
           txt2: "Deployed",
-          tip: "Loyal follower rewards are to those who deployed one or more projects before First Landing start in 4EVERLAND.",
+          tip: "Early adopter rewards are to those who deployed one or more projects before First Landing start in 4EVERLAND.",
         },
         {
           type: "DEPLOY",
@@ -187,7 +188,7 @@ export default {
   watch: {
     isFocus(val) {
       if (val) {
-        this.onRefresh();
+        // this.onRefresh();
       }
     },
   },
@@ -202,6 +203,21 @@ export default {
         "$1,"
       );
       return source.join(".");
+    },
+    async onClaim() {
+      if (Date) {
+        return this.$alert(
+          "It is only available at the end of the FIrstLanding, please claim at the end of the BIG BANG."
+        );
+      }
+      try {
+        const tip =
+          "Submit your ETH Adress,rewards available at the end of the 4EVERLAND FIrstLanding";
+        const { data } = await this.$prompt(tip);
+        console.log(data);
+      } catch (error) {
+        //
+      }
     },
     async onRefresh() {
       await this.getList();
@@ -226,18 +242,29 @@ export default {
     async getList() {
       try {
         this.loading = true;
-        const { data } = await this.$http.get("/activity/rewards");
-        for (const row of data) {
+        const {
+          data: { myRewards: rows, poolD2E: rest },
+        } = await this.$http.get("/activity/rewards");
+        let totalReward = 0;
+        for (const row of rows) {
+          delete row.title;
           const item = this.list.filter((it) => it.type == row.type)[0];
           if (!item) continue;
           row.loaded = true;
           row.btnTxt = item.txt;
-          if (row.done && item.txt2) {
-            row.btnTxt = item.txt2;
+          if (row.done) {
+            totalReward += row.reward;
+            if (item.txt2) {
+              row.btnTxt = item.txt2;
+              row.disabled = true;
+            }
+          }
+          if (rest <= 0) {
             row.disabled = true;
           }
           Object.assign(item, row);
         }
+        this.totalReward = totalReward;
       } catch (error) {
         //
       }
