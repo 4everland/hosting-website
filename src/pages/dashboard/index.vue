@@ -16,8 +16,7 @@
           <v-tab
             replace
             :to="'/dashboard/' + it.path"
-            v-show="!it.hide"
-            v-for="(it, i) in tabs"
+            v-for="(it, i) in tabList"
             :key="i"
           >
             <v-icon :color="it.color" v-if="it.icon">mdi-{{ it.icon }}</v-icon>
@@ -78,15 +77,37 @@ export default {
           // conCls: "act-con",
         },
       ],
+      actStatus: 1,
     };
   },
   computed: {
+    tabList() {
+      return this.tabs.filter((it) => {
+        if (it.path == "first-landing" && this.actStatus != 2) {
+          return false;
+        }
+        return !it.hide;
+      });
+    },
     curTab() {
       return (
         this.tabs.filter((it) => {
           return it.path == this.curPath.replace(/\/.+\//, "");
         })[0] || {}
       );
+    },
+  },
+  created() {
+    this.getActStatus();
+  },
+  methods: {
+    async getActStatus() {
+      try {
+        const { data: status } = await this.$http.get("/activity/status");
+        this.actStatus = status;
+      } catch (error) {
+        //
+      }
     },
   },
 };

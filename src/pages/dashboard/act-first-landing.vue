@@ -79,7 +79,7 @@
               <div v-if="it.loaded">
                 <p class="fw-b">
                   {{ numberComma(it.reward) }}
-                  <span class="fz-12">T-4EVER</span>
+                  <span class="fz-12">4EVER</span>
                 </p>
                 <div class="gray fz-12 mt-1 d-flex al-c flex-center">
                   <span>{{ it.title }}</span>
@@ -116,7 +116,8 @@
             style="background: linear-gradient(90deg, #fa4adc 0%, #de4343 100%)"
           >
             <span class="white-0 d-ib pl-3 pr-3"
-              >Available claim : {{ numberComma(totalReward) }} T-4EVER</span
+              >Available claim : {{ numberComma(totalReward) }}
+              <span class="fz-12">4EVER</span></span
             >
           </v-btn>
         </div>
@@ -145,6 +146,7 @@ export default {
   data() {
     return {
       loading: false,
+      actStatus: 2,
       totalReward: 0,
       list: [
         {
@@ -205,7 +207,7 @@ export default {
       return source.join(".");
     },
     async onClaim() {
-      if (Date) {
+      if (this.actStatus != 2) {
         return this.$alert(
           "It is only available at the end of the FirstLanding, please claim at the end of the FirstLanding."
         );
@@ -213,8 +215,13 @@ export default {
       try {
         const tip =
           "Submit your ETH Adress,rewards available at the end of the 4EVERLAND FirstLanding";
-        const { data } = await this.$prompt(tip);
-        console.log(data);
+        const { value } = await this.$prompt(tip, "Prompt", {
+          inputAttrs: {
+            label: "Wallet Adress",
+            require: true,
+          },
+        });
+        console.log(value);
       } catch (error) {
         //
       }

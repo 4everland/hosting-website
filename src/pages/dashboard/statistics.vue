@@ -164,12 +164,12 @@ export default {
           value: this.info.totalUsers,
         },
         {
-          title: "Total PV",
-          value: this.info.totalPv || 0,
+          title: "Total UV",
+          value: this.info.totalUv || 0,
         },
         {
-          title: this.$t(`dashboard.statistics.RetentionRate`),
-          value: (this.info.retentionRate || 0) + "%",
+          title: "Total PV",
+          value: this.info.totalPv || 0,
         },
       ];
     },

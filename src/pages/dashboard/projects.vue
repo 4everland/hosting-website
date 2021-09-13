@@ -16,7 +16,7 @@
       class="ta-c bg-white bdrs-5"
       style="padding: 50px 0"
     >
-      <v-img src="img/empty/proj.png" max-width="220" class="m-auto"></v-img>
+      <v-img src="img/empty/act-deploy.png" class="m-auto w100p"></v-img>
       <div class="gray mt-10">{{ $t(`${locales}NoDeployments`) }}</div>
       <div class="mt-6">
         <v-btn outlined color="primary" @click="addNew" :loading="loading">{{
@@ -26,7 +26,7 @@
     </div>
     <v-row v-else>
       <!-- :md="6"  -->
-      <v-col cols="12" :md="6" :lg="4" v-for="(it) in list" :key="it.id">
+      <v-col cols="12" :md="6" :lg="4" v-for="it in list" :key="it.id">
         <v-card outlined class="hover-c1 trans-200 ov-h">
           <a :href="`#/project/${it.id}/overview`">
             <v-img
