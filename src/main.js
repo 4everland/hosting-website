@@ -49,10 +49,21 @@ new Vue({
     },
   },
   methods: {
+    async getActStatus() {
+      try {
+        const { data } = await this.$http.get("/activity/status");
+        this.$setState({
+          actStatus: data,
+        });
+      } catch (error) {
+        //
+      }
+    },
     async onInit() {
       const now = Date.now();
       if (this.token) {
         this.initSocket();
+        this.getActStatus();
         await this.getUesrInfo();
         this.$setState({
           noticeMsg: {

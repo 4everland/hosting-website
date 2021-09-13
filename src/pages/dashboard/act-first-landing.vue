@@ -4,7 +4,7 @@
   background: linear-gradient(180deg, #353748 0%, #20242c 100%);
   .act-gift1 {
     right: -20px;
-    top: -120px;
+    top: -130px;
     width: 300px;
   }
   .reward-item {
@@ -53,8 +53,8 @@
         :style="asMobile ? 'width: 240px;top:-100px;' : ''"
       />
       <div class="pd-20 pl-0 pr-0">
-        <div class="ml-5 d-flex al-c">
-          <h3 class="mr-2">My Rewards</h3>
+        <div class="ml-5 mr-6 d-flex al-c">
+          <h3>My Rewards</h3>
           <v-btn
             plain
             color="white"
@@ -64,6 +64,14 @@
           >
             <v-icon>mdi-refresh</v-icon>
           </v-btn>
+          <v-btn
+            class="ml-auto"
+            color="primary"
+            small
+            href="https://www.4everland.org/firstlanding"
+            target="_blank"
+            >Rules</v-btn
+          >
         </div>
         <div class="ov-a mt-5 gray-3 ta-c">
           <div class="ml-5 nowrap d-flex">
@@ -120,6 +128,11 @@
               <span class="fz-12">4EVER</span></span
             >
           </v-btn>
+          <div class="mt-3">
+            <v-btn small plain color="white" @click="setAddr"
+              >Wallet Address</v-btn
+            >
+          </div>
         </div>
       </div>
     </div>
@@ -131,22 +144,22 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   computed: {
+    ...mapState({
+      actStatus: (s) => s.actStatus,
+      userInfo: (s) => s.userInfo,
+      isFocus: (s) => s.isFocus,
+    }),
     asMobile() {
       return this.$vuetify.breakpoint.smAndDown;
-    },
-    userInfo() {
-      return this.$store.state.userInfo;
-    },
-    isFocus() {
-      return this.$store.state.isFocus;
     },
   },
   data() {
     return {
       loading: false,
-      actStatus: 1,
       totalReward: 0,
       list: [
         {
@@ -187,6 +200,7 @@ export default {
           isMore: true,
         },
       ],
+      ethAddr: "",
     };
   },
   watch: {
@@ -198,6 +212,7 @@ export default {
   },
   created() {
     this.getList();
+    this.getAddr();
   },
   methods: {
     numberComma(source, length = 3) {
@@ -208,25 +223,52 @@ export default {
       );
       return source.join(".");
     },
+    async getAddr() {
+      const { data } = await this.$http.get("/activity/ethAddress");
+      this.ethAddr = data;
+    },
+    async setAddr() {
+      try {
+        const tip =
+          "Submit your ETH Address, rewards available at the end of the 4EVERLAND FirstLanding.";
+        const { value } = await this.$prompt(tip, "Prompt", {
+          hideTitle: true,
+          defaultValue: this.ethAddr,
+          inputAttrs: {
+            label: "Wallet Adress",
+            require: true,
+            placeholder: "Please enter your address",
+            rules: [
+              (v) =>
+                this.$regMap.eth.test(v) ||
+                "Please enter correct eth wallet address.",
+            ],
+            required: true,
+          },
+        });
+        if (val == this.ethAddr) {
+          return;
+        }
+        console.log(value);
+        this.$loading();
+        await this.$http.put(`/activity/bind/eth/${value}`);
+        this.$loading.close();
+        this.$toast(`${!this.ethAddr ? "Added" : "Updated"} successfully`);
+      } catch (error) {
+        //
+      }
+    },
     async onClaim() {
-      if (this.actStatus == 2) {
+      if (this.actStatus != 2) {
         return this.$alert(
           "It is only available at the end of the FirstLanding, please claim at the end of the FirstLanding."
         );
       }
-      try {
-        const tip =
-          "Submit your ETH Adress,rewards available at the end of the 4EVERLAND FirstLanding";
-        const { value } = await this.$prompt(tip, "Prompt", {
-          inputAttrs: {
-            label: "Wallet Adress",
-            require: true,
-          },
-        });
-        console.log(value);
-      } catch (error) {
-        //
+      if (!this.ethAddr) {
+        this.setAddr();
+        return;
       }
+      this.$toast("dev");
     },
     async onRefresh() {
       await this.getList();
@@ -252,8 +294,6 @@ export default {
       try {
         this.loading = true;
         const { data: status } = await this.$http.get("/activity/status");
-        console.log(status);
-        this.actStatus = status;
         this.$setState({
           actStatus: status,
         });

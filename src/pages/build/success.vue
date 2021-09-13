@@ -37,6 +37,7 @@ export default {
       try {
         const { data: addr } = await this.$http.get("/activity/ethAddress");
         if (addr) return;
+        console.log(addr);
         let html = `
 	<div class="fz-13">
 		Congration ! 

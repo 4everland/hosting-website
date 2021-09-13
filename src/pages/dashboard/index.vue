@@ -1,7 +1,7 @@
 <style lang="scss">
 .bg-act-1 {
-  background: #1f2228 url(/img/bg/act-first-landing.jpeg);
-  background-size: cover;
+  background: #1f2228 url(/img/bg/act-first-landing.jpeg) no-repeat;
+  background-size: 100%;
   .con-2 {
     max-width: 920px;
   }
@@ -77,16 +77,18 @@ export default {
           // conCls: "act-con",
         },
       ],
-      actStatus: 0,
     };
   },
   computed: {
+    actStatus() {
+      return this.$store.state.actStatus;
+    },
     tabList() {
       return this.tabs.filter((it) => {
         if (
           it.path == "first-landing" &&
           this.actStatus == 0 &&
-          !/localhost/.test(location.origin)
+          !/localhost1/.test(location.origin)
         ) {
           return false;
         }
@@ -99,22 +101,6 @@ export default {
           return it.path == this.curPath.replace(/\/.+\//, "");
         })[0] || {}
       );
-    },
-  },
-  created() {
-    this.getActStatus();
-  },
-  methods: {
-    async getActStatus() {
-      try {
-        const { data: status } = await this.$http.get("/activity/status");
-        this.actStatus = status;
-        this.$setState({
-          actStatus: status,
-        });
-      } catch (error) {
-        //
-      }
     },
   },
 };
