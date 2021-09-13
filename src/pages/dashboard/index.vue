@@ -77,13 +77,17 @@ export default {
           // conCls: "act-con",
         },
       ],
-      actStatus: 1,
+      actStatus: 0,
     };
   },
   computed: {
     tabList() {
       return this.tabs.filter((it) => {
-        if (it.path == "first-landing" && this.actStatus != 2) {
+        if (
+          it.path == "first-landing" &&
+          this.actStatus == 0 &&
+          !/localhost/.test(location.origin)
+        ) {
           return false;
         }
         return !it.hide;

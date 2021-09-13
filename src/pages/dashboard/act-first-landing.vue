@@ -146,7 +146,7 @@ export default {
   data() {
     return {
       loading: false,
-      actStatus: 2,
+      actStatus: 1,
       totalReward: 0,
       list: [
         {
@@ -207,7 +207,7 @@ export default {
       return source.join(".");
     },
     async onClaim() {
-      if (this.actStatus != 2) {
+      if (this.actStatus == 2) {
         return this.$alert(
           "It is only available at the end of the FirstLanding, please claim at the end of the FirstLanding."
         );
@@ -269,7 +269,7 @@ export default {
               row.disabled = true;
             }
           }
-          if (rest <= 0 || status == 3) {
+          if (rest <= 0 || status == 2) {
             row.disabled = true;
           }
           Object.assign(item, row);
