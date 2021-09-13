@@ -125,7 +125,12 @@ export default {
           }
         );
         this.info = data.task;
-        await this.getFiles();
+        const { state } = data.task;
+        if (state == "SUCCESS") {
+          this.getFiles();
+        } else {
+          this.isEmpty = true;
+        }
       } catch (error) {
         this.isEmpty = true;
       }
