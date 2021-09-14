@@ -85,11 +85,7 @@ export default {
     },
     tabList() {
       return this.tabs.filter((it) => {
-        if (
-          it.path == "first-landing" &&
-          this.actStatus == 0 &&
-          !/localhost1/.test(location.origin)
-        ) {
+        if (it.path == "first-landing" && this.actStatus == 0) {
           return false;
         }
         return !it.hide;

@@ -41,6 +41,16 @@
 </style>
 <template>
   <div class="white-0 act-wrap1">
+    <div class="ta-r">
+      <v-btn
+        color="primary"
+        small
+        rounded
+        href="https://www.4everland.org/firstlanding"
+        target="_blank"
+        >Rules</v-btn
+      >
+    </div>
     <div
       class="act-p1 bdrs-10 pos-r"
       :style="{
@@ -64,13 +74,8 @@
           >
             <v-icon>mdi-refresh</v-icon>
           </v-btn>
-          <v-btn
-            class="ml-auto"
-            color="primary"
-            small
-            href="https://www.4everland.org/firstlanding"
-            target="_blank"
-            >Rules</v-btn
+          <v-btn class="ml-auto" color="primary" small rounded @click="setAddr"
+            >Wallet Address</v-btn
           >
         </div>
         <div class="ov-a mt-5 gray-3 ta-c">
@@ -119,6 +124,7 @@
         </div>
         <div class="ta-c mt-10">
           <v-btn
+            :disabled="totalReward == 0"
             @click="onClaim"
             rounded
             style="background: linear-gradient(90deg, #fa4adc 0%, #de4343 100%)"
@@ -128,11 +134,11 @@
               <span class="fz-12">4EVER</span></span
             >
           </v-btn>
-          <div class="mt-3">
+          <!-- <div class="mt-3">
             <v-btn small plain color="white" @click="setAddr"
               >Wallet Address</v-btn
             >
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -294,10 +300,10 @@ export default {
     async getList() {
       try {
         this.loading = true;
-        const { data: status } = await this.$http.get("/activity/status");
-        this.$setState({
-          actStatus: status,
-        });
+        // const { data: status } = await this.$http.get("/activity/status");
+        // this.$setState({
+        //   actStatus: status,
+        // });
         const {
           data: { myRewards: rows, poolD2E: rest },
         } = await this.$http.get("/activity/rewards");

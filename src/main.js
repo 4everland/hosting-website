@@ -51,16 +51,19 @@ new Vue({
   methods: {
     async getActStatus() {
       try {
-        if(localStorage.actStatus) {
+        if (localStorage.actStatus) {
           this.$setState({
-            actStatus: localStorage.actStatus*1,
-          })
+            actStatus: localStorage.actStatus * 1,
+          });
         }
-        const { data } = await this.$http.get("/activity/status");
+        let { data } = await this.$http.get("/activity/status");
+        if (/localhost/.test(location.origin)) {
+          data = 1;
+        }
         this.$setState({
           actStatus: data,
         });
-        localStorage.actStatus = data
+        localStorage.actStatus = data;
       } catch (error) {
         //
       }
