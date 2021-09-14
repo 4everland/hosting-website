@@ -410,19 +410,17 @@ Are you sure you want to continue?
         this.state = data.task.state.toLowerCase();
         this.logs = data.log;
         this.goLogEnd();
-        // if(this.info.projectId != this.projInfo.id) {
-        //   await this.$store.dispatch('getProjectInfo', this.info.projectId)
-        // }
-        const { name, projectId } = this.info.buildConfig;
-        this.$setState({
-          noticeMsg: {
-            name: "setTitle",
-            data: {
-              title: name,
-              link: `#/project/${projectId}/overview`,
-            },
-          },
-        });
+        this.$store.commit("setProject", this.info);
+        // const { name, projectId } = this.info.buildConfig;
+        // this.$setState({
+        //   noticeMsg: {
+        //     name: "setTitle",
+        //     data: {
+        //       title: name,
+        //       link: `#/project/${projectId}/overview`,
+        //     },
+        //   },
+        // });
       } catch (error) {
         console.log(error);
       }

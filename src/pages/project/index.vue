@@ -2,7 +2,7 @@
   <div>
     <div class="bg-white shadow-1 pos-s z-100" style="top: 0">
       <div class="con-1">
-        <v-tabs :color="$color1" v-model="tabIdx">
+        <v-tabs :color="$color1" v-model="curPath">
           <v-tab
             replace
             :to="`/project/${id}/${it.path}`"
@@ -16,6 +16,7 @@
     </div>
     <div class="wrap-1">
       <div class="con-2">
+        <v-breadcrumbs :items="navItems" class="pl-0 pt-0"></v-breadcrumbs>
         <keep-alive>
           <router-view></router-view>
         </keep-alive>
@@ -34,12 +35,40 @@ export default {
       noticeMsg: (s) => s.noticeMsg,
       buildInfo: (s) => s.buildInfo,
     }),
+    curTab() {
+      return (
+        this.tabs.filter((it) => {
+          return it.path == this.curPath.replace(/\/.+\//, "");
+        })[0] || {}
+      );
+    },
+    navItems() {
+      const { name, projectId } = this.info.config || {};
+      if (!name) return [];
+      const list = [
+        {
+          text: "Projects",
+          to: "/dashboard/projects",
+        },
+        {
+          text: name,
+          to: `/project/${projectId}/overview`,
+        },
+      ];
+      if (this.curTab.path != "overview") {
+        list.push({
+          text: this.curTab.title,
+          disabled: true,
+        });
+      }
+      return list;
+    },
   },
   data() {
     const { id } = this.$route.params;
     return {
       id,
-      tabIdx: null,
+      curPath: "",
       tabs: [
         {
           title: "Overview",

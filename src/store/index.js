@@ -30,24 +30,24 @@ const store = new Vuex.Store({
         state[key] = data[key];
       }
     },
-  },
-  actions: {
-    async getProjectInfo(_, id) {
-      const { data } = await api.get("/project/" + id);
+    setProject(_, info) {
+      const data = { ...info };
       const { repo = {} } = data;
       repo.pathPre = `${repo.namespace}/${repo.name}`;
       data.repo = repo;
-      const { name } = (data.config = data.buildConfig);
-      data.name = name;
+      const { name, projectId } = (data.config = data.buildConfig);
       delete data.buildConfig;
-      // if(!data.config) {
-      //   const { data: config } = await api.get('/project/config/' + id)
-      //   data.config = config
-      // }
-      data.id = id;
+      data.name = name;
+      data.id = projectId;
       setState({
         projectInfo: data,
       });
+    },
+  },
+  actions: {
+    async getProjectInfo({ commit }, id) {
+      const { data } = await api.get("/project/" + id);
+      commit("setProject", data);
       return data;
     },
   },

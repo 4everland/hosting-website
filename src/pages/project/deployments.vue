@@ -35,7 +35,7 @@
             >
               <div class="flex-1">
                 <a
-                  :href="`#/build/${it.buildConfig.name}/${it.taskId}/overview`"
+                  :href="`#/build/${it.buildConfig.name}/${it.taskId}/overview?ftab=deployments`"
                   class="b"
                   >{{ it.buildConfig.name }}</a
                 >
@@ -143,7 +143,7 @@ export default {
         },
         {
           text: "Inspect Deployment",
-          link: "/build/{projName}/{taskId}/overview",
+          link: "/build/{projName}/{taskId}/overview?ftab=deployments",
           icon: "card-search-outline",
         },
         {

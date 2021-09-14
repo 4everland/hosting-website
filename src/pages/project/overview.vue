@@ -85,26 +85,34 @@
                   <e-domain :val="info.latest.domain"></e-domain>
                 </div>
 
-                <div class="label-1 mt-6">Domains</div>
-                <div v-for="(it, i) in info.domains.slice(0, 1)" :key="i">
-                  <e-domain :val="info.domains[i].domain"></e-domain>
-                  <v-menu v-if="info.domains.length > 1" offset-y open-on-hover>
-                    <template v-slot:activator="{ attrs, on }">
-                      <span v-bind="attrs" v-on="on" class="ml-5 pa-1 pr-3">
-                        +{{ info.domains.length - 1 }}
-                      </span>
-                    </template>
-                    <div class="bg-white pd-10 fz-14">
-                      <div
-                        class="pd-5"
-                        v-for="(row, j) in info.domains.slice(1)"
-                        :key="j"
-                      >
-                        <e-domain :val="info.domains[1 + j].domain"></e-domain>
+                <template v-if="info.domains">
+                  <div class="label-1 mt-6">Domains</div>
+                  <div v-for="(it, i) in info.domains.slice(0, 1)" :key="i">
+                    <e-domain :val="info.domains[i].domain"></e-domain>
+                    <v-menu
+                      v-if="info.domains.length > 1"
+                      offset-y
+                      open-on-hover
+                    >
+                      <template v-slot:activator="{ attrs, on }">
+                        <span v-bind="attrs" v-on="on" class="ml-5 pa-1 pr-3">
+                          +{{ info.domains.length - 1 }}
+                        </span>
+                      </template>
+                      <div class="bg-white pd-10 fz-14">
+                        <div
+                          class="pd-5"
+                          v-for="(row, j) in info.domains.slice(1)"
+                          :key="j"
+                        >
+                          <e-domain
+                            :val="info.domains[1 + j].domain"
+                          ></e-domain>
+                        </div>
                       </div>
-                    </div>
-                  </v-menu>
-                </div>
+                    </v-menu>
+                  </div>
+                </template>
 
                 <div class="d-flex mt-6">
                   <div class="flex-1">
