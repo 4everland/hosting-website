@@ -50,6 +50,10 @@ export default {
               label: "Feedback",
               notice: "feedback",
             },
+            {
+              label: "Brand Resources",
+              href: "file/logo.zip",
+            },
           ],
         },
         {
