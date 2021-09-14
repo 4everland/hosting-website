@@ -11,11 +11,11 @@
         <thead>
           <tr>
             <td>#</td>
-            <td>DApp</td>
+            <td>Dapp</td>
             <td>Domains</td>
             <td>Total Users</td>
             <td>Percentage</td>
-            <td>Created</td>
+            <td>CreatedAt</td>
           </tr>
         </thead>
         <tbody class="op-9">

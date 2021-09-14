@@ -32,7 +32,7 @@
           <tr>
             <td>#</td>
             <td>E-mail</td>
-            <td>Created</td>
+            <td>CreatedAt</td>
             <td>Deployed</td>
           </tr>
         </thead>
@@ -100,7 +100,7 @@ export default {
       loading: false,
       popInvite: false,
       sharePre:
-        "I am participating in 4EVERLAND the FirstLanding campaign. Successfully deploying projects to win your share of 50 million 4EVER, come and join here: ",
+        "I am participating in 4EVERLAND  First Landing event. Deploying projects to win your share of 50 million 4EVER, come and join here: ",
       copyTxt: "",
     };
   },

@@ -84,7 +84,7 @@
             <div
               class="bg-white bdrs-5 pt-5 pb-5 d-ib reward-item mr-6 flex-1"
               :class="{
-                done: it.done,
+                done: it.done && !it.isMore,
               }"
               v-for="it in list"
               :key="it.type"
