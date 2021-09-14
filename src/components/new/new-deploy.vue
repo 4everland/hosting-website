@@ -102,18 +102,44 @@
                   <img :src="chooseFramework.logo" style="width: 20px" />
                 </template>
               </v-select>
+            </div>
+            <v-alert
+              border="left"
+              colored-border
+              type="info"
+              elevation="1"
+              dense
+              class="fz-14"
+              ><span class="gray-6"
+                >4EVER-Hosting only serves static pages now, SSR will be
+                supported in the future. Thanks for your patience.</span
+              ></v-alert
+            >
 
-              <div class="ml-10 shrink-0">
-                <div class="fz-14 op-6">Web Hook</div>
-                <v-switch
-                  class="mt-1"
-                  v-model="form.hookSwitch"
-                  dense
-                ></v-switch>
+            <div class="d-flex al-c">
+              <div class="fz-14 op-6 mt-2">
+                <span>Deploy Hooks</span>
+                <e-tooltip right max-width="300">
+                  <template #ref>
+                    <v-icon size="15" class="ml-2">
+                      mdi-help-circle-outline
+                    </v-icon>
+                  </template>
+                  <p>
+                    Deloyhooks allow external services to be notified when
+                    certain events happen. When the specified events happen,
+                    we’ll update the deployment.
+                  </p>
+                </e-tooltip>
               </div>
+              <v-switch
+                class="ml-auto"
+                v-model="form.hookSwitch"
+                dense
+              ></v-switch>
             </div>
 
-            <v-expansion-panels class="mt-3" v-model="pan0Idx">
+            <v-expansion-panels class="mt-5" v-model="pan0Idx">
               <v-expansion-panel>
                 <v-expansion-panel-header>
                   {{ $t(`${locales}BuildOutputSettings`) }}
