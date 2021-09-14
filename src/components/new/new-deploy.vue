@@ -111,8 +111,8 @@
               dense
               class="fz-14"
               ><span class="gray-6"
-                >4EVER-Hosting only serves static pages now, SSR will be
-                supported in the future. Thanks for your patience.</span
+                >4EVER-Hosting only serves static pages(Server-Side-Rendering is
+                not supported at this time)</span
               ></v-alert
             >
 
