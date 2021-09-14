@@ -63,7 +63,7 @@
           width="60"
           class="d-ib"
         />
-        <div class="op-5 fz-14 mt-8">No developer has been invited</div>
+        <div class="op-5 fz-14 mt-8">No developer is invited</div>
         <v-btn
           v-if="actStatus == 1"
           color="primary"

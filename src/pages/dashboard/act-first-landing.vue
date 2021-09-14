@@ -213,12 +213,12 @@ export default {
   watch: {
     isFocus(val) {
       if (val) {
-        // this.onRefresh();
+        this.onRefresh();
       }
     },
     "$route.path"(val) {
       if (val == "/dashboard/first-landing") {
-        this.getList();
+        this.onRefresh();
       }
     },
   },
@@ -227,7 +227,7 @@ export default {
     this.getAddr();
     // setInterval(() => {
     //   if (localStorage.token) {
-    //     this.getList();
+    //     this.onRefresh();
     //   }
     // }, 15e3);
   },
