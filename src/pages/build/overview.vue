@@ -140,7 +140,16 @@
               </div>
 
               <div class="label-1 mt-4">IPFS</div>
-              <div>{{ ipfsTxt }}</div>
+              <div>
+                <a
+                  class="u b"
+                  target="_blank"
+                  :href="ipfsPre + info.cid"
+                  v-if="isSuccess"
+                  >{{ ipfsTxt }}</a
+                >
+                <span v-else>{{ ipfsTxt }}</span>
+              </div>
             </div>
 
             <v-menu v-if="info.taskId" offset-y>
@@ -289,6 +298,9 @@ export default {
     },
   },
   data() {
+    const ipfsPre = /xyz$/.test(process.env.VUE_APP_BASE_URL)
+      ? "http://ipfs.foreverland.xyz/ipfs/"
+      : "https://ipfs.4everland.org/ipfs/";
     return {
       info: {},
       logs: [],
@@ -312,6 +324,7 @@ export default {
           iconColor: "error",
         },
       ],
+      ipfsPre,
     };
   },
   watch: {
