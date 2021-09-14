@@ -51,6 +51,7 @@ export default {
         const { data } = await this.$http.get(`/project/task/object/${taskId}`);
         this.visitUrl = "https://" + data.task.domain;
 
+        if (this.$store.state.actStatus == 0) return;
         const { data: addr } = await this.$http.get("/activity/ethAddress");
         if (addr) return;
         console.log(addr);
