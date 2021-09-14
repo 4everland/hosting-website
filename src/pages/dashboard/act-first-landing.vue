@@ -74,9 +74,10 @@
           >
             <v-icon>mdi-refresh</v-icon>
           </v-btn>
-          <v-btn class="ml-auto" color="primary" small rounded @click="setAddr"
-            >Wallet Address</v-btn
-          >
+          <v-btn class="ml-auto" color="primary" small rounded @click="setAddr">
+            <v-icon size="16" class="mr-1">mdi-wallet</v-icon>
+            <span>{{ ethAddr ? ethAddr.cutStr(6, 4) : "Wallet Address" }}</span>
+          </v-btn>
         </div>
         <div class="ov-a mt-5 gray-3 ta-c">
           <div class="ml-5 nowrap d-flex">
@@ -234,27 +235,27 @@ export default {
       this.ethAddr = data;
     },
     async setAddr() {
+      const tip =
+        "Submit your ETH Address, rewards available at the end of the 4EVERLAND FirstLanding.";
+      const { value } = await this.$prompt(tip, "Prompt", {
+        hideTitle: true,
+        defaultValue: this.ethAddr,
+        inputAttrs: {
+          label: "Wallet Adress",
+          require: true,
+          placeholder: "Please enter your address",
+          rules: [
+            (v) =>
+              this.$regMap.eth.test(v) ||
+              "Please enter correct eth wallet address.",
+          ],
+          required: true,
+        },
+      }).catch(() => {});
+      if (value == this.ethAddr) {
+        return;
+      }
       try {
-        const tip =
-          "Submit your ETH Address, rewards available at the end of the 4EVERLAND FirstLanding.";
-        const { value } = await this.$prompt(tip, "Prompt", {
-          hideTitle: true,
-          defaultValue: this.ethAddr,
-          inputAttrs: {
-            label: "Wallet Adress",
-            require: true,
-            placeholder: "Please enter your address",
-            rules: [
-              (v) =>
-                this.$regMap.eth.test(v) ||
-                "Please enter correct eth wallet address.",
-            ],
-            required: true,
-          },
-        });
-        if (value == this.ethAddr) {
-          return;
-        }
         console.log(value);
         this.$loading();
         await this.$http.put(`/activity/bind/eth/${value}`);
@@ -262,6 +263,7 @@ export default {
         this.$toast(`${!this.ethAddr ? "Added" : "Updated"} successfully`);
       } catch (error) {
         console.log(error);
+        this.setAddr();
       }
     },
     async onClaim() {
@@ -321,7 +323,7 @@ export default {
               row.disabled = true;
             }
           }
-          if ((rest <= 0 || status == 2) && !item.isMore) {
+          if ((rest <= 0 && !item.isMore) || status == 2) {
             row.disabled = true;
             row.btnTxt = "Finished";
           }
