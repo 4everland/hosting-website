@@ -16,9 +16,7 @@
         </div> -->
 
         <div class="mt-10 ta-c" v-if="copyTxt">
-          <v-btn color="primary" v-clipboard="copyTxt" @success="onCopied"
-            >Copy</v-btn
-          >
+          <v-btn color="primary" @click="onCopy">Copy</v-btn>
         </div>
       </div>
     </v-dialog>
@@ -82,6 +80,7 @@
 
 <script>
 import { mapState } from "vuex";
+import * as clipboard from "clipboard-polyfill/text";
 // import html2canvas from "html2canvas";
 
 export default {
@@ -118,6 +117,15 @@ export default {
     },
   },
   methods: {
+    async onCopy() {
+      try {
+        await clipboard.writeText(this.copyTxt);
+        this.$toast("Copied to clipboard !");
+        this.popInvite = false;
+      } catch (error) {
+        this.$toast("Copied fail");
+      }
+    },
     onCopied() {
       this.$toast("Copied to clipboard !");
       this.popInvite = false;

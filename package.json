@@ -12,6 +12,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "clipboard": "^2.0.8",
+    "clipboard-polyfill": "^3.0.3",
     "core-js": "^3.6.5",
     "echarts": "^5.1.2",
     "vue": "^2.6.11",
