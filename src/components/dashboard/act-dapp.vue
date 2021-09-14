@@ -22,7 +22,7 @@
           <tr v-for="(it, i) in list" :key="it.projectId">
             <td>{{ 1 + i }}</td>
             <td>{{ it.projectName }}</td>
-            <td class="ta-l">
+            <td>
               <a
                 style="color: white"
                 class="u"

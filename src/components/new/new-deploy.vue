@@ -103,18 +103,6 @@
                 </template>
               </v-select>
             </div>
-            <v-alert
-              border="left"
-              colored-border
-              type="info"
-              elevation="1"
-              dense
-              class="fz-14"
-              ><span class="gray-6"
-                >4EVER-Hosting only serves static pages(Server-Side-Rendering is
-                not supported at this time)</span
-              ></v-alert
-            >
 
             <div class="d-flex al-c">
               <div class="fz-14 op-6 mt-2">
@@ -212,6 +200,11 @@
                 </v-expansion-panel-content>
               </v-expansion-panel>
             </v-expansion-panels>
+
+            <div class="gray-6 mt-5 fz-14">
+              Tips: 4EVER-Hosting only serves static pages(Server-Side-Rendering
+              is not supported at this time)
+            </div>
           </v-form>
         </v-window-item>
       </v-window>
