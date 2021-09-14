@@ -315,7 +315,7 @@ export default {
               row.disabled = true;
             }
           }
-          if ((rest <= 0 && !item.isMore) || status == 2) {
+          if ((rest <= 0 || status == 2) && !item.isMore) {
             row.disabled = true;
             row.btnTxt = "Finished";
           }
