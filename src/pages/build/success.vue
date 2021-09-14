@@ -12,9 +12,16 @@
               Your project has been successfully deployed.
             </p>
             <div class="mt-7">
-              <v-btn color="primary" small class="mr-3 mt-3">
+              <v-btn
+                :href="visitUrl"
+                target="_blank"
+                :loading="!visitUrl"
+                color="primary"
+                small
+                class="mr-4 mt-3"
+              >
                 <span>Visit</span>
-                <v-icon size="16">mdi-open-in-new</v-icon>
+                <v-icon size="14" class="ml-1">mdi-open-in-new</v-icon>
               </v-btn>
               <v-btn small class="mt-3" to="/dashboard/projects"
                 >Open Dashboard</v-btn
@@ -29,12 +36,21 @@
 
 <script>
 export default {
+  data() {
+    return {
+      visitUrl: "",
+    };
+  },
   mounted() {
     this.onInit();
   },
   methods: {
     async onInit() {
       try {
+        const { taskId } = this.$route.params;
+        const { data } = await this.$http.get(`/project/task/object/${taskId}`);
+        this.visitUrl = "https://" + data.task.domain;
+
         const { data: addr } = await this.$http.get("/activity/ethAddress");
         if (addr) return;
         console.log(addr);
