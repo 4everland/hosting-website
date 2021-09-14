@@ -48,7 +48,7 @@
                 <v-img
                   :src="$getImgSrc(info.screenshotPath)"
                   lazy-src="img/empty/cover.jpg"
-                  height="220px"
+                  height="240px"
                 ></v-img>
               </e-link>
               <v-progress-circular
@@ -127,17 +127,20 @@
                 </div>
               </div>
 
-              <div class="label-1 mt-6">Domains</div>
+              <div class="label-1 mt-4">Domains</div>
               <div>
                 <e-domain :val="info.domain" :disabled="!isSuccess"></e-domain>
               </div>
 
-              <div class="label-1 mt-6">Branch</div>
+              <div class="label-1 mt-4">Branch</div>
               <e-branch :info="info"></e-branch>
 
               <div class="mt-2">
                 <e-commit :info="info.commits"></e-commit>
               </div>
+
+              <div class="label-1 mt-4">IPFS</div>
+              <div>Failure、IPFS Hash Pending、Verify on IPFS</div>
             </div>
 
             <v-menu v-if="info.taskId" offset-y>
