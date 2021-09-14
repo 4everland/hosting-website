@@ -140,7 +140,7 @@
               </div>
 
               <div class="label-1 mt-4">IPFS</div>
-              <div>Failure、IPFS Hash Pending、Verify on IPFS</div>
+              <div>{{ ipfsTxt }}</div>
             </div>
 
             <v-menu v-if="info.taskId" offset-y>
@@ -254,11 +254,19 @@ export default {
     taskId() {
       return this.$route.params.taskId;
     },
+    isError() {
+      return /fail|error|cancel|timeout/i.test(this.state);
+    },
     isRunning() {
-      return this.state == "running";
+      return !this.isError && !this.isSuccess;
     },
     isSuccess() {
       return this.state == "success";
+    },
+    ipfsTxt() {
+      if (this.isSuccess) return "Verify on IPFS";
+      if (this.isError) return "Failure";
+      return "IPFS Hash Pending";
     },
     visitUrl() {
       const { domain } = this.info;
