@@ -158,8 +158,13 @@ export default {
     const showModal = (config) => {
       return new Promise((resolve, reject) => {
         if (config.showInput) {
-          this.inputVal = config.defaultValue || "";
-          this.inputVal2 = config.defaultValue2 || "";
+          setTimeout(() => {
+            this.$refs.form.reset();
+          }, 5);
+          setTimeout(() => {
+            let val = config.defaultValue
+            if(val) this.inputVal = val
+          }, 10);
         }
         this.$setState({
           alertInfo: {
