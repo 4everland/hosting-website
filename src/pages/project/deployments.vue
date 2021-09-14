@@ -192,7 +192,7 @@ export default {
           `/project/${it.taskId}/redeploy`
         );
         this.$router.replace(
-          `/build/${it.buildConfig.name}/${data.taskId}/overview`
+          `/build/${it.buildConfig.name}/${data.taskId}/overview?ftab=deployments`
         );
       } catch (error) {
         console.log(error, "deploy catch");

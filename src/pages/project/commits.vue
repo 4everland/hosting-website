@@ -108,7 +108,9 @@ export default {
           message: row.message,
         });
         this.$loading.close();
-        this.$router.push(`/build/${this.id}/${taskId}/overview`);
+        this.$router.push(
+          `/build/${this.info.name}/${taskId}/overview?ftab=commits`
+        );
       } catch (error) {
         //
       }
