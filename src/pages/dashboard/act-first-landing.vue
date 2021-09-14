@@ -323,7 +323,7 @@ export default {
               row.disabled = true;
             }
           }
-          if ((rest <= 0 && !item.isMore) || status == 2) {
+          if ((rest <= 0 && !item.isMore) || this.actStatus == 2) {
             row.disabled = true;
             row.btnTxt = "Finished";
           }
