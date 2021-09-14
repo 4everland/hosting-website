@@ -419,9 +419,8 @@ Are you sure you want to continue?
       await this.$alert(html, "Congratulations!", {
         type: "success",
       });
-      if (this.$store.state.actStatus == 1) {
-        this.$router.replace(this.$route.path.replace("/overview", "/success"));
-      }
+      // if (this.$store.state.actStatus == 1) { }
+      this.$router.replace(this.$route.path.replace("/overview", "/success"));
     },
     async initData() {
       try {
