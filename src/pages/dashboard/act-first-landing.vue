@@ -65,7 +65,7 @@
       <div class="pd-20 pl-0 pr-0">
         <div class="ml-5 mr-6 d-flex al-c">
           <h3>My Rewards</h3>
-          <v-btn
+          <!-- <v-btn
             plain
             color="white"
             small
@@ -73,7 +73,7 @@
             @click="onRefresh"
           >
             <v-icon>mdi-refresh</v-icon>
-          </v-btn>
+          </v-btn> -->
           <v-btn class="ml-auto" color="primary" small rounded @click="setAddr">
             <v-icon size="16" class="mr-1">mdi-wallet</v-icon>
             <span>{{ ethAddr ? ethAddr.cutStr(6, 4) : "Wallet Address" }}</span>
@@ -216,10 +216,20 @@ export default {
         // this.onRefresh();
       }
     },
+    "$route.path"(val) {
+      if (val == "/dashboard/first-landing") {
+        this.getList();
+      }
+    },
   },
   created() {
     this.getList();
     this.getAddr();
+    // setInterval(() => {
+    //   if (localStorage.token) {
+    //     this.getList();
+    //   }
+    // }, 15e3);
   },
   methods: {
     numberComma(source, length = 3) {

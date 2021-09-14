@@ -65,6 +65,7 @@
         />
         <div class="op-5 fz-14 mt-8">No developer has been invited</div>
         <v-btn
+          v-if="actStatus == 1"
           color="primary"
           rounded
           :loading="!code"
@@ -80,13 +81,15 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 // import html2canvas from "html2canvas";
 
 export default {
   computed: {
-    userInfo() {
-      return this.$store.state.userInfo;
-    },
+    ...mapState({
+      userInfo: (s) => s.userInfo,
+      actStatus: (s) => s.actStatus,
+    }),
     shareUrl() {
       return location.origin + "/#/?invite=" + this.code;
     },
