@@ -73,8 +73,7 @@ export default {
             },
             {
               label: "Whitepaper",
-              href:
-                "https://www.4everland.org/4everland-whitepaper-en(Draft%20V0.0.2).pdf",
+              href: "https://4everland.org/4everland-whitepaper-en.pdf",
             },
             {
               label: "Contact us",
