@@ -196,7 +196,7 @@ export default {
           type: "INVITE_REWARD",
           title: "Invite rewards",
           txt: "Invite",
-          tip: "Invitation rewards are to those who invite new developers to 4EVERLAND.",
+          tip: "Invitation rewards(shares of 10 million 4EVER) are to those who invite new developers to 4EVERLAND.",
           isMore: true,
         },
         {
