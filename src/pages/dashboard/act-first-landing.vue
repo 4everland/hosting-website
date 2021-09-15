@@ -306,7 +306,7 @@ export default {
       let { type, link } = row;
       console.log(type);
       const dapp = this.$refs.dapp;
-      if (type != "INVITE_REWARD" && !dapp.list.length) {
+      if (["VIEWER_REWARD", "DEPLOY"].includes(type) && !dapp.list.length) {
         link = "/new";
       }
       if (link) this.$navTo(link);
