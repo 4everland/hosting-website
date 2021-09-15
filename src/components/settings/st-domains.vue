@@ -123,7 +123,12 @@ export default {
   },
   watch: {
     isFocus(val) {
-      if (val) this.setRefresh();
+      if (val) {
+        this.setRefresh();
+        setTimeout(() => {
+          this.setRefresh();
+        }, 10e3);
+      }
     },
   },
   mounted() {
