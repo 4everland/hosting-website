@@ -71,13 +71,15 @@ http.interceptors.response.use(
     if (msg == "Network Error") {
       msg =
         "A network error has occurred. Please check your connections and try again.";
-    } else if (msg == "Request aborted") {
-      msg = "";
     }
     if (status == 401) {
       goLogin();
     } else if (msg) {
-      Vue.prototype.$alert(msg);
+      Vue.prototype.$alert(msg).then(() => {
+        if (msg == "Request aborted") {
+          location.reload();
+        }
+      });
     }
     return Promise.reject(error);
   }
