@@ -41,7 +41,14 @@ http.interceptors.response.use(
           goLogin();
         } else if (!noTip) {
           setTimeout(() => {
-            Vue.prototype.$alert(msg);
+            Vue.prototype.$alert(msg).then(() => {
+              if (
+                data.code == 10016 ||
+                /storage has reached the max/.test(msg)
+              ) {
+                location.href = "index.html";
+              }
+            });
           }, 10);
         }
         const error = new Error(msg);

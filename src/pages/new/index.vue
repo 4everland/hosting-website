@@ -1,5 +1,7 @@
 <template>
   <div class="wrap-1">
+    <e-storage ref="stor"></e-storage>
+
     <v-dialog v-model="showSelect" max-width="600">
       <div class="pos-r">
         <div
@@ -252,6 +254,8 @@ export default {
         this.popAccounts = true;
         return;
       }
+      const needCheck = await this.$refs.stor.checkStorage();
+      if (needCheck) return;
       this.isAddClick = true;
       try {
         this.$loading();
