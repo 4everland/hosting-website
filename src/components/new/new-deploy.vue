@@ -398,7 +398,7 @@ export default {
             data: { taskId },
           } = await this.$http.post(`/project/${projId}/build`);
           // await this.$alert('Project created successfully')
-          const path = `/build/${projId}/${taskId}/overview`;
+          const path = `/build/${body.name}/${taskId}/overview`;
           if (!isDev) {
             this.$router.replace(path);
           } else {
