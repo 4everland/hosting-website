@@ -247,21 +247,27 @@ export default {
     async setAddr() {
       const tip =
         "Submit your ETH Address, rewards available at the end of the 4EVERLAND FirstLanding.";
-      const { value } = await this.$prompt(tip, "Prompt", {
-        hideTitle: true,
-        defaultValue: this.ethAddr,
-        inputAttrs: {
-          label: "Wallet Adress",
-          require: true,
-          placeholder: "Please enter your address",
-          rules: [
-            (v) =>
-              this.$regMap.eth.test(v) ||
-              "Please enter correct eth wallet address.",
-          ],
-          required: true,
-        },
-      }).catch(() => {});
+      let value = "";
+      try {
+        const data = await this.$prompt(tip, "Prompt", {
+          hideTitle: true,
+          defaultValue: this.ethAddr,
+          inputAttrs: {
+            label: "Wallet Adress",
+            require: true,
+            placeholder: "Please enter your address",
+            rules: [
+              (v) =>
+                this.$regMap.eth.test(v) ||
+                "Please enter correct eth wallet address.",
+            ],
+            required: true,
+          },
+        });
+        value = data.value;
+      } catch (error) {
+        return;
+      }
       if (value == this.ethAddr) {
         return;
       }
@@ -271,6 +277,7 @@ export default {
         await this.$http.put(`/activity/bind/eth/${value}`);
         this.$loading.close();
         this.$toast(`${!this.ethAddr ? "Added" : "Updated"} successfully`);
+        this.ethAddr = value;
         this.getAddr();
       } catch (error) {
         console.log(error);
