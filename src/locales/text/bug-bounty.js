@@ -45,7 +45,7 @@ The severity of those bugs will be calculated using the Common Vulnerability Sco
 In addition to severity, rewards will also be weighed against the impact of bugs found and the difficulty level of finding them. 4EVERLAND may award an additional reward bonus for exceptional reports. This will be done at 4EVERLAND's discretion .
 
 <h4>How to submit your report</h4>
-Please submit your report at: https://hosting.4everland.org/feedback. Prior to the disclosure in the above report, no disclosure to any other person, entity or e-mail address is allowed.
+Please submit your report at this page. Prior to the disclosure in the above report, no disclosure to any other person, entity or e-mail address is allowed.
 
 Please include as much bug-related information as possible, including but not limited to:
 <ul>
