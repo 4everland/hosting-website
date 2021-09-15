@@ -64,6 +64,8 @@ http.interceptors.response.use(
     if (msg == "Network Error") {
       msg =
         "A network error has occurred. Please check your connections and try again.";
+    } else if (msg == "Request aborted") {
+      msg = "";
     }
     if (status == 401) {
       goLogin();
