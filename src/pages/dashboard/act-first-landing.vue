@@ -225,11 +225,6 @@ export default {
   created() {
     this.getList();
     this.getAddr();
-    // setInterval(() => {
-    //   if (localStorage.token) {
-    //     this.onRefresh();
-    //   }
-    // }, 15e3);
   },
   methods: {
     numberComma(source, length = 3) {
