@@ -271,6 +271,7 @@ export default {
         await this.$http.put(`/activity/bind/eth/${value}`);
         this.$loading.close();
         this.$toast(`${!this.ethAddr ? "Added" : "Updated"} successfully`);
+        this.getAddr();
       } catch (error) {
         console.log(error);
         this.setAddr();
