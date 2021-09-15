@@ -441,6 +441,9 @@ export default {
         params.rootPath = item.id;
       }
       params.ref = this.form.currentBranch;
+      if (!params.ref) {
+        params.ref = this.importItem.defaultBranch;
+      }
       let { data } = await this.$http.get(
         `/repo/${this.importItem.namespace}/dir/${this.importItem.name}/ref`,
         {
