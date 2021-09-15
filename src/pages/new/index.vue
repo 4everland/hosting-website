@@ -248,7 +248,7 @@ export default {
       this.showSelect = true;
     },
     async addNew() {
-      if (this.isTouch && !this.popAccounts) {
+      if (this.isTouch && !this.popAccounts && this.accountList.length) {
         this.popAccounts = true;
         return;
       }
