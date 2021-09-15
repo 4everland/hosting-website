@@ -320,6 +320,7 @@ export default {
           data: { myRewards: rows, poolD2E: rest },
         } = await this.$http.get("/activity/rewards");
         let totalReward = 0;
+        const list = [];
         for (const row of rows) {
           delete row.title;
           const item = this.list.filter((it) => it.type == row.type)[0];
@@ -337,11 +338,15 @@ export default {
             row.disabled = true;
             row.btnTxt = "Finished";
           }
-          Object.assign(item, row);
+          list.push({
+            ...item,
+            ...row,
+          });
         }
+        this.list = list;
         this.totalReward = totalReward;
       } catch (error) {
-        //
+        console.log(error);
       }
       this.loading = false;
     },
