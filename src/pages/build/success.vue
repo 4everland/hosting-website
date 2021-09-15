@@ -71,7 +71,7 @@ export default {
 		</ul>
 	</div>
 `;
-        const { value } = await this.$prompt(html, "Spaceman Plan", {
+        const { value } = await this.$prompt(html, "First Landing", {
           icon: "mdi-rocket",
           confirmText: "Submit",
           confirmTextAttrs: {
