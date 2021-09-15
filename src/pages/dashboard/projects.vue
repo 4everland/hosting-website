@@ -128,8 +128,17 @@ export default {
   },
   watch: {
     buildInfo({ data }) {
-      // console.log(data.state);
-      if (data.state != this.lastState) {
+      if (data.state != this.lastState && this.list) {
+        const item = this.list.filter((it) => {
+          return it.lastest && it.lastest.taskId == data.taskId;
+        })[0];
+        if (!item) {
+          if (this.hasNew) return;
+          this.hasNew = true;
+        } else {
+          this.hasNew = false;
+        }
+        console.log(this.hasNew, data.taskId, data.state);
         this.lastState = data.state;
         this.getList();
       }
