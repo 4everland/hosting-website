@@ -11,7 +11,7 @@
   <div>
     <div class="bg-white shadow-1 pos-s z-100" style="top: 0">
       <div class="con-1">
-        <v-tabs :color="$color1" v-model="curPath">
+        <v-tabs :color="$color1">
           <v-tabs-slider :color="curTab.color || 'primary'"></v-tabs-slider>
           <v-tab
             replace
@@ -45,8 +45,17 @@ export default {
   data() {
     return {
       locales: "dashboard.index.",
-      curPath: "",
-      tabs: [
+    };
+  },
+  computed: {
+    actStatus() {
+      return this.$store.state.actStatus;
+    },
+    curPath() {
+      return this.$route.path;
+    },
+    tabs() {
+      return [
         {
           title: this.$t(`dashboard.index.Projects`),
           path: "projects",
@@ -64,24 +73,19 @@ export default {
           path: "billing",
         },
         {
-          title: this.$t(`dashboard.index.Settings`),
-          path: "settings",
-          hide: true,
-        },
-        {
           title: "FirstLanding",
           path: "first-landing",
-          icon: "fire",
+          icon: this.actStatus == 1 ? "fire" : null,
           color: "#ff5252",
           wrapCls: "bg-act-1",
           // conCls: "act-con",
         },
-      ],
-    };
-  },
-  computed: {
-    actStatus() {
-      return this.$store.state.actStatus;
+        {
+          title: this.$t(`dashboard.index.Settings`),
+          path: "settings",
+          hide: !/settings/.test(this.curPath),
+        },
+      ];
     },
     tabList() {
       return this.tabs.filter((it) => {

@@ -84,7 +84,7 @@
             <div
               class="bg-white bdrs-5 pt-5 pb-5 d-ib reward-item mr-6 flex-1"
               :class="{
-                done: it.done && !it.isMore,
+                done: it.done,
               }"
               v-for="it in list"
               :key="it.type"
@@ -325,21 +325,24 @@ export default {
         //   actStatus: status,
         // });
         const {
-          data: { myRewards: rows, poolD2E: rest },
+          data: { myRewards: rows, poolD2E: rest, totalRewards },
         } = await this.$http.get("/activity/rewards");
-        let totalReward = 0;
         const list = [];
+        this.totalReward = totalRewards;
         for (const row of rows) {
           delete row.title;
           const item = this.list.filter((it) => it.type == row.type)[0];
           if (!item) continue;
           row.loaded = true;
           row.btnTxt = item.txt;
+          // row.done = true;
           if (row.done) {
-            totalReward += row.reward;
             if (item.txt2) {
               row.btnTxt = item.txt2;
               row.disabled = true;
+            }
+            if (this.actStatus == 1 && item.isMore) {
+              row.done = false;
             }
           }
           if ((rest <= 0 && !item.isMore) || this.actStatus == 2) {
@@ -352,7 +355,6 @@ export default {
           });
         }
         this.list = list;
-        this.totalReward = totalReward;
       } catch (error) {
         console.log(error);
       }
