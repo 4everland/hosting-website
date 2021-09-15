@@ -39,7 +39,7 @@ export default {
       );
     },
     navItems() {
-      const { taskId = "Log" } = this.projInfo;
+      const { taskId } = this.$route.params;
       const { name, projectId } = this.projInfo.config || {};
       if (!name) return [];
       const list = [
