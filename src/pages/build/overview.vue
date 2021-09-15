@@ -412,6 +412,10 @@ Are you sure you want to continue?
         `/project/task/${this.info.projectId}/all`
       );
       let html = "You just deployed a new project to 4EVERLAND.";
+      const inAct = this.$store.state.actStatus == 1;
+      if (inAct) {
+        html = `4EVERLAND's First Landing aims to reach outstanding developers and help them efficiently develope Web3.0 applications, encouraging the deployment of applications in 4EVERLAND.`;
+      }
       if (data.length > 1) {
         html = "Redeployed successfully.";
       }

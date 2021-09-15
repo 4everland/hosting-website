@@ -286,7 +286,7 @@ export default {
       }
       if (this.actStatus != 2) {
         return this.$alert(
-          "It is only available at the end of the FirstLanding, please claim at the end of the FirstLanding."
+          "Available to claim at the end of the First Landing."
         );
       }
 
