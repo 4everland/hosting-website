@@ -10,7 +10,7 @@
       <v-text-field
         outlined
         dense
-        v-model="domain"
+        v-model.trim="domain"
         @keyup.enter="onAdd"
         placeholder="mywebsite.com"
       >
