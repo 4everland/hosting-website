@@ -1,16 +1,11 @@
 <template>
   <div>
     <v-dialog v-model="showPop" max-width="800">
+      <e-dialog-close @click="showPop = false" />
       <div class="pos-r">
         <h2 class="ta-c pd-15 fz-18">
           {{ steps[curStep].title }}
         </h2>
-        <div
-          class="pos-a top-0 right-0 pd-15 z-100 hover-1"
-          @click="showPop = false"
-        >
-          <v-icon>mdi-close</v-icon>
-        </div>
       </div>
       <div class="pd-10-20">
         <v-window v-model="curStep">
