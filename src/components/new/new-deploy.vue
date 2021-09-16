@@ -419,7 +419,11 @@ export default {
         return this.$toast("Branch must be choosen.");
       }
       this.envList = [];
-      this.form.name = this.importItem.name;
+      let name = this.importItem.name;
+      if (/-project$/.test(name)) {
+        name += "-" + this.$utils.getNonce(4);
+      }
+      this.form.name = name;
       let framework = this.importItem.frameWorkAdvice || null;
       if (framework == "other") framework = null;
       this.form.framework = framework;

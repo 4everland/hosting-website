@@ -62,3 +62,15 @@ Vue.prototype.$regMap = {
   domain: /(\w+\.)+\w{2,10}/,
   eth: /^(0x)?[0-9a-fA-F]{40}$/,
 };
+
+Vue.prototype.$utils = {
+  getNonce(len = 4, radix = 36) {
+    let str = "";
+    while (str.length < len) {
+      str += Math.random()
+        .toString(radix)
+        .substr(2);
+    }
+    return str.substr(0, len);
+  },
+};
