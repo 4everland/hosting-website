@@ -15,10 +15,8 @@
       <div class="pd-30 mt-2">
         <div class="fz-14">
           <span>{{ sharePre }}</span>
-          <span class="d-ib">
-            <a :href="shareUrl" target="_blank">{{
-              shareUrl.cutStr(18, 16)
-            }}</a>
+          <span class="d-ib fz-13">
+            <a :href="shareUrl" target="_blank">{{ shareUrl }}</a>
             <v-icon size="14" class="pa-1 hover-1 ml-2" @click="onCopy"
               >mdi-content-copy</v-icon
             >
