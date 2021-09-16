@@ -22,26 +22,28 @@
             >
           </span>
         </div>
-        <div class="d-flex f-center al-c">
-          <div class="mt-3 bd-1 pos-r">
-            <div class="pos-r" ref="imgWrap">
-              <img
-                @load="isBgLoad = true"
-                src="img/bg/act-share.png"
-                style="width: 200px"
-                class="ev-n"
-              />
-              <img v-if="qrImg" :src="qrImg" class="pos-a qr-img" />
-            </div>
-            <div class="pos-mask share-img-wrap" v-if="shareImg">
-              <img :src="shareImg" class="w100p" />
+        <div v-show="isBgLoad">
+          <div class="d-flex f-center al-c">
+            <div class="mt-3 bd-1 pos-r">
+              <div class="pos-r" ref="imgWrap">
+                <img
+                  @load="isBgLoad = true"
+                  src="img/bg/act-share.png"
+                  style="width: 200px"
+                  class="ev-n"
+                />
+                <img v-if="qrImg" :src="qrImg" class="pos-a qr-img" />
+              </div>
+              <div class="pos-mask share-img-wrap" v-if="shareImg">
+                <img :src="shareImg" class="w100p" />
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="mt-5 gray ta-c" v-if="isTouch">Long press to save</div>
-        <div v-else class="mt-10 ta-c">
-          <v-btn color="primary" @click="onSaveImg">Save Image</v-btn>
+          <div class="mt-5 gray ta-c" v-if="isTouch">Long press to save</div>
+          <div v-else class="mt-10 ta-c">
+            <v-btn color="primary" @click="onSaveImg">Save Image</v-btn>
+          </div>
         </div>
       </div>
     </v-dialog>
