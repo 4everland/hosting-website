@@ -100,6 +100,17 @@
         </v-btn>
       </div>
     </div>
+    <div class="mt-6">
+      <div class="gray fz-14 ta-c mb-2">{{ total }} developers invited.</div>
+      <v-pagination
+        @input="onPage"
+        v-model="page"
+        :length="pageLen"
+        prev-icon="mdi-menu-left"
+        next-icon="mdi-menu-right"
+        :total-visible="7"
+      ></v-pagination>
+    </div>
   </div>
 </template>
 
@@ -125,6 +136,8 @@ export default {
     return {
       code: null,
       list: [],
+      page: 1,
+      pageLen: 1,
       loading: false,
       popInvite: false,
       sharePre:
@@ -133,6 +146,7 @@ export default {
       isBgLoad: false,
       qrImg: "",
       shareImg: "",
+      total: 0,
     };
   },
   created() {
@@ -156,6 +170,9 @@ export default {
     },
   },
   methods: {
+    onPage() {
+      this.getList();
+    },
     async onCopy() {
       try {
         await clipboard.writeText(this.copyTxt);
@@ -218,9 +235,17 @@ export default {
     async getList() {
       try {
         this.loading = true;
-        const { data } = await this.$http.get("/activity/invites?size=300");
+        const params = {
+          page: this.page - 1,
+          size: 10,
+        };
+        const { data } = await this.$http.get("/activity/invites", {
+          params,
+        });
         // console.log(data);
         this.list = data.page || [];
+        this.total = data.total;
+        this.pageLen = Math.max(1, Math.ceil(this.total / params.size));
       } catch (error) {
         //
       }
