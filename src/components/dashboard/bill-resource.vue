@@ -3,6 +3,7 @@
     <v-skeleton-loader type="article" />
   </div>
   <div v-else>
+    <e-storage ref="stor"></e-storage>
     <div class="mt-6 ta-c" v-if="!info.total">
       <img src="img/empty/bill.svg" style="height: 180px" />
       <div class="mt-3 gray">{{ $t(`${locales}NoResource`) }}</div>
@@ -106,6 +107,11 @@ export default {
           if (key) data[key] = data[key].toFixed(2);
         }
         this.info = data;
+        if (!data.total) {
+          setTimeout(() => {
+            this.$refs.stor.checkStorage();
+          }, 100);
+        }
       } catch (error) {
         console.log(error);
       }
