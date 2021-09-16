@@ -145,7 +145,7 @@ export default {
     popInvite(val) {
       if (val)
         setTimeout(() => {
-          this.genImg();
+          if (!this.shareImg) this.genImg();
         }, 100);
     },
   },
