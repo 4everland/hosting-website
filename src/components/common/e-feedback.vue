@@ -16,7 +16,7 @@
           class="mt-3"
           outlined
           persistent-placeholder
-          v-model="form.email"
+          v-model.trim="form.email"
           label="Email"
           placeholder="Your email"
         />
