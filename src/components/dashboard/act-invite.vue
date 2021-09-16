@@ -155,7 +155,7 @@ export default {
     async getList() {
       try {
         this.loading = true;
-        const { data } = await this.$http.get("/activity/invites");
+        const { data } = await this.$http.get("/activity/invites?size=300");
         // console.log(data);
         this.list = data.page || [];
       } catch (error) {
