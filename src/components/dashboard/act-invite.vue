@@ -24,6 +24,7 @@
           <div class="mt-3 bd-1 pos-r">
             <div class="pos-r" ref="imgWrap">
               <img
+                @load="isBgLoad = true"
                 src="img/bg/act-share.png"
                 style="width: 200px"
                 class="ev-n"
@@ -125,6 +126,7 @@ export default {
       sharePre:
         "I am participating in 4EVERLAND  First Landing event. Deploying projects to win your share of 50 million 4EVER, come and join here: ",
       copyTxt: "",
+      isBgLoad: false,
       qrImg: "",
       shareImg: "",
     };
@@ -142,11 +144,11 @@ export default {
       const url = await qrcode.toDataURL(this.shareUrl);
       this.qrImg = url;
     },
-    popInvite(val) {
-      if (val)
-        setTimeout(() => {
-          if (!this.shareImg) this.genImg();
-        }, 100);
+    isBgLoad() {
+      console.log("load");
+      setTimeout(() => {
+        this.genImg();
+      }, 300);
     },
   },
   methods: {
