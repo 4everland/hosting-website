@@ -195,7 +195,7 @@ export default {
       try {
         const el = this.$refs.imgWrap;
         let canvas = document.createElement("canvas");
-        const scale = 2;
+        const scale = 3;
         const width = el.offsetWidth * scale;
         const height = el.offsetHeight * scale;
         canvas.width = width * scale;
