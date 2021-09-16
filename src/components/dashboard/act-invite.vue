@@ -100,7 +100,7 @@
         </v-btn>
       </div>
     </div>
-    <div class="mt-6">
+    <div class="mt-6" v-if="pageLen > 1">
       <div class="gray fz-14 ta-c mb-2">{{ total }} developers invited.</div>
       <v-pagination
         @input="onPage"
