@@ -1,22 +1,43 @@
-<template>
-  <div>
-    <v-dialog v-model="popInvite" max-width="450" v-if="code">
-      <div class="pd-20">
-        <div>
-          <span>{{ sharePre }}</span>
-          <a :href="shareUrl" target="_blank">{{ shareUrl }}</a>
-          <!-- <v-icon
-            size="14"
-            class="pa-1 hover-1 ml-2"
-            >mdi-content-copy</v-icon
-          > -->
-        </div>
-        <!-- <div class="pos-r mt-3" ref="imgWrap">
-          <img src="img/bg/act-invite.png" style="width: 240px" class="bd-1" />
-        </div> -->
+<style lang="scss">
+.qr-img {
+  right: 10px;
+  bottom: 10px;
+  $size: 50px;
+  width: $size;
+  height: $size;
+}
+</style>
 
-        <div class="mt-10 ta-c" v-if="copyTxt">
-          <v-btn color="primary" @click="onCopy">Copy</v-btn>
+<template>
+  <div class="act-invite">
+    <v-dialog v-model="popInvite" max-width="450" v-if="code">
+      <e-dialog-close @click="popInvite = false" />
+      <div class="pd-30 mt-2">
+        <div class="fz-14">
+          <span>{{ sharePre }}</span>
+          <a class="d-ib" :href="shareUrl" target="_blank">{{ shareUrl }}</a>
+          <v-icon size="14" class="pa-1 hover-1 ml-2" @click="onCopy"
+            >mdi-content-copy</v-icon
+          >
+        </div>
+        <div class="d-flex f-center al-c">
+          <div class="mt-3 bd-1 pos-r">
+            <div class="pos-r" ref="imgWrap">
+              <img
+                src="img/bg/act-share.png"
+                style="width: 200px"
+                class="ev-n"
+              />
+              <img v-if="qrImg" :src="qrImg" class="pos-a qr-img" />
+            </div>
+            <div class="pos-mask share-img-wrap" v-if="shareImg">
+              <img :src="shareImg" class="w100p" />
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-10 ta-c">
+          <v-btn color="primary" @click="onSaveImg">Save Image</v-btn>
         </div>
       </div>
     </v-dialog>
@@ -81,7 +102,9 @@
 <script>
 import { mapState } from "vuex";
 import * as clipboard from "clipboard-polyfill/text";
-// import html2canvas from "html2canvas";
+import html2canvas from "html2canvas";
+import canvas2image from "@/plugins/canvas2image";
+import qrcode from "qrcode";
 
 export default {
   computed: {
@@ -102,6 +125,8 @@ export default {
       sharePre:
         "I am participating in 4EVERLAND  First Landing event. Deploying projects to win your share of 50 million 4EVER, come and join here: ",
       copyTxt: "",
+      qrImg: "",
+      shareImg: "",
     };
   },
   created() {
@@ -112,8 +137,16 @@ export default {
     userInfo() {
       this.getCode();
     },
-    code() {
+    async code() {
       this.copyTxt = this.sharePre + this.shareUrl;
+      const url = await qrcode.toDataURL(this.shareUrl);
+      this.qrImg = url;
+    },
+    popInvite(val) {
+      if (val)
+        setTimeout(() => {
+          this.genImg();
+        }, 100);
     },
   },
   methods: {
@@ -121,7 +154,6 @@ export default {
       try {
         await clipboard.writeText(this.copyTxt);
         this.$toast("Copied to clipboard !");
-        this.popInvite = false;
       } catch (error) {
         this.$toast("Copied fail");
       }
@@ -130,15 +162,40 @@ export default {
       this.$toast("Copied to clipboard !");
       this.popInvite = false;
     },
-    async onSaveImg() {
+    onSaveImg() {
+      this.genImg("save");
+    },
+    async genImg(act) {
       // window.open("img/bg/act-invite.png");
       try {
-        const canvas = ""; //await html2canvas(this.$refs.imgWrap);
-        console.log(canvas);
-        // this.$refs.imgWrap.appendChild(canvas);
-        const uri = canvas.toDataURL();
-        window.open(uri);
+        const el = this.$refs.imgWrap;
+        let canvas = document.createElement("canvas");
+        const scale = 2;
+        const width = el.offsetWidth * scale;
+        const height = el.offsetHeight * scale;
+        canvas.width = width * scale;
+        canvas.height = height * scale;
+        canvas.getContext("2d").scale(scale, scale);
+        canvas = await html2canvas(el, {
+          canvas,
+          width,
+          height,
+          scale,
+        });
+        // console.log(canvas);
+        if (act == "save") {
+          canvas2image.saveAsImage(
+            canvas,
+            width,
+            height,
+            "jpeg",
+            "4everland-" + this.code
+          );
+        }
+        const img = canvas2image.convertToJPEG(canvas, width, height);
+        this.shareImg = img.src;
       } catch (error) {
+        console.log(error);
         this.$toast("fail to generate share image");
       }
     },
