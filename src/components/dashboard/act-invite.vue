@@ -15,10 +15,14 @@
       <div class="pd-30 mt-2">
         <div class="fz-14">
           <span>{{ sharePre }}</span>
-          <a class="d-ib" :href="shareUrl" target="_blank">{{ shareUrl }}</a>
-          <v-icon size="14" class="pa-1 hover-1 ml-2" @click="onCopy"
-            >mdi-content-copy</v-icon
-          >
+          <span class="d-ib">
+            <a :href="shareUrl" target="_blank">{{
+              shareUrl.cutStr(18, 16)
+            }}</a>
+            <v-icon size="14" class="pa-1 hover-1 ml-2" @click="onCopy"
+              >mdi-content-copy</v-icon
+            >
+          </span>
         </div>
         <div class="d-flex f-center al-c">
           <div class="mt-3 bd-1 pos-r">
@@ -37,7 +41,8 @@
           </div>
         </div>
 
-        <div class="mt-10 ta-c">
+        <div class="mt-5 gray ta-c" v-if="isTouch">Long press to save</div>
+        <div v-else class="mt-10 ta-c">
           <v-btn color="primary" @click="onSaveImg">Save Image</v-btn>
         </div>
       </div>
@@ -112,6 +117,7 @@ export default {
     ...mapState({
       userInfo: (s) => s.userInfo,
       actStatus: (s) => s.actStatus,
+      isTouch: (s) => s.isTouch,
     }),
     shareUrl() {
       return location.origin + "/#/?invite=" + this.code;
