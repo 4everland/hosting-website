@@ -50,7 +50,7 @@
     <div class="mt-10 d-flex al-c">
       <h3 class="pd-20 pr-2">My Invites</h3>
       <e-tooltip right max-width="300" v-if="tip">
-        <v-icon slot="ref" color="#ddd" size="14" class="pa-1 d-ib"
+        <v-icon slot="ref" color="#ddd" size="14" class="pa-1 d-ib mt-1"
           >mdi-help-circle-outline</v-icon
         >
         <span>{{ tip }}</span>
