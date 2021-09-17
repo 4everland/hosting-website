@@ -27,8 +27,9 @@
                 style="color: white"
                 class="u"
                 :href="it.domain"
+                v-if="it.domain"
                 target="_blank"
-                >{{ it.domain.replace("https://", "") }}</a
+                >{{ it.domain.replace("https://", "").cutStr(18, 13) }}</a
               >
               <v-icon
                 size="14"

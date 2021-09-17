@@ -54,7 +54,7 @@
     <div
       class="act-p1 bdrs-10 pos-r"
       :style="{
-        'margin-top': asMobile ? '150px' : '240px',
+        'margin-top': asMobile ? '130px' : '220px',
       }"
     >
       <img
