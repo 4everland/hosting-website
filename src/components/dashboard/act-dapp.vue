@@ -6,7 +6,7 @@
         <v-icon slot="ref" color="#ddd" size="14" class="pa-1 d-ib mt-1"
           >mdi-help-circle-outline</v-icon
         >
-        <span>{{ tip }}</span>
+        <span v-html="tip"></span>
       </e-tooltip>
       <!-- <v-btn plain color="white" small :loading="loading" @click="getList">
         <v-icon>mdi-refresh</v-icon>

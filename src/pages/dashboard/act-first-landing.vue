@@ -101,7 +101,7 @@
                     <v-icon slot="ref" color="#999" size="14" class="pa-1 d-ib"
                       >mdi-help-circle-outline</v-icon
                     >
-                    <span>{{ it.tip }}</span>
+                    <span v-html="it.tip"></span>
                   </e-tooltip>
                 </div>
                 <div class="mt-8">
@@ -196,14 +196,14 @@ export default {
           type: "INVITE_REWARD",
           title: "Invite rewards",
           txt: "Invite",
-          tip: "Your valid invited developers/ total valid invited developers * 10 million = your invitation rewards.  *Invited developer GitHub accounts must be registered before 8th September.",
+          tip: "Your valid invited developers/ total valid invited developers * 10 million = your invitation rewards.  <i>* Invited developer GitHub accounts must be registered before 8th September.</i>",
           isMore: true,
         },
         {
           type: "VIEWER_REWARD",
           title: "Viewer rewards",
           txt: "Copy Domain",
-          tip: "Your valid page users/ total valid page users * 10 million = your total user rewards. * You must connect  your domain to claim total user rewards.",
+          tip: "Your valid page users/ total valid page users * 10 million = your total user rewards. <i>* You must connect  your domain to claim total user rewards.</i>",
           isMore: true,
         },
       ],

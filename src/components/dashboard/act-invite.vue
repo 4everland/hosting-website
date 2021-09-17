@@ -53,7 +53,7 @@
         <v-icon slot="ref" color="#ddd" size="14" class="pa-1 d-ib mt-1"
           >mdi-help-circle-outline</v-icon
         >
-        <span>{{ tip }}</span>
+        <span v-html="tip"></span>
       </e-tooltip>
       <span class="ml-auto gray fz-14">
         Valid invites: {{ totalEffective }}

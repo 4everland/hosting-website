@@ -2,7 +2,7 @@
   <div class="d-flex al-c f-center" v-if="domain">
     <a style="color: white" class="u line-1" :href="domain" target="_blank">
       <slot>
-        {{ domain.replace("https://", "").cutStr(18, 13) }}
+        {{ domain.replace("https://", "").cutStr(12, 13) }}
       </slot>
     </a>
     <v-icon
