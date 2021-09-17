@@ -131,7 +131,7 @@
             style="background: linear-gradient(90deg, #fa4adc 0%, #de4343 100%)"
           >
             <span class="white-0 d-ib pl-3 pr-3"
-              >Available claim : {{ numberComma(totalReward) }}
+              >My rewards : {{ numberComma(totalReward) }}
               <span class="fz-12">4EVER</span></span
             >
           </v-btn>
@@ -144,9 +144,9 @@
       </div>
     </div>
 
-    <act-dapp ref="dapp" />
+    <act-dapp ref="dapp" :tip="list[4].tip" />
 
-    <act-invite ref="invite" />
+    <act-invite ref="invite" :tip="list[3].tip" />
   </div>
 </template>
 
@@ -319,9 +319,10 @@ export default {
         // this.$setState({
         //   actStatus: status,
         // });
-        const {
+        let {
           data: { myRewards: rows, poolD2E: rest, totalRewards },
         } = await this.$http.get("/activity/rewards");
+        rest = 0;
         const list = [];
         this.totalReward = totalRewards;
         for (const row of rows) {
@@ -342,7 +343,7 @@ export default {
           }
           if ((rest <= 0 && !item.isMore) || this.actStatus == 2) {
             row.disabled = true;
-            row.btnTxt = "Finished";
+            row.btnTxt = this.actStatus == 2 ? "Finished" : "Run out";
           }
           list.push({
             ...item,

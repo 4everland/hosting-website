@@ -37,7 +37,7 @@
           :items="apps"
           item-text="projectName"
           item-value="projectId"
-          label="All Dapps"
+          label="All DApps"
           hide-details
           prepend-icon="mdi-apps"
           single-line

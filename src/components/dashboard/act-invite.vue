@@ -49,9 +49,15 @@
     </v-dialog>
     <div class="mt-10 d-flex al-c">
       <h3 class="pd-20 pr-2">My Invites</h3>
-      <!-- <v-btn plain small color="white" :loading="loading" @click="getList">
-        <v-icon>mdi-refresh</v-icon>
-      </v-btn> -->
+      <e-tooltip right max-width="300" v-if="tip">
+        <v-icon slot="ref" color="#ddd" size="14" class="pa-1 d-ib"
+          >mdi-help-circle-outline</v-icon
+        >
+        <span>{{ tip }}</span>
+      </e-tooltip>
+      <span class="ml-auto gray fz-14">
+        Valid invites: {{ totalEffective }}
+      </span>
     </div>
     <div class="ov-a bdrs-10 bd-1b ov-h">
       <table class="w100p ta-c" style="min-width: 260px">
@@ -61,6 +67,7 @@
             <td>E-mail</td>
             <td>CreatedAt</td>
             <td>Deployed</td>
+            <td>Status</td>
           </tr>
         </thead>
         <tbody class="op-9">
@@ -69,14 +76,10 @@
             <td>{{ it.email }}</td>
             <td>{{ new Date(it.inviteAt).format() }}</td>
             <td>
-              <a
-                v-if="it.domain"
-                style="color: white"
-                class="u"
-                :href="it.domain"
-                target="_blank"
-                >{{ it.domain.replace("https://", "") }}</a
-              >
+              <act-e-link :domain="it.domain" />
+            </td>
+            <td>
+              {{ it.valid ? "valid" : "invalid" }}
             </td>
           </tr>
         </tbody>
@@ -102,8 +105,7 @@
         </v-btn>
       </div>
     </div>
-    <div class="mt-6" v-if="pageLen > 1">
-      <div class="gray fz-14 ta-c mb-2">{{ total }} developers invited.</div>
+    <div class="mt-6" v-if="pageLen > 0">
       <v-pagination
         @input="onPage"
         v-model="page"
@@ -124,6 +126,9 @@ import canvas2image from "@/plugins/canvas2image";
 import qrcode from "qrcode";
 
 export default {
+  props: {
+    tip: String,
+  },
   computed: {
     ...mapState({
       userInfo: (s) => s.userInfo,
@@ -148,7 +153,7 @@ export default {
       isBgLoad: false,
       qrImg: "",
       shareImg: "",
-      total: 0,
+      totalEffective: 0,
     };
   },
   created() {
@@ -246,8 +251,8 @@ export default {
         });
         // console.log(data);
         this.list = data.page || [];
-        this.total = data.total;
-        this.pageLen = Math.max(1, Math.ceil(this.total / params.size));
+        this.totalEffective = data.totalEffective;
+        this.pageLen = Math.max(1, Math.ceil(data.total / params.size));
       } catch (error) {
         //
       }

@@ -1,7 +1,13 @@
 <template>
   <div>
     <div class="mt-5 d-flex al-c">
-      <h3 class="pd-20 pr-2">My Dapps</h3>
+      <h3 class="pd-20 pr-2">My DApps</h3>
+      <e-tooltip right max-width="300" v-if="tip">
+        <v-icon slot="ref" color="#ddd" size="14" class="pa-1 d-ib"
+          >mdi-help-circle-outline</v-icon
+        >
+        <span>{{ tip }}</span>
+      </e-tooltip>
       <!-- <v-btn plain color="white" small :loading="loading" @click="getList">
         <v-icon>mdi-refresh</v-icon>
       </v-btn> -->
@@ -11,8 +17,9 @@
         <thead>
           <tr>
             <td>#</td>
-            <td>Dapp</td>
-            <td>Domains</td>
+            <td>DApp</td>
+            <td>Added Domain</td>
+            <td>4EVERLAND Domain</td>
             <td>Total Users</td>
             <td>Percentage</td>
             <td>CreatedAt</td>
@@ -23,25 +30,10 @@
             <td>{{ 1 + i }}</td>
             <td>{{ it.projectName }}</td>
             <td>
-              <a
-                style="color: white"
-                class="u"
-                :href="it.domain"
-                v-if="it.domain"
-                target="_blank"
-                >{{ it.domain.replace("https://", "").cutStr(18, 13) }}</a
-              >
-              <v-icon
-                size="14"
-                class="pa-1 hover-1"
-                :class="{
-                  'anim-shine': isTipCopy,
-                }"
-                v-clipboard="it.domain"
-                @success="$toast('Copied to clipboard !')"
-                color="white"
-                >mdi-content-copy</v-icon
-              >
+              <act-e-link :domain="it.domain" :notice="isTipCopy" />
+            </td>
+            <td>
+              <act-e-link :domain="it.foreverlandDomain" :notice="isTipCopy" />
             </td>
             <td>{{ it.totalUsers }}</td>
             <td>{{ it.percentage }}%</td>
@@ -58,6 +50,9 @@
 
 <script>
 export default {
+  props: {
+    tip: String,
+  },
   data() {
     return {
       list: [],
