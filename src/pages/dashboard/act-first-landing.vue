@@ -322,7 +322,7 @@ export default {
         let {
           data: { myRewards: rows, poolD2E: rest, totalRewards },
         } = await this.$http.get("/activity/rewards");
-        rest = 0;
+        // rest = 0;
         const list = [];
         this.totalReward = totalRewards;
         for (const row of rows) {
