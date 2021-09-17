@@ -76,7 +76,7 @@
             <td>{{ it.email }}</td>
             <td>{{ new Date(it.inviteAt).format() }}</td>
             <td>
-              <act-e-link :domain="it.domain" />
+              <act-e-link no-copy :domain="it.domain" />
             </td>
             <td>
               {{ it.valid ? "valid" : "invalid" }}
@@ -105,7 +105,7 @@
         </v-btn>
       </div>
     </div>
-    <div class="mt-6" v-if="pageLen > 0">
+    <div class="mt-6" v-if="pageLen > 1">
       <v-pagination
         @input="onPage"
         v-model="page"

@@ -6,6 +6,7 @@
       </slot>
     </a>
     <v-icon
+      v-if="!noCopy"
       size="14"
       class="pa-1 hover-1"
       :class="{
@@ -24,6 +25,7 @@ export default {
   props: {
     domain: String,
     notice: Boolean,
+    noCopy: Boolean,
   },
 };
 </script>
