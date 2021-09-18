@@ -308,7 +308,6 @@ export default {
       else if (type == "INVITE_REWARD") {
         this.$refs.invite.onInvite();
       } else if (type == "VIEWER_REWARD") {
-        window.scrollTo(0, dapp.$el.offsetTop);
         dapp.setTipCopy();
       }
     },

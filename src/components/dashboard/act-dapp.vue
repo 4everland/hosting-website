@@ -26,7 +26,7 @@
           </tr>
         </thead>
         <tbody class="op-9">
-          <tr v-for="(it, i) in list" :key="it.projectId">
+          <tr v-for="(it, i) in appList" :key="it.projectId">
             <td>{{ 1 + i }}</td>
             <td>{{ it.projectName }}</td>
             <td>
@@ -45,6 +45,15 @@
         <span class="fz-14 op-9">No Statistics</span>
       </div>
     </div>
+    <div class="mt-6" v-if="pageLen > 1">
+      <v-pagination
+        v-model="page"
+        :length="pageLen"
+        prev-icon="mdi-menu-left"
+        next-icon="mdi-menu-right"
+        :total-visible="7"
+      ></v-pagination>
+    </div>
   </div>
 </template>
 
@@ -58,13 +67,28 @@ export default {
       list: [],
       loading: false,
       isTipCopy: false,
+      page: 1,
+      pageLen: 1,
     };
+  },
+  computed: {
+    appList() {
+      return this.list.slice((this.page - 1) * 10, this.page * 10);
+    },
+  },
+  watch: {
+    page() {
+      setTimeout(() => {
+        this.setTipCopy();
+      }, 100);
+    },
   },
   created() {
     this.getList();
   },
   methods: {
     async setTipCopy() {
+      window.scrollTo(0, this.$el.offsetTop);
       await this.$sleep(100);
       this.isTipCopy = true;
       await this.$sleep(1000);
@@ -76,6 +100,7 @@ export default {
         await this.$sleep(300);
         const { data } = await this.$http.get("/project/bigbang/projects");
         this.list = data;
+        this.pageLen = Math.ceil(data.length / 10);
       } catch (error) {
         //
       }
