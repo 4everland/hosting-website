@@ -11,9 +11,11 @@
 <template>
   <div class="wrap-1 bug-bounty">
     <div class="con-3 bg-white bd-1">
-      <img
+      <v-img
         src="img/bg/bug-bounty.png"
         class="wh100p d-b hover-1"
+        min-height="100"
+        alt="Submit Report"
         @click="onReport"
       />
       <div class="pd-20">
