@@ -29,17 +29,25 @@
     </div>
 
     <div v-else>
-      <div class="mb-6">
+      <div class="mb-6 d-flex al-c">
+        <v-btn
+          :loading="loading"
+          @click="getData"
+          small
+          class="ml-auto mr-1 mt-5"
+          plain
+        >
+          <v-icon>mdi-refresh</v-icon>
+        </v-btn>
+        <!--  -->
         <v-select
           style="max-width: 300px"
-          class="ml-auto"
           v-model="appId"
           :items="apps"
           item-text="projectName"
           item-value="projectId"
           label="All DApps"
           hide-details
-          prepend-icon="mdi-apps"
           single-line
           :menu-props="{ offsetY: true }"
         ></v-select>
@@ -80,6 +88,7 @@
       <v-row class="mb-6">
         <v-col cols="12" md="6" v-for="(it, i) in chartList" :key="i">
           <statis-chart
+            :reload="!loading"
             :appId="appId"
             :title="it.title"
             :type="it.type"
@@ -99,6 +108,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   data() {
     const { appId } = this.$route.query;
@@ -107,6 +118,7 @@ export default {
       appId,
       apps: null,
       info: null,
+      loading: false,
       chartList: [
         {
           title: this.$tc(`dashboard.statistics.TotalUser`),
@@ -156,6 +168,12 @@ export default {
     };
   },
   computed: {
+    ...mapState({
+      isFocus: (s) => s.isFocus,
+    }),
+    inTab() {
+      return this.$route.path == "/dashboard/statistics";
+    },
     summaryList() {
       if (!this.info) return [];
       return [
@@ -200,6 +218,9 @@ export default {
     },
   },
   watch: {
+    inTab(val) {
+      if (this.appId && val) this.getApps();
+    },
     appId(val) {
       this.$router.replace({
         query: {
@@ -240,7 +261,7 @@ export default {
     async getData() {
       try {
         if (!this.appId) return;
-        this.$loading();
+        this.loading = true;
         const { data } = await this.$http.get(
           "/analytics/user/data/project/" + this.appId
         );
@@ -257,7 +278,7 @@ export default {
         console.log(error);
       }
       this.tableLoading = false;
-      this.$loading.close();
+      this.loading = false;
     },
   },
 };
