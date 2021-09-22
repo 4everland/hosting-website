@@ -129,7 +129,10 @@
                         class="ml-1"
                         >mdi-lock-outline</v-icon
                       >
-                      <span class="ml-2 mr-3 gray fz-13 shrink-0">
+                      <span
+                        class="ml-2 mr-3 gray fz-13 shrink-0"
+                        v-if="!asMobile"
+                      >
                         <e-time>{{ it.updateAt }}</e-time>
                       </span>
                       <v-btn
@@ -150,7 +153,7 @@
                     :length="pageLen"
                     prev-icon="mdi-menu-left"
                     next-icon="mdi-menu-right"
-                    :total-visible="7"
+                    :total-visible="6"
                   ></v-pagination>
                 </div>
               </div>
@@ -195,6 +198,9 @@ export default {
       isFocus: (s) => s.isFocus,
       isTouch: (s) => s.isTouch,
     }),
+    asMobile() {
+      return this.$vuetify.breakpoint.smAndDown;
+    },
     chooseAccount() {
       return this.accountList.filter(
         (it) => it.githubId == this.chooseGithubId
