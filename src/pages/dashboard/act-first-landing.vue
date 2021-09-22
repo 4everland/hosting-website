@@ -152,6 +152,8 @@
 
 <script>
 import { mapState } from "vuex";
+import Web3 from "web3";
+// import WalletConnectProvider from '@walletconnect/web3-provider';
 
 export default {
   computed: {
@@ -227,6 +229,31 @@ export default {
     this.getAddr();
   },
   methods: {
+    async connectMetaMask() {
+      if (window.ethereum) {
+        window.web3 = new Web3(window.ethereum);
+        // await window.ethereum.enable();
+        try {
+          await window.ethereum.request({ method: "eth_requestAccounts" });
+          return true;
+        } catch (error) {
+          this.$alert("Failed to connect wallet" + ": " + error.message);
+          return false;
+        }
+      } else if (window.web3) {
+        window.web3 = new Web3(window.web3.currentProvider);
+        return true;
+      } else {
+        this.$confirm("Metamask is not installed", {
+          confirnText: "Install",
+        }).then(() => {
+          window.open(
+            "https://chrome.google.com/webstore/detail/nkbihfbeogaeaoehlefnkodbefgpgknn"
+          );
+        });
+        return false;
+      }
+    },
     numberComma(source, length = 3) {
       source = String(source).split(".");
       source[0] = source[0].replace(
@@ -250,7 +277,7 @@ export default {
           inputAttrs: {
             label: "Wallet Adress",
             require: true,
-            placeholder: "Please enter your address",
+            placeholder: "Enter your wallet address",
             rules: [
               (v) =>
                 this.$regMap.eth.test(v) ||
@@ -280,6 +307,12 @@ export default {
       }
     },
     async onClaim() {
+      const isOk = await this.connectMetaMask();
+      console.log(isOk);
+      if (!isOk) return;
+      // let accounts = await window.web3.eth.getAccounts();
+      // console.log(accounts);
+
       if (!this.ethAddr) {
         this.setAddr();
         return;
