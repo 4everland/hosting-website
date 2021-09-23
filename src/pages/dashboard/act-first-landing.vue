@@ -46,10 +46,17 @@
         >Rules</v-btn
       >
     </div>
-
+    <div class="ta-c">
+      <img
+        src="img/bg/act-title1.png"
+        :style="{
+          height: asMobile ? '100px' : '250px',
+        }"
+      />
+    </div>
     <div
       :style="{
-        'margin-top': asMobile ? '130px' : '240px',
+        'margin-top': asMobile ? '60px' : '50px',
       }"
     ></div>
     <act-countdown></act-countdown>
@@ -118,6 +125,7 @@
         <div class="ta-c mt-10">
           <v-btn
             :disabled="totalReward == 0"
+            :loading="loading"
             @click="onClaim"
             rounded
             style="background: linear-gradient(90deg, #fa4adc 0%, #de4343 100%)"

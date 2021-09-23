@@ -1,6 +1,6 @@
 <style lang="scss">
 .bg-act-1 {
-  background: #1f2228 url(/img/bg/act-first-landing.jpeg) no-repeat;
+  background: #1f2228 url(/img/bg/act-bg1.jpeg) no-repeat;
   background-size: 100%;
   .con-2 {
     max-width: 920px;
