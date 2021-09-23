@@ -126,6 +126,7 @@
           <v-btn
             :disabled="totalReward == 0"
             @click="onClaim"
+            :loading="claimLoading"
             rounded
             style="background: linear-gradient(90deg, #fa4adc 0%, #de4343 100%)"
           >
@@ -153,7 +154,7 @@
 import { mapState } from "vuex";
 import Web3 from "web3";
 // import WalletConnectProvider from '@walletconnect/web3-provider';
-// import abiERC20 from "../../plugins/abiERC20";
+import actAbi from "../../plugins/act-abi";
 
 export default {
   computed: {
@@ -210,6 +211,7 @@ export default {
         },
       ],
       ethAddr: "",
+      claimLoading: false,
     };
   },
   watch: {
@@ -255,27 +257,63 @@ export default {
       }
     },
     async onClaim() {
-      const isOk = await this.connectMetaMask();
-      console.log(isOk);
-      if (!isOk) return;
-      // let accounts = await window.web3.eth.getAccounts();
-      // console.log(accounts);
-      // const contract = new window.web3.eth.Contract(abiERC20, 'address_xxx');
-      // await contract.methods.claim().send({
-      //   from: '',
-      // })
-
       if (!this.ethAddr) {
         this.setAddr();
         return;
       }
-      if (this.actStatus != 2) {
-        return this.$alert(
-          "Available to claim at the end of the First Landing."
-        );
+      // if (this.actStatus != 2) {
+      //   return this.$alert(
+      //     "Available to claim at the end of the First Landing."
+      //   );
+      // }
+
+      const isOk = await this.connectMetaMask();
+      console.log(isOk);
+      if (!isOk) return;
+
+      // https://github.com/dinn2018/airdrop-claim/blob/master/deployments/ropsten/MerkleDistributor.json
+      // https://github.com/dinn2018/airdrop-claim/blob/master/deployments/ropsten/TEver.json
+      // https://raw.githubusercontent.com/dinn2018/airdrop-claim/master/scripts/result.json
+      const info = actAbi.result.claims[this.ethAddr];
+      if (!info) {
+        return this.$alert(`Your ETH address is not in reward list.`);
       }
 
-      this.$toast("dev");
+      let accounts = await window.web3.eth.getAccounts();
+      console.log(accounts);
+      if (!accounts.includes(this.ethAddr)) {
+        return this.$alert(`Your ETH address is not in MetaMask.`);
+      }
+
+      const contract = new window.web3.eth.Contract(actAbi.abi, actAbi.address);
+      this.claimLoading = true;
+      try {
+        await contract.methods
+          .claim(
+            info.index,
+            this.ethAddr,
+            info.amount,
+            info.tokenId,
+            info.proof
+          )
+          .send(
+            {
+              from: this.ethAddr,
+            },
+            (err, txid) => {
+              if (err) {
+                throw err;
+              }
+              localStorage.txid = txid;
+              this.$toast("txid: " + txid);
+            }
+          );
+        this.$alert("Claim successfully!");
+      } catch (error) {
+        console.log(error);
+        this.$alert("Claim failed: " + error.message);
+      }
+      this.claimLoading = false;
     },
     numberComma(source, length = 3) {
       source = String(source).split(".");
