@@ -261,11 +261,11 @@ export default {
         this.setAddr();
         return;
       }
-      // if (this.actStatus != 2) {
-      //   return this.$alert(
-      //     "Available to claim at the end of the First Landing."
-      //   );
-      // }
+      if (this.actStatus != 2 && !this.$inDev) {
+        return this.$alert(
+          "Available to claim at the end of the First Landing."
+        );
+      }
 
       const isOk = await this.connectMetaMask();
       console.log(isOk);
@@ -313,7 +313,7 @@ export default {
         this.$alert("Claim successfully!");
       } catch (error) {
         console.log(error);
-        this.$alert("Claim failed: " + error.message);
+        this.$alert(error.message);
       }
       this.claimLoading = false;
     },

@@ -8,6 +8,8 @@ import router from "./router";
 
 Vue.use(VueClipboards);
 
+Vue.prototype.$inDev = /localhost|hosting-dev/.test(location.host);
+
 Vue.prototype.$sleep = (msec = 300) => {
   return new Promise((resolve) => {
     setTimeout(() => {
