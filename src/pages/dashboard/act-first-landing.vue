@@ -153,6 +153,7 @@
 import { mapState } from "vuex";
 import Web3 from "web3";
 // import WalletConnectProvider from '@walletconnect/web3-provider';
+// import abiERC20 from "../../plugins/abiERC20";
 
 export default {
   computed: {
@@ -253,6 +254,29 @@ export default {
         return false;
       }
     },
+    async onClaim() {
+      const isOk = await this.connectMetaMask();
+      console.log(isOk);
+      if (!isOk) return;
+      // let accounts = await window.web3.eth.getAccounts();
+      // console.log(accounts);
+      // const contract = new window.web3.eth.Contract(abiERC20, 'address_xxx');
+      // await contract.methods.claim().send({
+      //   from: '',
+      // })
+
+      if (!this.ethAddr) {
+        this.setAddr();
+        return;
+      }
+      if (this.actStatus != 2) {
+        return this.$alert(
+          "Available to claim at the end of the First Landing."
+        );
+      }
+
+      this.$toast("dev");
+    },
     numberComma(source, length = 3) {
       source = String(source).split(".");
       source[0] = source[0].replace(
@@ -304,25 +328,6 @@ export default {
         console.log(error);
         this.setAddr();
       }
-    },
-    async onClaim() {
-      const isOk = await this.connectMetaMask();
-      console.log(isOk);
-      if (!isOk) return;
-      // let accounts = await window.web3.eth.getAccounts();
-      // console.log(accounts);
-
-      if (!this.ethAddr) {
-        this.setAddr();
-        return;
-      }
-      if (this.actStatus != 2) {
-        return this.$alert(
-          "Available to claim at the end of the First Landing."
-        );
-      }
-
-      this.$toast("dev");
     },
     async onRefresh() {
       await this.getList();
