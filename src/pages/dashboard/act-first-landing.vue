@@ -2,11 +2,6 @@
 .act-p1 {
   min-height: 200px;
   background: linear-gradient(180deg, #353748 0%, #20242c 100%);
-  .act-gift1 {
-    right: -20px;
-    top: -130px;
-    width: 300px;
-  }
   .reward-item {
     min-width: 156px;
     height: 150px;
@@ -51,17 +46,21 @@
         >Rules</v-btn
       >
     </div>
-    <div
-      class="act-p1 bdrs-10 pos-r"
-      :style="{
-        'margin-top': asMobile ? '130px' : '220px',
-      }"
-    >
+    <div class="ta-c">
       <img
-        src="img/bg/act-gift.png"
-        class="pos-a act-gift1"
-        :style="asMobile ? 'width: 240px;top:-100px;' : ''"
+        src="img/bg/act-title1.png"
+        :style="{
+          height: asMobile ? '100px' : '250px',
+        }"
       />
+    </div>
+    <div
+      :style="{
+        'margin-top': asMobile ? '60px' : '50px',
+      }"
+    ></div>
+    <act-countdown></act-countdown>
+    <div class="act-p1 bdrs-10 pos-r">
       <div class="pd-20 pl-0 pr-0">
         <div class="ml-5 mr-6 d-flex al-c">
           <h3>My Rewards</h3>

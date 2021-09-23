@@ -30,7 +30,7 @@
         </v-col>
         <v-col cols="12" md="7" v-if="fileName">
           <v-skeleton-loader type="article" v-if="loading" />
-          <div v-else-if="isMedia">
+          <div class="ta-c" v-else-if="isMedia">
             <img
               v-if="isImg"
               :src="result"
@@ -40,8 +40,17 @@
             <audio v-else-if="isAudio" :src="result"></audio>
             <video v-else :src="result" class="w100p" controls></video>
           </div>
+          <div class="ta-c pd-20" v-else-if="isLarge">
+            <v-btn :href="result" target="_blank">
+              <v-icon>mdi-file-export-outline</v-icon>
+              <span>{{ fileName }}</span>
+            </v-btn>
+          </div>
           <div v-else class="fz-14 lh-2 ov-a" style="max-height: 80vh">
             {{ result }}
+          </div>
+          <div class="ta-c mt-3 gray fz-14">
+            {{ sizeInfo }}
           </div>
         </v-col>
       </v-row>
@@ -75,6 +84,7 @@ export default {
       loading: false,
       fileName: null,
       info: null,
+      fileSize: 0,
     };
   },
   computed: {
@@ -83,6 +93,14 @@ export default {
     },
     ftype() {
       return this.getFtype(this.fileName);
+    },
+    sizeInfo() {
+      const m = Math.pow(1024, 2);
+      if (this.fileSize >= m) return (this.fileSize / m).toFixed(1) + "M";
+      return (this.fileSize / 1024).toFixed(1) + "K";
+    },
+    isLarge() {
+      return this.fileSize > 512 * 1024;
     },
     isImg() {
       return /ico|png|jpg|jpeg|gif|svg/.test(this.ftype);
@@ -136,13 +154,14 @@ export default {
       }
     },
     async onActive(it) {
-      const [hash, name, dir] = it[0].split(",");
+      const [hash, name, dir, size] = it[0].split(",");
       try {
         this.fileName = name;
         this.loading = true;
         this.result = "";
         const url = `/artifact/deployment/${hash}/file/${name}`;
-        if (this.isMedia) {
+        this.fileSize = size;
+        if (this.isMedia || this.isLarge) {
           await this.$sleep(500);
           this.result =
             "//" + this.info.domain + "/" + dir + "/" + this.fileName;
@@ -180,7 +199,7 @@ export default {
         if (item) {
           it.dir = item.dir + (it.dir ? "/" + it.dir : "");
         }
-        it.id = [it.hash, it.name, it.dir].join(",");
+        it.id = [it.hash, it.name, it.dir, it.size].join(",");
       });
       // console.log(data);
       if (item) {

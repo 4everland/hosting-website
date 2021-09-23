@@ -2,9 +2,9 @@
   <div>
     <h3>Domains</h3>
     <div class="gray mt-1 fz-14">
-      These domains are assigned to your Production Deployments.Optionally, a
-      different Git branch or a redirection to another domain can be configured
-      for each one.
+      These domains are assigned to your Production Deployments.
+      <!-- Optionally, a different Git branch or a redirection to another domain can be configured
+      for each one. -->
     </div>
     <div class="mt-5 d-flex">
       <v-text-field
@@ -105,7 +105,9 @@ import { mapState } from "vuex";
 
 export default {
   data() {
+    const curPath = this.$route.path;
     return {
+      curPath,
       domain: "",
       list: null,
       adding: false,
@@ -120,10 +122,13 @@ export default {
       info: (s) => s.projectInfo,
       isFocus: (s) => s.isFocus,
     }),
+    isCurPath() {
+      return this.curPath == this.$route.path;
+    },
   },
   watch: {
     isFocus(val) {
-      if (val) {
+      if (val && this.isCurPath) {
         this.setRefresh();
         setTimeout(() => {
           this.setRefresh();

@@ -196,7 +196,6 @@ export default {
       this.genImg("save");
     },
     async genImg(act) {
-      // window.open("img/bg/act-invite.png");
       try {
         const el = this.$refs.imgWrap;
         let canvas = document.createElement("canvas");

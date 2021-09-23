@@ -14,7 +14,9 @@
         }"
       >
         <!-- <img src="img/icon.svg" style="height: 30px" /> -->
-        <e-logo class="d-b" :height="50"></e-logo>
+        <a href="/">
+          <e-logo class="d-b" :height="50"></e-logo>
+        </a>
         <div class="mt-10">
           <v-btn
             icon
