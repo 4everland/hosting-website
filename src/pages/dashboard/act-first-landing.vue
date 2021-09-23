@@ -302,10 +302,12 @@ export default {
             },
             (err, txid) => {
               if (err) {
-                throw err;
+                this.$alert(err.message);
+                return;
               }
               localStorage.txid = txid;
-              this.$toast("txid: " + txid);
+              console.log("txid: " + txid);
+              this.$toast("Transaction start");
             }
           );
         this.$alert("Claim successfully!");
