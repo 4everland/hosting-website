@@ -48,7 +48,7 @@
           <v-col cols="3" v-for="(it, i) in timeList" :key="i">
             <div class="bg-pane ta-c bdrs-10 lh-1">
               <h2 class="fz-35 mb-2">{{ it.val }}</h2>
-              <div class="unit fz-17">{{ it.unit }}</div>
+              <div class="unit fz-16">{{ it.unit }}</div>
             </div>
           </v-col>
         </v-row>

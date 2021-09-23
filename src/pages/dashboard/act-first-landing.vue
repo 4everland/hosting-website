@@ -125,7 +125,6 @@
         <div class="ta-c mt-10">
           <v-btn
             :disabled="totalReward == 0"
-            :loading="loading"
             @click="onClaim"
             rounded
             style="background: linear-gradient(90deg, #fa4adc 0%, #de4343 100%)"
