@@ -108,7 +108,7 @@
                     @click="onClick(it)"
                     color="primary"
                     small
-                    :disabled="it.disabled"
+                    :disabled="it.disabled && !$inDev"
                     v-if="it.btnTxt"
                     >{{ it.btnTxt }}</v-btn
                   >
