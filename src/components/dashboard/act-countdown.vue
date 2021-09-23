@@ -73,7 +73,7 @@ export default {
       const hours = ((sec % 86400) / 3600) | 0;
       const mins = ((sec % 3600) / 60) | 0;
       const seconds = sec % 60;
-      return [
+      const list = [
         {
           val: days,
           unit: "DAYS",
@@ -91,6 +91,10 @@ export default {
           unit: "SECONDS",
         },
       ];
+      for (const it of list) {
+        if (it.val < 10) it.val = "0" + it.val;
+      }
+      return list;
     },
   },
 };
