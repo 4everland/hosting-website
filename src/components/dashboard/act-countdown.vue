@@ -2,11 +2,6 @@
 .act-countdown {
   background: #1e2226;
   min-height: 100px;
-  .act-gift1 {
-    right: -20px;
-    top: -130px;
-    width: 300px;
-  }
   .bg-pane {
     background: -webkit-linear-gradient(top, #353748, #20242c);
     padding: 20px 0;
@@ -19,20 +14,15 @@
 
 <template>
   <div class="act-countdown pos-r bdrs-10 mb-8" v-if="timeList.length">
-    <img
-      src="img/bg/act-gift.png"
-      class="pos-a act-gift1"
-      :style="asMobile ? 'width: 240px;top:-100px;' : ''"
-    />
     <v-row>
       <v-col md="12" cols="12">
         <div class="d-flex f-center al-c h100p">
-          <h2 class="lh-1" style="font-size: 30px">EVENT ENDS IN</h2>
+          <h2 class="lh-1" style="font-size: 28px">EVENT ENDS IN</h2>
           <e-tooltip right max-width="300">
             <v-icon
               slot="ref"
               color="#ddd"
-              size="20"
+              size="16"
               class="pa-1 d-ib mt-1 ml-2"
               >mdi-help-circle-outline</v-icon
             >
@@ -67,6 +57,9 @@ export default {
     },
     timeList() {
       const msec = 1634169600000 - this.$store.state.nowDate;
+      if (!this.$inDev && msec > 86400 * 10e3) {
+        return [];
+      }
       if (msec < 0) {
         return [];
       }

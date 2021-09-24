@@ -11,6 +11,11 @@
     }
   }
 }
+.act-gift1 {
+  right: -20px;
+  top: -130px;
+  width: 300px;
+}
 .act-wrap1 {
   .bd-1b {
     border: 1px solid #4a96fa;
@@ -59,7 +64,15 @@
         'margin-top': asMobile ? '60px' : '50px',
       }"
     ></div>
-    <act-countdown></act-countdown>
+
+    <div class="pos-r">
+      <img
+        src="img/bg/act-gift.png"
+        class="pos-a z-1 act-gift1"
+        :style="asMobile ? 'width: 240px;top:-100px;' : ''"
+      />
+      <act-countdown></act-countdown>
+    </div>
     <div class="act-p1 bdrs-10 pos-r">
       <div class="pd-20 pl-0 pr-0">
         <div class="ml-5 mr-6 d-flex al-c">
@@ -276,14 +289,14 @@ export default {
       // https://raw.githubusercontent.com/dinn2018/airdrop-claim/master/scripts/result.json
       const info = actAbi.result.claims[this.ethAddr];
       if (!info) {
-        return this.$alert(`Your ETH address is not in reward list.`);
+        return this.$alert(`Your Wallet address is not in reward list.`);
       }
 
       let accounts = await window.web3.eth.getAccounts();
       console.log(accounts);
-      // if (!accounts.includes(this.ethAddr)) {
-      //   return this.$alert(`Your ETH address is not in MetaMask.`);
-      // }
+      if (!accounts.includes(this.ethAddr)) {
+        return this.$alert(`Your Wallet address is not connected in MetaMask.`);
+      }
 
       const contract = new window.web3.eth.Contract(actAbi.abi, actAbi.address);
       this.claimLoading = true;
