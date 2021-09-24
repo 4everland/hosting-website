@@ -97,12 +97,8 @@
       </v-row>
 
       <h4 class="mb-2">Retention Rate</h4>
-      <v-data-table
-        :headers="headers"
-        :items="tableList"
-        :loading="tableLoading"
-        hide-default-footer
-      ></v-data-table>
+      <v-skeleton-loader type="article" v-if="tableLoading"></v-skeleton-loader>
+      <statis-table :list="tableList" v-else></statis-table>
     </div>
   </v-card>
 </template>
@@ -130,38 +126,6 @@ export default {
           type: "UNIQUE_VISITOR",
         },
         { title: this.$t(`dashboard.statistics.PageView`), type: "PAGE_VIEW" },
-      ],
-      headers: [
-        { text: this.$t(`dashboard.statistics.Time`), value: "date" },
-        { text: this.$t(`dashboard.statistics.NewUsers`), value: "newUsers" },
-        {
-          text: this.$t(`dashboard.statistics.Day`, { num: "1" }),
-          value: "d1",
-        },
-        {
-          text: this.$t(`dashboard.statistics.Day`, { num: "2" }),
-          value: "d2",
-        },
-        {
-          text: this.$t(`dashboard.statistics.Day`, { num: "3" }),
-          value: "d3",
-        },
-        {
-          text: this.$t(`dashboard.statistics.Day`, { num: "4" }),
-          value: "d4",
-        },
-        {
-          text: this.$t(`dashboard.statistics.Day`, { num: "5" }),
-          value: "d5",
-        },
-        {
-          text: this.$t(`dashboard.statistics.Day`, { num: "6" }),
-          value: "d6",
-        },
-        {
-          text: this.$t(`dashboard.statistics.Day`, { num: "7" }),
-          value: "d7",
-        },
       ],
       tableList: [],
       tableLoading: false,
