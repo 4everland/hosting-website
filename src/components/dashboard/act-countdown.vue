@@ -25,9 +25,9 @@
       :style="asMobile ? 'width: 240px;top:-100px;' : ''"
     />
     <v-row>
-      <v-col md="6" cols="12">
+      <v-col md="12" cols="12">
         <div class="d-flex f-center al-c h100p">
-          <h2 class="lh-1" style="font-size: 40px">EVENT ENDS IN</h2>
+          <h2 class="lh-1" style="font-size: 30px">EVENT ENDS IN</h2>
           <e-tooltip right max-width="300">
             <v-icon
               slot="ref"
@@ -43,15 +43,17 @@
           </e-tooltip>
         </div>
       </v-col>
-      <v-col md="6" cols="12">
-        <v-row>
-          <v-col cols="3" v-for="(it, i) in timeList" :key="i">
-            <div class="bg-pane ta-c bdrs-10 lh-1">
-              <h2 class="fz-35 mb-2">{{ it.val }}</h2>
-              <div class="unit fz-16">{{ it.unit }}</div>
-            </div>
-          </v-col>
-        </v-row>
+      <v-col md="12" cols="12">
+        <div style="max-width: 500px" class="m-auto">
+          <v-row>
+            <v-col cols="3" v-for="(it, i) in timeList" :key="i">
+              <div class="bg-pane ta-c bdrs-10 lh-1">
+                <h2 class="fz-35 mb-2">{{ it.val }}</h2>
+                <div class="unit fz-16">{{ it.unit }}</div>
+              </div>
+            </v-col>
+          </v-row>
+        </div>
       </v-col>
     </v-row>
   </div>
