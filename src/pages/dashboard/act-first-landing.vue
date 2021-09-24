@@ -108,7 +108,7 @@
                     @click="onClick(it)"
                     color="primary"
                     small
-                    :disabled="it.disabled && !$inDev"
+                    :disabled="it.disabled"
                     v-if="it.btnTxt"
                     >{{ it.btnTxt }}</v-btn
                   >
@@ -281,9 +281,9 @@ export default {
 
       let accounts = await window.web3.eth.getAccounts();
       console.log(accounts);
-      if (!accounts.includes(this.ethAddr)) {
-        return this.$alert(`Your ETH address is not in MetaMask.`);
-      }
+      // if (!accounts.includes(this.ethAddr)) {
+      //   return this.$alert(`Your ETH address is not in MetaMask.`);
+      // }
 
       const contract = new window.web3.eth.Contract(actAbi.abi, actAbi.address);
       this.claimLoading = true;
