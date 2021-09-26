@@ -324,11 +324,39 @@ export default {
             }
           );
         this.$alert("Claim successfully!");
+        // this.addSymbol();
       } catch (error) {
         console.log(error);
         this.$alert(error.message);
       }
       this.claimLoading = false;
+    },
+    addSymbol() {
+      if (localStorage.tever_symbol) {
+        return;
+      }
+      window.web3.currentProvider.send(
+        {
+          method: "wallet_watchAsset",
+          params: {
+            type: "ERC20",
+            options: {
+              address: actAbi.address,
+              symbol: "TEVER",
+              decimals: 5,
+              image: "https://hosting-dev.vercel.app/img/logo.jpg",
+            },
+          },
+        },
+        (err, ok) => {
+          if (err) {
+            console.log(err);
+            return;
+          }
+          console.log("set symbol", ok);
+          localStorage.tever_symbol = 1;
+        }
+      );
     },
     numberComma(source, length = 3) {
       source = String(source).split(".");
