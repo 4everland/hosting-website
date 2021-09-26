@@ -86,7 +86,13 @@
           >
             <v-icon>mdi-refresh</v-icon>
           </v-btn> -->
-          <v-btn class="ml-auto" color="primary" small rounded @click="setAddr">
+          <v-btn
+            class="ml-auto"
+            :color="errAccount ? 'error' : 'primary'"
+            small
+            rounded
+            @click="setAddr"
+          >
             <v-icon size="16" class="mr-1">mdi-wallet</v-icon>
             <span>{{ ethAddr ? ethAddr.cutStr(6, 4) : "Wallet Address" }}</span>
           </v-btn>
@@ -225,6 +231,7 @@ export default {
       ],
       ethAddr: "",
       claimLoading: false,
+      errAccount: false,
     };
   },
   watch: {
@@ -294,8 +301,14 @@ export default {
 
       let accounts = await window.web3.eth.getAccounts();
       console.log(accounts);
-      if (!accounts.includes(this.ethAddr)) {
-        return this.$alert(`Your Wallet address is not connected in MetaMask.`);
+      this.errAccount = !accounts.includes(this.ethAddr);
+      if (this.errAccount) {
+        return this.$alert(
+          `Wallet address(${this.ethAddr.cutStr(
+            6,
+            4
+          )}) is not connected in MetaMask.`
+        );
       }
 
       const contract = new window.web3.eth.Contract(actAbi.abi, actAbi.address);
