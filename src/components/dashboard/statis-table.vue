@@ -12,8 +12,12 @@
     tbody td {
       border-bottom: 1px solid #eee;
       color: #495667;
+    }
+    span.num {
+      padding: 4px 8px;
+      border-radius: 8px;
       &.v-1 {
-        background: #c3e2fe;
+        background: #c3e9fe;
       }
       &.v-5 {
         background: #84c2fc;
@@ -45,8 +49,10 @@
           <tr v-for="(it, i) in list" :key="i">
             <td>{{ it.date }}</td>
             <td>{{ numberComma(it.newUsers) }}</td>
-            <td v-for="j in 7" :key="j" :class="getCls(it['d' + j])">
-              {{ it["d" + j] }}
+            <td v-for="j in 7" :key="j">
+              <span class="d-ib num" :class="getCls(it['d' + j])">
+                {{ it["d" + j] }}
+              </span>
             </td>
           </tr>
         </tbody>
