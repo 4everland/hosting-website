@@ -39,9 +39,9 @@ export default {
       );
     },
     navItems() {
-      const { taskId } = this.$route.params;
+      const { projName, taskId } = this.$route.params;
       const { name, projectId } = this.projInfo.config || {};
-      if (!name) return [];
+      if (name != projName) return [];
       const list = [
         {
           text: "Projects",

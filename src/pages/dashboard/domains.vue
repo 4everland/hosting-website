@@ -38,7 +38,9 @@
             <v-chip
               :color="item.valid ? 'success' : 'error'"
               small
-              :to="`/project/${item.projectId}/settings?tab=1`"
+              :to="`/project/${item.projectName || 'project'}/${
+                item.projectId
+              }/settings?tab=1`"
             >
               {{ item.domain }}
             </v-chip>
@@ -248,7 +250,9 @@ export default {
         this.domain = "";
         this.$toast("Added successfully");
         this.showPop = false;
-        this.$router.push(`/project/${projectId}/settings?tab=1`);
+        this.$router.push(
+          `/project/${this.chooseProj.name}/${projectId}/settings?tab=1`
+        );
         // this.getList();
       } catch (error) {
         console.log(error);

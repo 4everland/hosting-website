@@ -102,6 +102,11 @@ export default {
     },
   },
   mounted() {
+    if (this.projName != this.info.name || this.info.repo) {
+      this.$setState({
+        projectInfo: {},
+      });
+    }
     this.getInfo();
   },
   methods: {
