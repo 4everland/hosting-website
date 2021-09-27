@@ -150,7 +150,8 @@
             style="background: linear-gradient(90deg, #fa4adc 0%, #de4343 100%)"
           >
             <span class="white-0 d-ib pl-3 pr-3"
-              >My rewards : {{ numberComma(totalReward) }}
+              >{{ claimed ? "Claimed" : "My rewards" }} :
+              {{ numberComma(totalReward) }}
               <span class="fz-12">4EVER</span></span
             >
           </v-btn>
@@ -232,6 +233,7 @@ export default {
       ethAddr: "",
       claimLoading: false,
       errAccount: false,
+      claimed: !!localStorage.claimed,
     };
   },
   watch: {
@@ -312,8 +314,13 @@ export default {
       }
 
       const contract = new window.web3.eth.Contract(actAbi.abi, actAbi.address);
-      this.claimLoading = true;
       try {
+        const isClaimed = await contract.methods.isClaimed(info.index);
+        if (isClaimed) {
+          this.$alert("Your wallet address has been claimed.");
+          return;
+        }
+        this.claimLoading = true;
         await contract.methods
           .claim(
             info.index,
@@ -337,6 +344,8 @@ export default {
             }
           );
         this.$alert("Claim successfully!");
+        localStorage.claimed = 1;
+        this.claimed = true;
         // this.addSymbol();
       } catch (error) {
         console.log(error);
