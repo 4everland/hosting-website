@@ -49,7 +49,7 @@ export default {
         },
         {
           text: name,
-          to: `/project/${projectId}/overview`,
+          to: `/project/${name}/${projectId}/overview`,
         },
         {
           text: `Build-${taskId.slice(-6)}`,
@@ -65,7 +65,7 @@ export default {
       if (this.ftab) {
         list.splice(2, -1, {
           text: this.ftab.capitalize(),
-          to: `/project/${projectId}/${this.ftab}`,
+          to: `/project/${name}/${projectId}/${this.ftab}`,
         });
       }
       return list;

@@ -47,8 +47,8 @@ export default {
               to: "/changelog",
             },
             {
-              label: "Feedback",
-              notice: "feedback",
+              label: "Bug Bounty",
+              to: "/bug-bounty",
             },
             {
               label: "Brand Resources",

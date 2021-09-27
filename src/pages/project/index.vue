@@ -5,7 +5,7 @@
         <v-tabs :color="$color1" v-model="curPath">
           <v-tab
             replace
-            :to="`/project/${id}/${it.path}`"
+            :to="`/project/${projName}/${id}/${it.path}`"
             v-for="(it, i) in tabs"
             :key="i"
           >
@@ -43,16 +43,14 @@ export default {
       );
     },
     navItems() {
-      const { name, projectId } = this.info.config || {};
-      if (!name) return [];
       const list = [
         {
           text: "Projects",
           to: "/dashboard/projects",
         },
         {
-          text: name,
-          to: `/project/${projectId}/overview`,
+          text: this.projName,
+          to: `/project/${this.projName}/${this.id}/overview`,
         },
       ];
       if (this.curTab.path != "overview") {
@@ -65,9 +63,10 @@ export default {
     },
   },
   data() {
-    const { id } = this.$route.params;
+    const { projName, id } = this.$route.params;
     return {
       id,
+      projName,
       curPath: "",
       tabs: [
         {

@@ -34,7 +34,7 @@
       <!-- :md="6"  -->
       <v-col cols="12" :md="6" :lg="4" v-for="it in list" :key="it.id">
         <v-card outlined class="hover-c1 trans-200 ov-h">
-          <a :href="`#/project/${it.id}/overview`">
+          <a :href="`#/project/${it.name}/${it.id}/overview`">
             <v-img
               :src="$getImgSrc(it.production.screenshot)"
               lazy-src="img/empty/cover.jpg"
@@ -44,7 +44,7 @@
 
           <div class="d-flex al-c pl-4 pr-4 pt-3 bdt-1">
             <a
-              :href="`#/project/${it.id}/overview`"
+              :href="`#/project/${it.name}/${it.id}/overview`"
               class="mr-auto b line-1 fz-18 fw-b"
             >
               {{ it.name }}

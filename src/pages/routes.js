@@ -20,10 +20,16 @@ export default [
   {
     path: "/new/clone-flow",
     component: CloneFlow,
+    meta: {
+      title: "New Project",
+    },
   },
   {
     path: "/bug-bounty",
     component: BugBounty,
+    meta: {
+      title: "Bug Bounty",
+    },
   },
   {
     path: "/changelog",
@@ -32,6 +38,9 @@ export default [
   {
     path: "/changelog",
     component: Changelog,
+    meta: {
+      title: "Changelog",
+    },
   },
   {
     path: "/templates",
@@ -40,6 +49,9 @@ export default [
   {
     path: "/solution/:name",
     component: Solution,
+    meta: {
+      title: "New Project",
+    },
   },
   {
     path: "/dashboard",
@@ -49,9 +61,12 @@ export default [
   {
     path: "/new",
     component: ProjectNew,
+    meta: {
+      title: "New Project",
+    },
   },
   {
-    path: "/project/:id",
+    path: "/project/:projName/:id",
     component: Project,
     children: ProjectChildren,
   },

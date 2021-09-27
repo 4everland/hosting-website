@@ -185,13 +185,13 @@ export default {
       }
       this.building = false;
     },
-    getLink(name) {
-      const { latest = {} } = this.info;
+    getLink(act) {
+      const { name, latest = {} } = this.info;
       let link;
-      if (name == "log") {
-        link = `/build/${this.info.name}/${latest.taskId}/overview`;
-      } else if (name == "domain") {
-        link = `/project/${this.id}/settings?tab=1`;
+      if (act == "log") {
+        link = `/build/${name}/${latest.taskId}/overview`;
+      } else if (act == "domain") {
+        link = `/project/${name}/${this.id}/settings?tab=1`;
       }
       return link;
     },
