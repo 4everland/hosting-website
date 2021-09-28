@@ -164,9 +164,6 @@ export default {
     isFocus(val) {
       if (val && this.isCurPath) {
         this.setRefresh();
-        setTimeout(() => {
-          this.setRefresh();
-        }, 10e3);
       }
     },
   },
