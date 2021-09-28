@@ -346,7 +346,7 @@ export default {
         this.$alert("Claim successfully!");
         localStorage.claimed = 1;
         this.claimed = true;
-        // this.addSymbol();
+        this.addSymbol();
       } catch (error) {
         console.log(error);
         this.$alert(error.message);
@@ -357,15 +357,16 @@ export default {
       if (localStorage.tever_symbol) {
         return;
       }
+      // https://github.com/dinn2018/airdrop-claim/blob/master/deployments/ropsten/TEver.json
       window.web3.currentProvider.send(
         {
           method: "wallet_watchAsset",
           params: {
             type: "ERC20",
             options: {
-              address: actAbi.address,
+              address: "0x91122227D4b4dbdFE85b9e0D8FbBd8bBeD2F038c",
               symbol: "TEVER",
-              decimals: 5,
+              decimals: 18,
               image: "https://hosting-dev.vercel.app/img/logo.jpg",
             },
           },
