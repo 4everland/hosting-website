@@ -318,7 +318,7 @@ export default {
         const isClaimed = await contract.methods.isClaimed(info.index);
         if (isClaimed) {
           this.$alert("Your wallet address has been claimed.");
-          return;
+          if (!this.$inDev) return;
         }
         this.claimLoading = true;
         await contract.methods
