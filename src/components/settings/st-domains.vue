@@ -233,10 +233,10 @@ export default {
         });
         this.domain = "";
         this.$toast("Added successfully");
+        this.hasRefresh = false;
         await this.getList();
         // console.log(data)
         this.onUpdate();
-        this.setRefresh();
       } catch (error) {
         console.log(error);
       }
@@ -258,6 +258,7 @@ export default {
         }
         this.$set(it, "removing", true);
         await this.$http.delete("/domain/" + it.domainId);
+        this.hasRefresh = false;
         await this.getList();
         this.$toast("Removed successfully");
         this.onUpdate();
