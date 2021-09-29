@@ -110,28 +110,28 @@ export default {
     links() {
       let links = [
         {
-          label: "Changelog",
+          label: this.$t("common.Changelog"),
           to: "/changelog",
         },
         {
-          label: "Docs",
+          label: this.$t("common.Doc"),
           href: "https://docs.hosting.4everland.org/guide/",
         },
       ];
       const { username, avatar } = this.userInfo;
       if (username) {
         let feedback = {
-          label: "Contact",
+          label: this.$t("common.Contact"),
           icon: "message-processing-outline",
           // name: "feedback",
           subs: [
             {
-              label: "Bug Bounty",
+              label: this.$t("common.Bugbounty"),
               to: "/bug-bounty",
               icon: "bug-outline",
             },
             {
-              label: "Report",
+              label: this.$t("common.Report"),
               name: "feedback",
               icon: "alert-octagon-outline",
             },
@@ -143,12 +143,12 @@ export default {
         } else links.unshift(feedback);
         const subs = [
           {
-            label: "Settings",
+            label: this.$t("common.Settings"),
             title: username,
             to: "/dashboard/settings",
           },
           {
-            label: "Logout",
+            label: this.$t("common.Logout"),
             name: "logout",
           },
         ];

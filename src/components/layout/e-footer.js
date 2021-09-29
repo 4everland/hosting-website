@@ -3,7 +3,7 @@ export default {
     return {
       menus: [
         {
-          title: "Frameworks",
+          title: this.$t("common.Frameworks"),
           subs: [
             {
               label: "Vue.js",
@@ -36,60 +36,60 @@ export default {
           ],
         },
         {
-          title: "Resources",
+          title: this.$t("common.Resources"),
           subs: [
             {
-              label: "Documentation",
+              label: this.$t("common.Doc"),
               href: "https://docs.hosting.4everland.org/guide/",
             },
             {
-              label: "Changelog",
+              label: this.$t("common.Changelog"),
               to: "/changelog",
             },
             {
-              label: "Bug Bounty",
+              label: this.$t("common.Bugbounty"),
               to: "/bug-bounty",
             },
             {
-              label: "Brand Resources",
+              label: this.$t("common.Brand"),
               href: "file/logo.zip",
             },
           ],
         },
         {
-          title: "Project",
+          title: this.$t("common.Project"),
           subs: [
             {
-              label: "Home",
+              label: this.$t("common.Home"),
               href: "https://www.4everland.org/",
             },
             {
-              label: "Blog",
+              label: this.$t("common.Blog"),
               href: "https://www.4everland.org/blog",
             },
             {
-              label: "Roadmap",
+              label: this.$t("common.Roadmap"),
               href: "https://www.4everland.org/#roadmap",
             },
             {
-              label: "Whitepaper",
+              label: this.$t("common.Whitepaper"),
               href: "https://4everland.org/4everland-whitepaper-en.pdf",
             },
             {
-              label: "Contact us",
+              label: this.$t("common.ContactUs"),
               href: "mailto:contact@4everlan.org",
             },
           ],
         },
         {
-          title: "Legal",
+          title: this.$t("common.Legal"),
           subs: [
             {
-              label: "Privacy Policy",
+              label: this.$t("common.PrivacyPolicy"),
               href: "https://www.4everland.org/privacy-policy",
             },
             {
-              label: "Term of Service",
+              label: this.$t("common.TermOfService"),
               href: "https://www.4everland.org/term-of-use",
             },
             // {
