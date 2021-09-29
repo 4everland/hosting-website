@@ -367,7 +367,7 @@ export default {
               address: "0x91122227D4b4dbdFE85b9e0D8FbBd8bBeD2F038c",
               symbol: "TEVER",
               decimals: 18,
-              image: "https://hosting-dev.vercel.app/img/logo.jpg",
+              image: "https://hosting.4everland.org/img/logo.jpg",
             },
           },
         },
