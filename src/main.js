@@ -8,6 +8,20 @@ import "./setup";
 import locales from "./locales";
 Vue.config.productionTip = false;
 
+router.beforeEach((to, _, next) => {
+  // console.log(to);
+  let { title } = to.meta || {};
+  const name = "4EVERLAND";
+  if (title) {
+    title += " - " + name;
+    for (const key in to.params) {
+      title = title.replace(`{${key}}`, to.params[key]);
+    }
+  } else title = name;
+  document.title = title;
+  next();
+});
+
 new Vue({
   router,
   store,
@@ -21,7 +35,6 @@ new Vue({
     }),
   },
   mounted() {
-    Vue.prototype.$docTitle = document.title;
     this.onInit();
   },
   watch: {
@@ -29,10 +42,6 @@ new Vue({
       window.scrollTo(0, 0);
       if (!/^\/build\//.test(val)) {
         this.$setIcon();
-        document.title = this.$docTitle;
-        this.$setState({
-          noticeMsg: { name: "setTitle" },
-        });
       }
       this.$loading.close();
     },
@@ -49,10 +58,30 @@ new Vue({
     },
   },
   methods: {
+    async getActStatus() {
+      try {
+        if (localStorage.actStatus) {
+          this.$setState({
+            actStatus: localStorage.actStatus * 1,
+          });
+        }
+        let { data } = await this.$http.get("/activity/status");
+        if (/localhost/.test(location.origin)) {
+          data = 1;
+        }
+        this.$setState({
+          actStatus: data,
+        });
+        localStorage.actStatus = data;
+      } catch (error) {
+        //
+      }
+    },
     async onInit() {
       const now = Date.now();
       if (this.token) {
         this.initSocket();
+        this.getActStatus();
         await this.getUesrInfo();
         this.$setState({
           noticeMsg: {

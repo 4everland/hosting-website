@@ -4,8 +4,11 @@ import "./components";
 import "./api";
 import VueClipboards from "vue-clipboards";
 import frameworks from "./assets/frameworks.json";
+import router from "./router";
 
 Vue.use(VueClipboards);
+
+Vue.prototype.$inDev = /localhost|hosting-dev/.test(location.host);
 
 Vue.prototype.$sleep = (msec = 300) => {
   return new Promise((resolve) => {
@@ -21,7 +24,7 @@ Vue.prototype.$navTo = (url) => {
   } else if (/:/.test(url)) {
     location.href = url;
   } else {
-    Vue.prototype.$router.push(url);
+    router.push(url);
   }
 };
 
@@ -57,6 +60,19 @@ Vue.prototype.$color1 = "#4A96FA";
 Vue.prototype.$bg1 = "#1e2226";
 
 Vue.prototype.$regMap = {
-  email: /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/,
+  email: /^.+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/,
   domain: /(\w+\.)+\w{2,10}/,
+  eth: /^(0x)?[0-9a-fA-F]{40}$/,
+};
+
+Vue.prototype.$utils = {
+  getNonce(len = 4, radix = 36) {
+    let str = "";
+    while (str.length < len) {
+      str += Math.random()
+        .toString(radix)
+        .substr(2);
+    }
+    return str.substr(0, len);
+  },
 };

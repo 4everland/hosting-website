@@ -45,7 +45,7 @@ The severity of those bugs will be calculated using the Common Vulnerability Sco
 In addition to severity, rewards will also be weighed against the impact of bugs found and the difficulty level of finding them. 4EVERLAND may award an additional reward bonus for exceptional reports. This will be done at 4EVERLAND's discretion .
 
 <h4>How to submit your report</h4>
-Please submit your report at: https://hosting.4everland.org/feedback. Prior to the disclosure in the above report, no disclosure to any other person, entity or e-mail address is allowed.
+Please submit your report at this page. Prior to the disclosure in the above report, no disclosure to any other person, entity or e-mail address is allowed.
 
 Please include as much bug-related information as possible, including but not limited to:
 <ul>
@@ -83,7 +83,7 @@ Please include as much bug-related information as possible, including but not li
 除了评估严重性外，还将根据发现的漏洞的影响以及发现此类漏洞的难度级别来考虑奖励。4EVERLAND可能会为特殊报告提供额外奖励。这将由4EVERLAND自行决定完成。
 
 漏洞报告提交方式
-请在 https://hosting.4everland.org/feedback 上提交你的漏洞报告。在向上述报告披露之前，不得向任何其他人、实体或电子邮件地址披露。
+请在本页面提交你的漏洞报告。在向上述报告披露之前，不得向任何其他人、实体或电子邮件地址披露。
 
 请包含尽可能多的漏洞信息，包括：
 重现错误的条件是确定性的。

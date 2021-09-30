@@ -9,3 +9,10 @@
   transform: scale(.9);
 }
 
+.anim-shine {
+  animation: anim_shine 0.6s linear 3;
+}
+@keyframes anim_shine {
+  from {opacity: .5;}
+  to {opacity: 1;}
+}

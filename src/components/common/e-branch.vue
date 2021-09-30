@@ -1,7 +1,15 @@
 <template>
   <div class="d-flex al-c">
-    <v-icon size="18">mdi-github</v-icon>
-    <a v-if="href" :href="href" class="ml-2 b u" target="_blank">
+    <v-icon size="18" :color="color">{{ icon }}</v-icon>
+    <a
+      v-if="href"
+      :href="href"
+      class="ml-2 b u"
+      target="_blank"
+      :style="{
+        color,
+      }"
+    >
       {{ branch }}
     </a>
   </div>
@@ -11,6 +19,11 @@
 export default {
   props: {
     info: Object,
+    color: String,
+    icon: {
+      type: String,
+      default: "mdi-github",
+    },
   },
   computed: {
     projInfo() {

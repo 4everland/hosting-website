@@ -60,7 +60,10 @@ export default {
   },
   methods: {
     async onInit() {
-      const { token, is_new } = this.$route.query;
+      const { token, is_new, invite } = this.$route.query;
+      if (invite) {
+        localStorage.inviteBy = invite;
+      }
       if (token) {
         localStorage.token = token;
         localStorage.refreshAt = Date.now();
@@ -88,7 +91,13 @@ export default {
     async onLogin() {
       try {
         this.$loading();
-        const { data } = await this.$http.get("/githubapp/url");
+        const params = {};
+        if (localStorage.inviteBy) {
+          params.inviteCode = localStorage.inviteBy;
+        }
+        const { data } = await this.$http.get("/githubapp/url", {
+          params,
+        });
         // console.log(data)
         this.isOpen = true;
         // this.$openWindow(data.url);

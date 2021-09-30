@@ -17,7 +17,7 @@ export default {
     staCls() {
       let cls = "";
       if (this.state == "success") cls = "c-success";
-      else if (["failure", "cancelled"].includes(this.state)) cls = "c-error";
+      else if (/fail|error|cancel|timeout/i.test(this.state)) cls = "c-error";
       return cls;
     },
   },

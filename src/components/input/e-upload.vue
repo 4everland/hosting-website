@@ -2,7 +2,7 @@
 .e-upload {
   .item {
     width: 150px;
-    height: 112px;
+    height: 95px;
     border-radius: 5px;
     margin-right: 15px;
     margin-bottom: 15px;

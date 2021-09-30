@@ -1,14 +1,9 @@
 <template>
   <div class="wrap-1">
+    <e-storage ref="stor"></e-storage>
+
     <v-dialog v-model="showSelect" max-width="600">
-      <div class="pos-r">
-        <div
-          class="pos-a top-0 right-0 pd-15 z-100 hover-1"
-          @click="showSelect = false"
-        >
-          <v-icon>mdi-close</v-icon>
-        </div>
-      </div>
+      <e-dialog-close @click="showSelect = false" />
       <new-deploy
         :value="showSelect"
         :clone="!!isClone"
@@ -134,7 +129,10 @@
                         class="ml-1"
                         >mdi-lock-outline</v-icon
                       >
-                      <span class="ml-2 mr-3 gray fz-13 shrink-0">
+                      <span
+                        class="ml-2 mr-3 gray fz-13 shrink-0"
+                        v-if="!asMobile"
+                      >
                         <e-time>{{ it.updateAt }}</e-time>
                       </span>
                       <v-btn
@@ -155,7 +153,7 @@
                     :length="pageLen"
                     prev-icon="mdi-menu-left"
                     next-icon="mdi-menu-right"
-                    :total-visible="7"
+                    :total-visible="6"
                   ></v-pagination>
                 </div>
               </div>
@@ -200,6 +198,9 @@ export default {
       isFocus: (s) => s.isFocus,
       isTouch: (s) => s.isTouch,
     }),
+    asMobile() {
+      return this.$vuetify.breakpoint.smAndDown;
+    },
     chooseAccount() {
       return this.accountList.filter(
         (it) => it.githubId == this.chooseGithubId
@@ -248,10 +249,12 @@ export default {
       this.showSelect = true;
     },
     async addNew() {
-      if (this.isTouch && !this.popAccounts) {
+      if (this.isTouch && !this.popAccounts && this.accountList.length) {
         this.popAccounts = true;
         return;
       }
+      const needCheck = await this.$refs.stor.checkStorage();
+      if (needCheck) return;
       this.isAddClick = true;
       try {
         this.$loading();

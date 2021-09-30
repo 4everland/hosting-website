@@ -13,10 +13,16 @@
     </v-row>
     <div
       v-else-if="!list.length"
-      class="ta-c bg-white bdrs-5"
-      style="padding: 50px 0"
+      class="pb-10 ta-c bg-white bdrs-5 ov-h m-auto shadow-1"
+      style="max-width: 750px"
     >
-      <v-img src="img/empty/proj.png" max-width="220" class="m-auto"></v-img>
+      <v-img
+        src="img/empty/proj.png"
+        class="m-auto mt-10"
+        max-width="220"
+        v-if="actStatus == 0"
+      ></v-img>
+      <img src="img/empty/act-proj.png" class="m-auto w100p" v-else />
       <div class="gray mt-10">{{ $t(`${locales}NoDeployments`) }}</div>
       <div class="mt-6">
         <v-btn outlined color="primary" @click="addNew" :loading="loading">{{
@@ -26,9 +32,9 @@
     </div>
     <v-row v-else>
       <!-- :md="6"  -->
-      <v-col cols="12" :md="6" :lg="4" v-for="(it) in list" :key="it.id">
+      <v-col cols="12" :md="6" :lg="4" v-for="it in list" :key="it.id">
         <v-card outlined class="hover-c1 trans-200 ov-h">
-          <a :href="`#/project/${it.id}/overview`">
+          <a :href="`#/project/${it.name}/${it.id}/overview`">
             <v-img
               :src="$getImgSrc(it.production.screenshot)"
               lazy-src="img/empty/cover.jpg"
@@ -38,7 +44,7 @@
 
           <div class="d-flex al-c pl-4 pr-4 pt-3 bdt-1">
             <a
-              :href="`#/project/${it.id}/overview`"
+              :href="`#/project/${it.name}/${it.id}/overview`"
               class="mr-auto b line-1 fz-18 fw-b"
             >
               {{ it.name }}
@@ -117,12 +123,22 @@ export default {
     ...mapState({
       isFocus: (s) => s.isFocus,
       buildInfo: (s) => s.buildInfo,
+      actStatus: (s) => s.actStatus,
     }),
   },
   watch: {
     buildInfo({ data }) {
-      // console.log(data.state);
-      if (data.state != this.lastState) {
+      if (data.state != this.lastState && this.list) {
+        const item = this.list.filter((it) => {
+          return it.lastest && it.lastest.taskId == data.taskId;
+        })[0];
+        if (!item) {
+          if (this.hasNew) return;
+          this.hasNew = true;
+        } else {
+          this.hasNew = false;
+        }
+        console.log(this.hasNew, data.taskId, data.state);
         this.lastState = data.state;
         this.getList();
       }

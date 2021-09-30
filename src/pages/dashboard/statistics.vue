@@ -29,17 +29,25 @@
     </div>
 
     <div v-else>
-      <div class="mb-6">
+      <div class="mb-6 d-flex al-c">
+        <v-btn
+          :loading="loading"
+          @click="getData"
+          small
+          class="ml-auto mr-1 mt-5"
+          plain
+        >
+          <v-icon>mdi-refresh</v-icon>
+        </v-btn>
+        <!--  -->
         <v-select
           style="max-width: 300px"
-          class="ml-auto"
           v-model="appId"
           :items="apps"
           item-text="projectName"
           item-value="projectId"
-          label="All Dapps"
+          label="All DApps"
           hide-details
-          prepend-icon="mdi-apps"
           single-line
           :menu-props="{ offsetY: true }"
         ></v-select>
@@ -80,6 +88,7 @@
       <v-row class="mb-6">
         <v-col cols="12" md="6" v-for="(it, i) in chartList" :key="i">
           <statis-chart
+            :reload="!loading"
             :appId="appId"
             :title="it.title"
             :type="it.type"
@@ -88,17 +97,15 @@
       </v-row>
 
       <h4 class="mb-2">Retention Rate</h4>
-      <v-data-table
-        :headers="headers"
-        :items="tableList"
-        :loading="tableLoading"
-        hide-default-footer
-      ></v-data-table>
+      <v-skeleton-loader type="article" v-if="tableLoading"></v-skeleton-loader>
+      <statis-table :list="tableList" v-else></statis-table>
     </div>
   </v-card>
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   data() {
     const { appId } = this.$route.query;
@@ -107,6 +114,7 @@ export default {
       appId,
       apps: null,
       info: null,
+      loading: false,
       chartList: [
         {
           title: this.$tc(`dashboard.statistics.TotalUser`),
@@ -119,43 +127,17 @@ export default {
         },
         { title: this.$t(`dashboard.statistics.PageView`), type: "PAGE_VIEW" },
       ],
-      headers: [
-        { text: this.$t(`dashboard.statistics.Time`), value: "date" },
-        { text: this.$t(`dashboard.statistics.NewUsers`), value: "newUsers" },
-        {
-          text: this.$t(`dashboard.statistics.Day`, { num: "1" }),
-          value: "d1",
-        },
-        {
-          text: this.$t(`dashboard.statistics.Day`, { num: "2" }),
-          value: "d2",
-        },
-        {
-          text: this.$t(`dashboard.statistics.Day`, { num: "3" }),
-          value: "d3",
-        },
-        {
-          text: this.$t(`dashboard.statistics.Day`, { num: "4" }),
-          value: "d4",
-        },
-        {
-          text: this.$t(`dashboard.statistics.Day`, { num: "5" }),
-          value: "d5",
-        },
-        {
-          text: this.$t(`dashboard.statistics.Day`, { num: "6" }),
-          value: "d6",
-        },
-        {
-          text: this.$t(`dashboard.statistics.Day`, { num: "7" }),
-          value: "d7",
-        },
-      ],
       tableList: [],
       tableLoading: false,
     };
   },
   computed: {
+    ...mapState({
+      isFocus: (s) => s.isFocus,
+    }),
+    inTab() {
+      return this.$route.path == "/dashboard/statistics";
+    },
     summaryList() {
       if (!this.info) return [];
       return [
@@ -164,12 +146,12 @@ export default {
           value: this.info.totalUsers,
         },
         {
-          title: "Total PV",
-          value: this.info.totalPv || 0,
+          title: "Total UV",
+          value: this.info.totalUv || 0,
         },
         {
-          title: this.$t(`dashboard.statistics.RetentionRate`),
-          value: (this.info.retentionRate || 0) + "%",
+          title: "Total PV",
+          value: this.info.totalPv || 0,
         },
       ];
     },
@@ -200,6 +182,9 @@ export default {
     },
   },
   watch: {
+    inTab(val) {
+      if (this.appId && val) this.getApps();
+    },
     appId(val) {
       this.$router.replace({
         query: {
@@ -240,7 +225,7 @@ export default {
     async getData() {
       try {
         if (!this.appId) return;
-        this.$loading();
+        this.loading = true;
         const { data } = await this.$http.get(
           "/analytics/user/data/project/" + this.appId
         );
@@ -257,7 +242,7 @@ export default {
         console.log(error);
       }
       this.tableLoading = false;
-      this.$loading.close();
+      this.loading = false;
     },
   },
 };

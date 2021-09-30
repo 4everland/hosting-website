@@ -12,6 +12,7 @@ body {
   .fz-22 { font-size: 22px; }
   .fz-25 { font-size: 25px; }
   .fz-30 { font-size: 30px; }
+  .fz-35 { font-size: 35px; }
   .fz-50 { font-size: 50px; }
   .fz-60 { font-size: 60px; }
 }
@@ -33,6 +34,9 @@ body {
 .bd-n { border: none; }
 .cursor-ban { cursor: not-allowed;}
 .cursor-p, .hover-1 { cursor: pointer; }
+.hover-1:hover {
+  opacity: .8;
+}
 .filter-gray {
   filter: grayscale(100%);
 }

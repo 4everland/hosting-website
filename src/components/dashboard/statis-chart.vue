@@ -15,6 +15,7 @@ export default {
     title: String,
     type: String,
     appId: String,
+    reload: Boolean,
   },
   data() {
     return {
@@ -23,15 +24,15 @@ export default {
     };
   },
   watch: {
-    appId() {
-      this.getData();
-    },
     timeLimit() {
       this.getData();
     },
+    reload(val) {
+      if (val) this.getData();
+    },
   },
   mounted() {
-    this.getData();
+    // this.getData();
   },
   methods: {
     async getData() {

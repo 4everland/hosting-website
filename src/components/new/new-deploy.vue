@@ -88,19 +88,46 @@
                 >{{ $t(`${locales}Edit`) }}</v-btn
               >
             </div>
-            <v-select
-              v-model="form.framework"
-              @input="onFramework"
-              :items="frameworks"
-              item-text="name"
-              item-value="slug"
-              :label="$t(`${locales}FrameworkPreset`)"
-            >
-              <template #prepend v-if="chooseFramework">
-                <img :src="chooseFramework.logo" style="width: 20px" />
-              </template>
-            </v-select>
-            <v-expansion-panels v-model="pan0Idx">
+
+            <div class="d-flex">
+              <v-select
+                v-model="form.framework"
+                @input="onFramework"
+                :items="frameworks"
+                item-text="name"
+                item-value="slug"
+                :label="$t(`${locales}FrameworkPreset`)"
+              >
+                <template #prepend v-if="chooseFramework">
+                  <img :src="chooseFramework.logo" style="width: 20px" />
+                </template>
+              </v-select>
+            </div>
+
+            <div class="d-flex al-c">
+              <div class="fz-14 op-6 mt-2">
+                <span>Deploy Hooks</span>
+                <e-tooltip right max-width="300">
+                  <template #ref>
+                    <v-icon size="15" class="ml-2">
+                      mdi-help-circle-outline
+                    </v-icon>
+                  </template>
+                  <p>
+                    Deloyhooks allow external services to be notified when
+                    certain events happen. When the specified events happen,
+                    we’ll update the deployment.
+                  </p>
+                </e-tooltip>
+              </div>
+              <v-switch
+                class="ml-auto"
+                v-model="form.hookSwitch"
+                dense
+              ></v-switch>
+            </div>
+
+            <v-expansion-panels class="mt-5" v-model="pan0Idx">
               <v-expansion-panel>
                 <v-expansion-panel-header>
                   {{ $t(`${locales}BuildOutputSettings`) }}
@@ -173,6 +200,11 @@
                 </v-expansion-panel-content>
               </v-expansion-panel>
             </v-expansion-panels>
+
+            <div class="gray-6 mt-5 fz-14">
+              Tips: 4EVER-Hosting only serves static pages(Server-Side-Rendering
+              is not supported at this time)
+            </div>
           </v-form>
         </v-window-item>
       </v-window>
@@ -223,6 +255,7 @@ export default {
         buildCommand: "",
         outputDirectory: "",
         currentBranch: "",
+        hookSwitch: false,
       },
       branchList: null,
       scripts: null,
@@ -256,12 +289,15 @@ export default {
   },
   mounted() {
     if (this.clone) {
-      this.onSelect();
+      this.onBranch();
     }
+    this.getBranchList();
   },
   watch: {
     value() {
       this.curStep = 0;
+    },
+    importItem() {
       this.getBranchList();
     },
   },
@@ -362,7 +398,7 @@ export default {
             data: { taskId },
           } = await this.$http.post(`/project/${projId}/build`);
           // await this.$alert('Project created successfully')
-          const path = `/build/${projId}/${taskId}/overview`;
+          const path = `/build/${body.name}/${taskId}/overview`;
           if (!isDev) {
             this.$router.replace(path);
           } else {
@@ -383,7 +419,11 @@ export default {
         return this.$toast("Branch must be choosen.");
       }
       this.envList = [];
-      this.form.name = this.importItem.name;
+      let name = this.importItem.name;
+      if (/-project$/.test(name)) {
+        name += "-" + this.$utils.getNonce(4);
+      }
+      this.form.name = name;
       let framework = this.importItem.frameWorkAdvice || null;
       if (framework == "other") framework = null;
       this.form.framework = framework;
@@ -404,8 +444,12 @@ export default {
       if (item) {
         params.rootPath = item.id;
       }
+      if (!this.form.currentBranch) {
+        this.form.currentBranch = this.importItem.defaultBranch;
+      }
+      params.ref = this.form.currentBranch;
       let { data } = await this.$http.get(
-        `/repo/${this.importItem.namespace}/dir/${this.importItem.name}/${this.form.currentBranch}`,
+        `/repo/${this.importItem.namespace}/dir/${this.importItem.name}/ref`,
         {
           params,
         }

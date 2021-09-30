@@ -37,7 +37,7 @@
       :persistent="alertInfo.showCancel"
     >
       <v-card class="pd-10">
-        <v-card-title>
+        <v-card-title v-if="!alertInfo.hideTitle">
           <v-icon :color="iconColor" class="mr-2">
             {{ iconName }}
           </v-icon>
@@ -49,6 +49,8 @@
               : "Alert"
           }}
         </v-card-title>
+        <div v-else class="pd-15"></div>
+
         <v-card-text>
           <div class="fz-16" v-html="alertInfo.content"></div>
           <div class="mt-8" v-if="alertInfo.showInput">
@@ -92,9 +94,19 @@
               color: 'primary',
               ...alertInfo.confirmTextAttrs,
             }"
+            v-if="!alertInfo.hideConfirm"
             @click="hideAlert(1)"
           >
             {{ alertInfo.confirmText || "OK" }}
+          </v-btn>
+          <v-btn
+            class="ml-4"
+            color="primary"
+            v-clipboard="alertInfo.copyText"
+            @success="hideAlert(1)"
+            v-if="alertInfo.copyText"
+          >
+            {{ alertInfo.copyBtnText || "Copy" }}
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -146,9 +158,12 @@ export default {
     const showModal = (config) => {
       return new Promise((resolve, reject) => {
         if (config.showInput) {
-          this.inputVal = config.defaultValue || "";
           setTimeout(() => {
             this.$refs.form.reset();
+          }, 5);
+          setTimeout(() => {
+            let val = config.defaultValue
+            if(val) this.inputVal = val
           }, 10);
         }
         this.$setState({

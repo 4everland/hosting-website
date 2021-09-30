@@ -2,7 +2,7 @@
   <div class="wrap-1">
     <div class="con-3">
       <v-card outlined>
-        <div :class="asMobile ? 'pd-15' : 'pd-20 pr-10'">
+        <div class="pr-8">
           <v-timeline dense align-top>
             <v-timeline-item small v-for="(it, i) in list" :key="i">
               <v-img

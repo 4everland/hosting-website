@@ -138,6 +138,19 @@
               <div class="mt-2">
                 <e-commit :info="info.commits"></e-commit>
               </div>
+
+              <!-- <div class="label-1 mt-4">IPFS</div>
+              <div>
+                <a
+                  class="u b"
+                  target="_blank"
+                  :href="ipfsPre + info.cid"
+                  v-if="isSuccess"
+                  >{{ ipfsTxt }}</a
+                >
+                <span v-else>{{ ipfsTxt }}</span>
+              </div>
+               -->
             </div>
 
             <v-menu v-if="info.taskId" offset-y>
@@ -251,11 +264,19 @@ export default {
     taskId() {
       return this.$route.params.taskId;
     },
+    isError() {
+      return /fail|error|cancel|timeout/i.test(this.state);
+    },
     isRunning() {
-      return this.state == "running";
+      return !this.isError && !this.isSuccess;
     },
     isSuccess() {
       return this.state == "success";
+    },
+    ipfsTxt() {
+      if (this.isSuccess) return "Verify on IPFS";
+      if (this.isError) return "Failure";
+      return "IPFS Hash Pending";
     },
     visitUrl() {
       const { domain } = this.info;
@@ -278,6 +299,9 @@ export default {
     },
   },
   data() {
+    const ipfsPre = /xyz$/.test(process.env.VUE_APP_BASE_URL)
+      ? "http://ipfs.foreverland.xyz/ipfs/"
+      : "https://ipfs.4everland.org/ipfs/";
     return {
       info: {},
       logs: [],
@@ -285,6 +309,7 @@ export default {
       endGap: 0,
       newLogNum: 0,
       deploying: false,
+      popSuc: false,
       state: "",
       optList: [
         {
@@ -300,6 +325,7 @@ export default {
           iconColor: "error",
         },
       ],
+      ipfsPre,
     };
   },
   watch: {
@@ -311,10 +337,10 @@ export default {
     buildInfo({ name, data }) {
       if (data.taskId == this.taskId) {
         console.log(this.taskId, name);
-        this.state = data.state.toLowerCase();
         const last = this.logs[this.logs.length - 1];
         if (name != "log") {
-          if (data.state == "SUCCESS") {
+          if (data.state == "SUCCESS" && !this.popSuc) {
+            this.popSuc = true;
             this.onBuildSuc();
           }
           this.initData();
@@ -323,6 +349,7 @@ export default {
           if (!this.isAtEnd) this.newLogNum++;
           this.goLogEnd();
         }
+        this.state = data.state.toLowerCase();
       }
     },
     state(val) {
@@ -385,13 +412,19 @@ Are you sure you want to continue?
         `/project/task/${this.info.projectId}/all`
       );
       let html = "You just deployed a new project to 4EVERLAND.";
+      const inAct = this.$store.state.actStatus == 1;
+      if (inAct) {
+        html = `4EVERLAND's First Landing aims to reach outstanding developers and help them efficiently develope Web3.0 applications, encouraging the deployment of applications in 4EVERLAND.`;
+      }
       if (data.length > 1) {
         html = "Redeployed successfully.";
       }
       html += `<div class="mt-5 ta-c"><img src="img/bg/party.gif" style="height: 200px;" /></div>`;
-      this.$alert(html, "Congratulations!", {
+      await this.$alert(html, "Congratulations!", {
         type: "success",
       });
+      // if (this.$store.state.actStatus == 1) { }
+      this.$router.replace(this.$route.path.replace("/overview", "/success"));
     },
     async initData() {
       try {
@@ -402,19 +435,17 @@ Are you sure you want to continue?
         this.state = data.task.state.toLowerCase();
         this.logs = data.log;
         this.goLogEnd();
-        // if(this.info.projectId != this.projInfo.id) {
-        //   await this.$store.dispatch('getProjectInfo', this.info.projectId)
-        // }
-        const { name, projectId } = this.info.buildConfig;
-        this.$setState({
-          noticeMsg: {
-            name: "setTitle",
-            data: {
-              title: name,
-              link: `#/project/${projectId}/overview`,
-            },
-          },
-        });
+        this.$store.commit("setProject", this.info);
+        // const { name, projectId } = this.info.buildConfig;
+        // this.$setState({
+        //   noticeMsg: {
+        //     name: "setTitle",
+        //     data: {
+        //       title: name,
+        //       link: `#/project/${projectId}/overview`,
+        //     },
+        //   },
+        // });
       } catch (error) {
         console.log(error);
       }

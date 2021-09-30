@@ -1,16 +1,26 @@
+<style lang="scss">
+.st-domains {
+  table {
+    td {
+      padding: 2px 10px;
+    }
+  }
+}
+</style>
+
 <template>
-  <div>
+  <div class="st-domains">
     <h3>Domains</h3>
     <div class="gray mt-1 fz-14">
-      These domains are assigned to your Production Deployments.Optionally, a
-      different Git branch or a redirection to another domain can be configured
-      for each one.
+      These domains are assigned to your Production Deployments.
+      <!-- Optionally, a different Git branch or a redirection to another domain can be configured
+      for each one. -->
     </div>
     <div class="mt-5 d-flex">
       <v-text-field
         outlined
         dense
-        v-model="domain"
+        v-model.trim="domain"
         @keyup.enter="onAdd"
         placeholder="mywebsite.com"
       >
@@ -70,29 +80,52 @@
           <!-- <div class="fz-14">
             <b>Nameservers</b>
           </div> -->
-          <p class="gray mt-1 fz-14">
+          <template v-if="it.conflicts.length">
+            <p class="gray mt-1 fz-14">
+              Please remove the following conflicting DNS records from your DNS
+              provider:
+            </p>
+            <div class="bg-f4 pd-10 fz-14 mt-3 mb-5">
+              <table class="w100p">
+                <tr class="gray">
+                  <td>Type</td>
+                  <td>Name</td>
+                  <td>Value</td>
+                </tr>
+                <tr v-for="(row, j) in it.conflicts" :key="j">
+                  <td>{{ row.type }}</td>
+                  <td>@</td>
+                  <td class="wb-all">{{ row.value }}</td>
+                </tr>
+              </table>
+            </div>
+          </template>
+          <p class="gray mt-3 fz-14">
+            <span v-if="it.conflicts.length">Afterwards,</span>
             Set the following record on your DNS provider to continue:
           </p>
-          <div class="bg-f4 pd-10-20 fz-14 bd-1 d-flex mt-3">
-            <div class="flex-1">
-              <p class="el-label-1">Type</p>
-              <p class="mt-3">{{ it.isA ? "A" : "CNAME" }}</p>
-            </div>
-            <div class="flex-1 ml-5">
-              <p class="el-label-1">Name</p>
-              <p class="mt-3">{{ it.pre }}</p>
-            </div>
-            <div class="flex-2 ml-5">
-              <p class="el-label-1">Value</p>
-              <p
-                class="mt-3 hover-1 wb-all"
-                v-clipboard="it.isA ? dns.ip : dns.cname"
-                @success="$toast('Copied to clipboard !')"
-              >
-                {{ it.isA ? dns.ip : dns.cname }}
-                <v-icon size="14" class="ml-1">mdi-content-copy</v-icon>
-              </p>
-            </div>
+          <div class="bg-f4 pd-10 fz-14 mt-3">
+            <table class="w100p">
+              <tr class="gray">
+                <td>Type</td>
+                <td>Name</td>
+                <td>Value</td>
+              </tr>
+              <tr>
+                <td>{{ it.isA ? "A" : "CNAME" }}</td>
+                <td>{{ it.pre }}</td>
+                <td>
+                  <p
+                    class="mt-3 hover-1 wb-all"
+                    v-clipboard="it.isA ? dns.ip : dns.cname"
+                    @success="$toast('Copied to clipboard !')"
+                  >
+                    {{ it.isA ? dns.ip : dns.cname }}
+                    <v-icon size="14" class="ml-1">mdi-content-copy</v-icon>
+                  </p>
+                </td>
+              </tr>
+            </table>
           </div>
         </div>
       </div>
@@ -105,7 +138,9 @@ import { mapState } from "vuex";
 
 export default {
   data() {
+    const curPath = this.$route.path;
     return {
+      curPath,
       domain: "",
       list: null,
       adding: false,
@@ -113,6 +148,7 @@ export default {
         cname: "-",
         ip: "",
       },
+      hasRefresh: false,
     };
   },
   computed: {
@@ -120,10 +156,15 @@ export default {
       info: (s) => s.projectInfo,
       isFocus: (s) => s.isFocus,
     }),
+    isCurPath() {
+      return this.curPath == this.$route.path;
+    },
   },
   watch: {
     isFocus(val) {
-      if (val) this.setRefresh();
+      if (val && this.isCurPath) {
+        this.setRefresh();
+      }
     },
   },
   mounted() {
@@ -165,9 +206,14 @@ export default {
           arr.pop();
           it.isA = !arr.length;
           it.pre = it.isA ? "@" : arr.join(".");
+          it.conflicts = it.conflicts || [];
           // it.valid = 1
           return it;
         });
+        if (!this.hasRefresh) {
+          this.setRefresh();
+          this.hasRefresh = true;
+        }
       } catch (error) {
         console.log(error);
       }
@@ -187,10 +233,10 @@ export default {
         });
         this.domain = "";
         this.$toast("Added successfully");
+        this.hasRefresh = false;
         await this.getList();
         // console.log(data)
         this.onUpdate();
-        this.setRefresh();
       } catch (error) {
         console.log(error);
       }
@@ -212,6 +258,7 @@ export default {
         }
         this.$set(it, "removing", true);
         await this.$http.delete("/domain/" + it.domainId);
+        this.hasRefresh = false;
         await this.getList();
         this.$toast("Removed successfully");
         this.onUpdate();
@@ -229,6 +276,8 @@ export default {
         if (data.success) {
           await this.getList();
           this.$toast(it.domain + " is valid now");
+        } else if (data.conflicts) {
+          this.$set(it, "conflicts", data.conflicts);
         }
       } catch (error) {
         //
