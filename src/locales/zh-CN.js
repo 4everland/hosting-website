@@ -21,6 +21,7 @@ const locale = {
     Logout: "退出登录",
     Frameworks: "框架",
     Resources: "资源",
+    Documentation: "文档",
     Brand: "品牌物料",
     Project: "项目",
     Home: "首页",

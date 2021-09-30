@@ -39,7 +39,7 @@ export default {
           title: this.$t("common.Resources"),
           subs: [
             {
-              label: this.$t("common.Doc"),
+              label: this.$t("common.Documentation"),
               href: "https://docs.hosting.4everland.org/guide/",
             },
             {

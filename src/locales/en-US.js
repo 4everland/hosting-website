@@ -21,6 +21,7 @@ const locale = {
     Logout: "Logout",
     Frameworks: "Frameworks",
     Resources: "Resources",
+    Documentation: "Documentation",
     Brand: "Brand Resources",
     Project: "Project",
     Home: "Home",
