@@ -283,7 +283,8 @@ export default {
         this.setAddr();
         return;
       }
-      if (this.actStatus != 2 && !this.$inDev) {
+      // this.actStatus != 2 && 
+      if (!this.$inDev) {
         return this.$alert(
           "Available to claim at the end of the First Landing."
         );
