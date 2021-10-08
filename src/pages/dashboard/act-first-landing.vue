@@ -182,9 +182,13 @@ export default {
       actStatus: (s) => s.actStatus,
       userInfo: (s) => s.userInfo,
       isFocus: (s) => s.isFocus,
+      nowDate: (s) => s.nowDate,
     }),
     asMobile() {
       return this.$vuetify.breakpoint.smAndDown;
+    },
+    isEnd() {
+      return this.actStatus == 2 || this.nowDate > 1634083200000;
     },
   },
   data() {
@@ -283,8 +287,8 @@ export default {
         this.setAddr();
         return;
       }
-      // this.actStatus != 2 && 
-      if (!this.$inDev) {
+      //
+      if (this.actStatus != 2 && !this.$inDev) {
         return this.$alert(
           "Available to claim at the end of the First Landing."
         );
@@ -482,9 +486,9 @@ export default {
               row.done = false;
             }
           }
-          if ((rest <= 0 && !item.isMore) || this.actStatus == 2) {
+          if ((rest <= 0 && !item.isMore) || this.isEnd) {
             row.disabled = true;
-            row.btnTxt = this.actStatus == 2 ? "Finished" : "Run out";
+            row.btnTxt = this.isEnd ? "Ended" : "Run out";
           }
           list.push({
             ...item,
