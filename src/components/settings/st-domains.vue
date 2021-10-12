@@ -273,10 +273,11 @@ export default {
         const { data } = await this.$http.get("/domain/verify/" + it.domainId, {
           noTip: true,
         });
-        if (data.success) {
+        if (data.success != it.valid) {
           await this.getList();
-          this.$toast(it.domain + " is valid now");
-        } else if (data.conflicts) {
+          if (!it.valid) this.$toast(it.domain + " is valid now");
+        }
+        if (!data.success && data.conflicts) {
           this.$set(it, "conflicts", data.conflicts);
         }
       } catch (error) {
