@@ -188,7 +188,7 @@ export default {
       });
     },
     async setRefresh() {
-      const rows = (this.list || []).filter((it) => !it.valid);
+      const rows = this.list || []; //.filter((it) => !it.valid);
       for (const it of rows) {
         await this.onRefresh(it);
       }
