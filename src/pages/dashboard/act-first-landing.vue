@@ -188,7 +188,7 @@ export default {
       return this.$vuetify.breakpoint.smAndDown;
     },
     isEnd() {
-      return this.actStatus == 2 || this.nowDate > 1634083200000;
+      return this.actStatus == 2 || this.nowDate > 1634169600000;
     },
   },
   data() {
@@ -251,6 +251,9 @@ export default {
         this.onRefresh();
       }
     },
+    isEnd() {
+      this.getList();
+    },
   },
   created() {
     this.getList();
@@ -287,10 +290,10 @@ export default {
         this.setAddr();
         return;
       }
-      //
-      if (this.actStatus != 2 && !this.$inDev) {
+      // && !this.$inDev
+      if (this.actStatus != 3) {
         return this.$alert(
-          "Available to claim at the end of the First Landing."
+          "The claim is expected to start on 21st October, please make sure that you have added your ETH wallet address in time otherwise you might lost your rewards."
         );
       }
 
