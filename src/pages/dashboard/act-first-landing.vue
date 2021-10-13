@@ -485,7 +485,7 @@ export default {
               row.btnTxt = item.txt2;
               row.disabled = true;
             }
-            if (this.actStatus == 1 && item.isMore) {
+            if (!this.isEnd && item.isMore) {
               row.done = false;
             }
           }
