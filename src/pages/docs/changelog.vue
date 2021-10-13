@@ -12,7 +12,9 @@
                 min-height="300"
                 v-if="it.img"
               />
-              <div class="color-1 fw-b">{{ it.time }}</div>
+              <div class="color-1 fw-b">
+                {{ it.time.toDate().format("date") }}
+              </div>
               <div class="mt-3 mb-5">
                 <div class="lh-2 gray-6 fz-14" v-html="it.con"></div>
               </div>
@@ -36,7 +38,49 @@ export default {
     return {
       list: [
         {
-          time: "August 31, 2021",
+          time: "2021-10-11",
+          img: "img/log/2021-10-11.jpeg",
+          con: `<h3>More details in 4EVER-HOSTING have improved.</h3>
+          <ul>
+          <li>Set the corresponding browser title according to the page route </li>
+          <li>Added a prompt of A record or AAAA record conflict when adding a first-level domain name in the project settings</li>
+          </ul>`,
+        },
+        {
+          time: "2021-9-27",
+          img: "img/log/2021-9-27.jpeg",
+          con: `<h3>Improvements on the statistics page and breadcrumb navigation is added.</h3>
+          <ul>
+          <li>Breadcrumb navigation added on project details and build page</li>
+          <li>Added refresh data button added on  the Statistics page </li>
+          <li>Optimized UI of the statistics page, added different colour for retention rate</li>
+          </ul>`,
+        },
+        {
+          time: "2021-9-13",
+          img: "img/log/2021-9-13.jpeg",
+          con: `<h3>Optimized the deployment process.</h3>
+          <ul>
+          <li>Optimized the construction process and added branch selection function</li>
+          <li>Optimized the build process and increased the Deploy Hooks option</li>
+          <li>Added commits history to the project details page, and specific commits can be selected for deployment</li>
+          </ul>`,
+        },
+        {
+          time: "2021-9-6",
+          img: "img/log/2021-9-6.png",
+          con: `<h3>Intercom is now up. Now you can speak to us in no time and also we have optimized couples details such as import Git repository etc.</h3>
+          <ul>
+          <li>Optimized the Build command, scroll down for the default scripts in package.json</li>
+          <li>Optimized Git repository search</li>
+          <li>Optimized Git Repo import process and support branch selection </li>
+          <li>Set the Clone Flow page defaults to project name to the git name and added branch display</li>
+          <li>Integrated Intercom</li>
+          </ul>
+          `,
+        },
+        {
+          time: "2021-8-31",
           img: "img/log/2021-8-31.jpg",
           con: `<h3>We have done more functional support and detailed optimization for 4EVER-HOSTING, as follows:</h3>
 <ul>
@@ -50,7 +94,7 @@ export default {
 </ul>`,
         },
         {
-          time: "2021-8-16".toDate().format("date"),
+          time: "2021-8-16",
           img: "https://www.4everland.org/imgs/blogs/Hosting_Launch.png",
           con: `
 <h3>4EVER-HOSTING is officially launched, you can deploy and host your website through "HOSTING" with one click. The specific features are as follows.</h3>
