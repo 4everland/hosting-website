@@ -91,6 +91,8 @@
           </v-list>
         </v-menu>
       </template>
+
+      <e-meta-connect v-if="userInfo.username"></e-meta-connect>
     </v-app-bar>
   </div>
 </template>
@@ -142,14 +144,14 @@ export default {
           links = feedback.concat(links);
         } else links.unshift(feedback);
         const subs = [
-          // {
-          //   label: "My Collections",
-          //   title: username,
-          //   to: "/dashboard/collections",
-          // },
+          {
+            label: "My Collections",
+            title: username,
+            to: "/dashboard/collections",
+          },
           {
             label: this.$t("common.Settings"),
-            title: username,
+            // title: username,
             to: "/dashboard/settings",
           },
           {

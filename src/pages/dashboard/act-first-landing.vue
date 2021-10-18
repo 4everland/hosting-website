@@ -290,22 +290,28 @@ export default {
         this.setAddr();
         return;
       }
-      // && !this.$inDev
-      if (this.actStatus != 3) {
+      //
+      if (this.actStatus != 3 && !this.$inDev) {
         return this.$alert(
           "The claim is expected to start on 21st October, please make sure that you have added your ETH wallet address in time otherwise you might lost your rewards."
         );
       }
 
       const isOk = await this.connectMetaMask();
+      this.isConnectMetaMask = 1;
       console.log(isOk);
       if (!isOk) return;
 
       // https://github.com/dinn2018/airdrop-claim/blob/master/deployments/ropsten/MerkleDistributor.json
       // https://github.com/dinn2018/airdrop-claim/blob/master/deployments/ropsten/TEver.json
       // https://raw.githubusercontent.com/dinn2018/airdrop-claim/master/scripts/result.json
-      const info = actAbi.result.claims[this.ethAddr];
-      if (!info) {
+      const { data: info } = await this.$http.get("/claim-info", {
+        params: {
+          addr: this.ethAddr,
+        },
+      });
+      // const info = actAbi.result.claims[this.ethAddr];
+      if (!info || !info.tokenId) {
         return this.$alert(`Your Wallet address is not in reward list.`);
       }
 
