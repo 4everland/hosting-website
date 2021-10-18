@@ -68,7 +68,7 @@ export default {
         },
         {
           time: "2021-9-6",
-          img: "img/log/2021-9-6.png",
+          img: "img/log/2021-9-6.jpeg",
           con: `<h3>Intercom is now up. Now you can speak to us in no time and also we have optimized couples details such as import Git repository etc.</h3>
           <ul>
           <li>Optimized the Build command, scroll down for the default scripts in package.json</li>
