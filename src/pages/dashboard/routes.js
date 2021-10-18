@@ -4,6 +4,7 @@ import Statistics from "./statistics";
 import Billing from "./billing";
 import Settings from "./settings";
 import FirstLanding from "./act-first-landing";
+import Collections from "./collections";
 
 export default [
   {
@@ -46,6 +47,13 @@ export default [
     component: FirstLanding,
     meta: {
       title: "FirstLanding",
+    },
+  },
+  {
+    path: "collections",
+    component: Collections,
+    meta: {
+      title: "Collections - Dashboard",
     },
   },
 ];

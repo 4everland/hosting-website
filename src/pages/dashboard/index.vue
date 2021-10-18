@@ -85,6 +85,11 @@ export default {
           path: "settings",
           hide: !/settings/.test(this.curPath),
         },
+        {
+          title: this.$t(`dashboard.index.Collections`),
+          path: "collections",
+          hide: !/collections/.test(this.curPath),
+        },
       ];
     },
     tabList() {

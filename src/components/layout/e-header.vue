@@ -142,6 +142,11 @@ export default {
           links = feedback.concat(links);
         } else links.unshift(feedback);
         const subs = [
+          // {
+          //   label: "My Collections",
+          //   title: username,
+          //   to: "/dashboard/collections",
+          // },
           {
             label: this.$t("common.Settings"),
             title: username,
