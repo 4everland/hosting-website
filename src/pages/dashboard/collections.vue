@@ -116,6 +116,11 @@ export default {
         this.onInit();
       }
     },
+    "$route.path"(val) {
+      if (val == "/dashboard/collections") {
+        this.onInit();
+      }
+    },
   },
   created() {
     this.onInit();
