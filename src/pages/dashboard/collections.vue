@@ -146,6 +146,7 @@ export default {
         //   "https://gateway.pinata.cloud/ipfs/" + cid.replace("ipfs://", "")
         // );
         const num = await contract.methods.balanceOf(this.ethAddr, 0).call();
+        console.log("balance of #0", num);
         this.list =
           num > 0
             ? [

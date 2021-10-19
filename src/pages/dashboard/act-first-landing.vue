@@ -307,7 +307,7 @@ export default {
         await this.$sleep(100);
         // console.log(window.ethContract);
       }
-      const { data: info } = await this.$http.get("/claim-info", {
+      const { data: info } = await this.$http.get("/firstland/claim-info", {
         params: {
           addr: this.ethAddr,
         },
@@ -331,10 +331,11 @@ export default {
 
       const { methods } = window.ethContract;
       try {
-        const isClaimed = await methods.isClaimed(info.index);
+        const isClaimed = await methods.isClaimed(info.index).call();
+        console.log(isClaimed);
         if (isClaimed) {
           this.$alert("Your wallet address has been claimed.");
-          if (!this.$inDev) return;
+          return; //if (!this.$inDev)
         }
         this.claimLoading = true;
         await methods
