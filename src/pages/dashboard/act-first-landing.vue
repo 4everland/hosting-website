@@ -174,7 +174,6 @@
 import { mapState } from "vuex";
 import Web3 from "web3";
 // import WalletConnectProvider from '@walletconnect/web3-provider';
-import actAbi from "../../plugins/act-abi";
 
 export default {
   computed: {
@@ -290,21 +289,24 @@ export default {
         this.setAddr();
         return;
       }
-      //
-      if (this.actStatus != 3 && !this.$inDev) {
+      // && !this.$inDev
+      if (this.actStatus != 3) {
         return this.$alert(
           "The claim is expected to start on 21st October, please make sure that you have added your ETH wallet address in time otherwise you might lost your rewards."
         );
       }
 
-      const isOk = await this.connectMetaMask();
-      this.isConnectMetaMask = 1;
-      console.log(isOk);
-      if (!isOk) return;
-
-      // https://github.com/dinn2018/airdrop-claim/blob/master/deployments/ropsten/MerkleDistributor.json
-      // https://github.com/dinn2018/airdrop-claim/blob/master/deployments/ropsten/TEver.json
-      // https://raw.githubusercontent.com/dinn2018/airdrop-claim/master/scripts/result.json
+      if (!window.ethContract) {
+        const isOk = await this.connectMetaMask();
+        if (!isOk) return;
+        this.$setState({
+          noticeMsg: {
+            name: "walletConnect",
+          },
+        });
+        await this.$sleep(100);
+        // console.log(window.ethContract);
+      }
       const { data: info } = await this.$http.get("/claim-info", {
         params: {
           addr: this.ethAddr,
@@ -327,15 +329,15 @@ export default {
         );
       }
 
-      const contract = new window.web3.eth.Contract(actAbi.abi, actAbi.address);
+      const { methods } = window.ethContract;
       try {
-        const isClaimed = await contract.methods.isClaimed(info.index);
+        const isClaimed = await methods.isClaimed(info.index);
         if (isClaimed) {
           this.$alert("Your wallet address has been claimed.");
           if (!this.$inDev) return;
         }
         this.claimLoading = true;
-        await contract.methods
+        await methods
           .claim(
             info.index,
             this.ethAddr,

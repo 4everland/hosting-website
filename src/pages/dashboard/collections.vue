@@ -8,23 +8,28 @@
         </div>
       </div>
       <div class="pd-20">
-        <img :src="curItem.img" class="w100p d-b mb-3" />
+        <v-img :src="curItem.img" class="w100p d-b mb-3" max-height="360" />
         <v-row>
-          <v-col cols="12" md="6">
+          <v-col cols="12" md="5">
             <h4>Description</h4>
-            <div class="pa-2 mt-1 bg-f5 gray-3 fz-14">
+            <div class="pa-1 mt-1 bg-f5 gray-3 fz-13">
               {{ curItem.desc }}
             </div>
           </v-col>
-          <v-col cols="12" md="6">
+          <v-col cols="12" md="7">
             <h4>Details</h4>
             <div
-              class="mt-2 d-flex al-c space-btw fz-13"
-              v-for="i in 3"
+              class="mt-2 d-flex al-c space-btw fz-12"
+              v-for="(it, i) in introList"
               :key="i"
             >
-              <span class="gray">Owned by</span>
-              <span class="color-1">address</span>
+              <span class="gray">{{ it.label }}</span>
+              <span
+                class="color-1 hover-1"
+                v-clipboard="it.value"
+                @success="$toast('Copied')"
+                >{{ it.value.cutStr(6, 4) }}</span
+              >
             </div>
           </v-col>
         </v-row>
@@ -33,7 +38,7 @@
     <v-card outlined>
       <div class="pd-15-20 bdb-1 d-flex al-c">
         <b class="fz-16">My Collections</b>
-        <span class="gray ml-auto fz-14">Connect</span>
+        <span class="gray ml-auto fz-14">{{ ethAddr.cutStr(4, 4) }}</span>
       </div>
       <div class="pd-20">
         <div class="ta-c pa-10" v-if="!list.length">
@@ -63,25 +68,145 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   data() {
     return {
       showPop: false,
-      list: [
-        {
-          title: "Firstlanding",
-          id: 0,
-          img: "https://gateway.pinata.cloud/ipfs/Qmcnz5HGgGgJHZqnhGj1PhjgJzHUYZ8Sxs2h4rHkmQ8xRK",
-          desc: "this is a test",
-        },
-      ],
+      list: [],
       curItem: {},
+      ethAddr: "",
+      contractAddr: "",
     };
   },
+  computed: {
+    ...mapState({
+      noticeMsg: (s) => s.noticeMsg,
+    }),
+    introList() {
+      return [
+        {
+          label: "Owned by",
+          value: this.ethAddr,
+        },
+        {
+          label: "Contract Address",
+          value: this.contractAddr,
+        },
+        {
+          label: "Token ID",
+          value: "0",
+        },
+        {
+          label: "Token Standard",
+          value: "ERC-1155",
+        },
+        {
+          label: "Blockchain",
+          value: "Ethernum",
+        },
+      ];
+    },
+  },
+  watch: {
+    noticeMsg({ name }) {
+      // console.log(name);
+      if (name == "walletConntected") {
+        this.onInit();
+      }
+    },
+  },
+  created() {
+    this.onInit();
+  },
   methods: {
+    async onInit() {
+      if (!this.ethAddr) {
+        await this.getAddr();
+      }
+      if (!window.ethContract) {
+        if (!localStorage.isConnectMetaMask)
+          this.$setState({
+            noticeMsg: {
+              name: "showWalletConnect",
+            },
+          });
+        return;
+      }
+      try {
+        this.$loading();
+        const { data } = await this.$http.get(
+          location.origin + "/file/tever-1155.json"
+        );
+        this.contractAddr = data.address;
+        const contract = new window.web3.eth.Contract(data.abi, data.address);
+        // const cid = await contract.methods.uri(0).call();
+        // const { data: info } = await this.$http.get(
+        //   "https://gateway.pinata.cloud/ipfs/" + cid.replace("ipfs://", "")
+        // );
+        const num = await contract.methods.balanceOf(this.ethAddr, 0).call();
+        if (num > -1) {
+          this.list = [
+            {
+              title: "Firstlanding",
+              id: 0,
+              img: "img/bg/firstlanding0.gif",
+              desc: "NFT test",
+            },
+          ];
+        }
+        this.$loading.close();
+      } catch (error) {
+        console.log(error);
+      }
+    },
     onItem(it) {
       this.curItem = it;
       this.showPop = true;
+    },
+    async getAddr() {
+      const { data } = await this.$http.get("/activity/ethAddress");
+      this.ethAddr = data;
+    },
+    async setAddr() {
+      const tip = "Your ETH Address";
+      let value = "";
+      try {
+        const data = await this.$prompt(tip, "Prompt", {
+          hideTitle: true,
+          defaultValue: this.ethAddr,
+          inputAttrs: {
+            label: "Wallet Adress",
+            require: true,
+            placeholder: "Enter your wallet address",
+            rules: [
+              (v) =>
+                this.$regMap.eth.test(v) ||
+                "Please enter correct eth wallet address.",
+            ],
+            required: true,
+          },
+        });
+        value = data.value;
+      } catch (error) {
+        return;
+      }
+      if (value == this.ethAddr) {
+        return;
+      }
+      try {
+        console.log(value);
+        this.$loading();
+        await this.$http.put(`/activity/bind/eth/${value}`);
+        this.$loading.close();
+        this.$toast(`${!this.ethAddr ? "Added" : "Updated"} successfully`);
+        this.ethAddr = value;
+        this.getAddr();
+      } catch (error) {
+        console.log(error);
+        this.setAddr();
+      }
     },
   },
 };

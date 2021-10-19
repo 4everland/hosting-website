@@ -14,7 +14,7 @@
           <div class="mt-5 d-flex al-c">
             <img src="img/icon/metamask.png" style="height: 25px" />
             <b class="ml-4">MetaMask</b>
-            <span class="gray fz-13 ml-5">{{ ethAddr.cutStr(4, 4) }}</span>
+            <span class="gray fz-13 ml-5">{{ walletAddr.cutStr(4, 4) }}</span>
             <v-btn
               :color="isConnect ? '' : 'primary'"
               class="ml-auto"
@@ -29,6 +29,7 @@
       @click="showPop = true"
       v-ripple
       style="background: #ffe9d3; padding: 5px"
+      :class="{ 'filter-gray': !isConnect }"
       class="bdrs-3 ml-5 hover-1"
     >
       <v-img src="img/icon/metamask.png" width="22"></v-img>
@@ -37,76 +38,73 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import Web3 from "web3";
+import actAbi from "../../plugins/act-abi";
+// https://github.com/dinn2018/airdrop-claim/blob/master/deployments/ropsten/MerkleDistributor.json
+// https://github.com/dinn2018/airdrop-claim/blob/master/deployments/ropsten/TEver.json
+// https://raw.githubusercontent.com/dinn2018/airdrop-claim/master/scripts/result.json
 
 export default {
   data() {
     return {
       showPop: false,
       ethAddr: "",
-      isConnect: !!localStorage.isConnectMetaMask,
+      walletAddr: "",
+      isConnect: false,
     };
   },
+  computed: {
+    ...mapState({
+      noticeMsg: (s) => s.noticeMsg,
+    }),
+  },
   watch: {
-    showPop(val) {
-      if (val && localStorage.isConnectMetaMask) this.isConnect = true;
+    noticeMsg({ name }) {
+      if (name == "walletConnect") {
+        this.isConnect = true;
+      } else if (name == "showWalletConnect") {
+        this.showPop = true;
+      }
+    },
+    async isConnect(val) {
+      localStorage.isConnectMetaMask = val ? "1" : "";
+      // this.onConnect();
+      if (val) {
+        this.showPop = false;
+        window.ethContract = new window.web3.eth.Contract(
+          actAbi.abi,
+          actAbi.address
+        );
+        const accounts = await window.web3.eth.getAccounts();
+        this.walletAddr = accounts[0];
+
+        this.$setState({
+          noticeMsg: {
+            name: "walletConntected",
+          },
+        });
+      }
     },
   },
   created() {
     this.getAddr();
+    if (localStorage.isConnectMetaMask) {
+      this.onConnect();
+    }
   },
   methods: {
     async getAddr() {
       const { data } = await this.$http.get("/activity/ethAddress");
       this.ethAddr = data;
     },
-    async setAddr() {
-      const tip = "Your ETH Address";
-      let value = "";
-      try {
-        const data = await this.$prompt(tip, "Prompt", {
-          hideTitle: true,
-          defaultValue: this.ethAddr,
-          inputAttrs: {
-            label: "Wallet Adress",
-            require: true,
-            placeholder: "Enter your wallet address",
-            rules: [
-              (v) =>
-                this.$regMap.eth.test(v) ||
-                "Please enter correct eth wallet address.",
-            ],
-            required: true,
-          },
-        });
-        value = data.value;
-      } catch (error) {
-        return;
-      }
-      if (value == this.ethAddr) {
-        return;
-      }
-      try {
-        console.log(value);
-        this.$loading();
-        await this.$http.put(`/activity/bind/eth/${value}`);
-        this.$loading.close();
-        this.$toast(`${!this.ethAddr ? "Added" : "Updated"} successfully`);
-        this.ethAddr = value;
-        this.getAddr();
-      } catch (error) {
-        console.log(error);
-        this.setAddr();
-      }
-    },
     async onConnect() {
       if (!this.isConnect) {
-        await this.connectMetaMask();
-        this.isConnect = true;
-        localStorage.isConnectMetaMask = 1;
+        const isOk = await this.connectMetaMask();
+        this.isConnect = isOk;
       } else {
+        window.ethereum = null;
         this.isConnect = false;
-        localStorage.isConnectMetaMask = "";
       }
     },
     async connectMetaMask() {
