@@ -146,16 +146,17 @@ export default {
         //   "https://gateway.pinata.cloud/ipfs/" + cid.replace("ipfs://", "")
         // );
         const num = await contract.methods.balanceOf(this.ethAddr, 0).call();
-        if (num > -1) {
-          this.list = [
-            {
-              title: "Firstlanding",
-              id: 0,
-              img: "img/bg/firstlanding0.gif",
-              desc: "NFT test",
-            },
-          ];
-        }
+        this.list =
+          num > 0
+            ? [
+                {
+                  title: "Firstlanding",
+                  id: 0,
+                  img: "img/bg/firstlanding0.gif",
+                  desc: "NFT test",
+                },
+              ]
+            : [];
         this.$loading.close();
       } catch (error) {
         console.log(error);

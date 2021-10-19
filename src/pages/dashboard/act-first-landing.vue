@@ -289,8 +289,8 @@ export default {
         this.setAddr();
         return;
       }
-      // && !this.$inDev
-      if (this.actStatus != 3) {
+      //
+      if (this.actStatus != 3 && !this.$inDev) {
         return this.$alert(
           "The claim is expected to start on 21st October, please make sure that you have added your ETH wallet address in time otherwise you might lost your rewards."
         );
