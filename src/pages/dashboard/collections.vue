@@ -152,17 +152,16 @@ export default {
         // );
         const num = await contract.methods.balanceOf(this.ethAddr, 0).call();
         console.log("balance of #0", num);
-        this.list =
-          num > 0
-            ? [
-                {
-                  title: "Firstlanding",
-                  id: 0,
-                  img: "img/bg/firstlanding0.gif",
-                  desc: "NFT test",
-                },
-              ]
-            : [];
+        let list = [];
+        while (list.length < num) {
+          list.push({
+            title: "Firstlanding",
+            id: 0,
+            img: "img/bg/firstlanding0.gif",
+            desc: "NFT test",
+          });
+        }
+        this.list = list;
         this.$loading.close();
       } catch (error) {
         console.log(error);
