@@ -241,12 +241,18 @@ export default {
     },
     async getBranch() {
       if (!this.repoName) return;
+      this.branches = [];
       try {
         const { data } = await this.$http.get(
           `/project/branch/${this.info.id}`
         );
         // console.log(data)
-        this.branches = [data.current, ...(data.other || [])];
+        const branches = [...(data.other || [])];
+        if (data.current) branches.unshift(data.current);
+        else data.current = branches[0];
+        this.branches = branches;
+        this.currentBranch = data.current;
+        console.log(this.branches, this.currentBranch);
       } catch (error) {
         console.log(error);
       }
