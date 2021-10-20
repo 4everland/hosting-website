@@ -163,7 +163,7 @@ export default {
         console.log("balance of #" + nftId, num);
         this.total = num;
         let list = [];
-        if (num) {
+        if (num > 0) {
           list.push({
             title: "Firstlanding",
             id: nftId,
