@@ -371,7 +371,7 @@ export default {
       this.claimLoading = false;
     },
     addSymbol() {
-      if (localStorage.tever_symbol) {
+      if (localStorage.tever_symbol2) {
         return;
       }
       // https://github.com/dinn2018/airdrop-claim/blob/master/deployments/ropsten/TEver.json
@@ -381,10 +381,10 @@ export default {
           params: {
             type: "ERC20",
             options: {
-              address: "0x91122227D4b4dbdFE85b9e0D8FbBd8bBeD2F038c",
+              address: "0x7c17dEe8ECD5fCB3A32f2189A1f6859611DA8b11",
               symbol: "TEVER",
               decimals: 18,
-              image: "https://hosting.4everland.org/img/logo.jpg",
+              // image: "https://hosting.4everland.org/img/logo.jpg",
             },
           },
         },
@@ -394,7 +394,7 @@ export default {
             return;
           }
           console.log("set symbol", ok);
-          localStorage.tever_symbol = 1;
+          localStorage.tever_symbol2 = 1;
         }
       );
     },
