@@ -339,6 +339,16 @@ export default {
         );
       }
 
+      const netType = await web3.eth.net.getNetworkType();
+      let msg = "";
+      if (this.$inDev) {
+        if (netType != "ropsten") msg = "Dev: please connect to ropsten";
+      } else {
+        if (netType != "main")
+          msg = "Wrong network, please connect to Ethereum mainnet";
+      }
+      if (msg) return this.$alert(msg);
+
       const { methods } = window.ethContract;
       try {
         if (!this.claimed) {
@@ -396,8 +406,8 @@ export default {
           params: {
             type: "ERC20",
             options: {
-              address: "0x17fF6c00d916553be3cb8Bb4Adb0D0B0783a269f",
-              symbol: "TEVER",
+              address: "0x88ACE80F1981D7d816887eBfd8a3BD86e7d41842",
+              symbol: "T4EVER",
               decimals: 18,
               image: location.origin + "/img/icon/tever.jpg",
             },
