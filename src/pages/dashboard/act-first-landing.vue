@@ -339,7 +339,7 @@ export default {
         );
       }
 
-      const netType = await web3.eth.net.getNetworkType();
+      const netType = await window.web3.eth.net.getNetworkType();
       let msg = "";
       if (this.$inDev) {
         if (netType != "ropsten") msg = "Dev: please connect to ropsten";
