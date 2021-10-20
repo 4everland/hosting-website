@@ -384,7 +384,7 @@ export default {
               address: "0x7c17dEe8ECD5fCB3A32f2189A1f6859611DA8b11",
               symbol: "TEVER",
               decimals: 18,
-              // image: "https://hosting.4everland.org/img/logo.jpg",
+              image: location.origin + "/img/icon/tever.jpg",
             },
           },
         },

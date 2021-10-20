@@ -56,7 +56,7 @@
                 <v-img :src="it.img" height="300"></v-img>
                 <div class="pd-15-20">
                   <p class="fw-b fz-15 gray-6">{{ it.title }}</p>
-                  <p class="gray fz-12">{{ it.title }} #{{ it.id }}</p>
+                  <!-- <p class="gray fz-12">{{ it.title }} #{{ it.id }}</p> -->
                 </div>
               </v-card>
             </v-col>
@@ -94,10 +94,10 @@ export default {
           label: "Contract Address",
           value: this.contractAddr,
         },
-        {
-          label: "Token ID",
-          value: "0",
-        },
+        // {
+        //   label: "Token ID",
+        //   value: "0",
+        // },
         {
           label: "Token Standard",
           value: "ERC-1155",
