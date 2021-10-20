@@ -81,14 +81,14 @@ export default [
     path: "/settings",
     component: Settings,
     meta: {
-      title: "Settings - Dashboard",
+      title: "Settings",
     },
   },
   {
     path: "/collections",
     component: Collections,
     meta: {
-      title: "Collections - Dashboard",
+      title: "Collections",
     },
   },
 ];
