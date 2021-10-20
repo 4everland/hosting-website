@@ -147,10 +147,14 @@
             @click="onClaim"
             :loading="claimLoading"
             rounded
-            style="background: linear-gradient(90deg, #fa4adc 0%, #de4343 100%)"
+            :style="
+              claimed
+                ? 'background: #999;'
+                : 'background: linear-gradient(90deg, #fa4adc 0%, #de4343 100%)'
+            "
           >
             <span class="white-0 d-ib pl-3 pr-3"
-              >{{ claimed ? "Claimed" : "My rewards" }} :
+              >{{ claimBtnTxt }} :
               {{ numberComma(totalReward) }}
               <span class="fz-12">4EVER</span></span
             >
@@ -186,14 +190,23 @@ export default {
     asMobile() {
       return this.$vuetify.breakpoint.smAndDown;
     },
-    isEnd() {
-      return this.actStatus == 2 || this.nowDate > 1634169600000;
+    noChange() {
+      return this.nowDate > 1634774400000;
+    },
+    isFinal() {
+      return this.$inDev; // || this.nowDate > 1634860800000;
+    },
+
+    claimBtnTxt() {
+      if (!this.isFinal) return "My rewards";
+      return this.claimed ? "Claimed" : "Claim Now";
     },
   },
   data() {
     return {
       loading: false,
       totalReward: 0,
+      isEnd: true,
       list: [
         {
           type: "OLD_USER_DEPLOY",
@@ -250,9 +263,6 @@ export default {
         this.onRefresh();
       }
     },
-    isEnd() {
-      this.getList();
-    },
   },
   created() {
     this.getList();
@@ -290,7 +300,7 @@ export default {
         return;
       }
       //
-      if (this.actStatus != 3 && !this.$inDev) {
+      if (!this.isFinal) {
         return this.$alert(
           "The claim is expected to start on 21st October, please make sure that you have added your ETH wallet address in time otherwise you might lost your rewards."
         );
@@ -331,11 +341,16 @@ export default {
 
       const { methods } = window.ethContract;
       try {
-        const isClaimed = await methods.isClaimed(info.index).call();
-        console.log(isClaimed);
-        if (isClaimed) {
+        if (!this.claimed) {
+          const isClaimed = await methods.isClaimed(info.index).call();
+          if (isClaimed) {
+            localStorage.claimed = 1;
+            this.claimed = true;
+          }
+        }
+        if (this.claimed) {
           this.$alert("Your wallet address has been claimed.");
-          return; //if (!this.$inDev)
+          return;
         }
         this.claimLoading = true;
         await methods
@@ -411,6 +426,13 @@ export default {
       this.ethAddr = data;
     },
     async setAddr() {
+      if (this.noChange) {
+        let tip = this.ethAddr;
+        if (!this.ethAddr) {
+          tip = "Unable to set wallet adress after 21st October.";
+        }
+        return this.$alert(tip, "Wallet Address");
+      }
       const tip =
         "Submit your ETH Address, rewards available at the end of the 4EVERLAND FirstLanding.";
       let value = "";

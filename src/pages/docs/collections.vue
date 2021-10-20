@@ -50,13 +50,18 @@
             </p>
           </div>
           <div v-else class="pb-3">
-            <p class="fz-14 fw-b mb-4">Total: {{ list.length }}</p>
+            <p class="fz-14 fw-b mb-4">Total: {{ total }}</p>
             <v-row>
               <v-col cols="12" md="4" v-for="(it, i) in list" :key="i">
                 <v-card @click="onItem(it)">
-                  <v-img :src="it.img" height="300"></v-img>
+                  <v-img :src="it.img" height="280"></v-img>
                   <div class="pd-15-20">
-                    <p class="fw-b fz-15 gray-6">{{ it.title }}</p>
+                    <p class="fz-15 gray-6">
+                      <b>{{ it.title }}</b>
+                      <span class="gray-6 ml-1 fz-12" v-if="it.num > 1"
+                        >× {{ it.num }}</span
+                      >
+                    </p>
                     <!-- <p class="gray fz-12">{{ it.title }} #{{ it.id }}</p> -->
                   </div>
                 </v-card>
@@ -76,6 +81,7 @@ export default {
   data() {
     return {
       showPop: false,
+      total: 0,
       list: [],
       curItem: {},
       contractAddr: "",
@@ -130,11 +136,11 @@ export default {
   methods: {
     async onInit() {
       if (!this.connectAddr) {
-        // this.$setState({
-        //   noticeMsg: {
-        //     name: "showWalletConnect",
-        //   },
-        // });
+        this.$setState({
+          noticeMsg: {
+            name: "showWalletConnect",
+          },
+        });
         this.list = [];
         return;
       }
@@ -152,17 +158,18 @@ export default {
         //   "https://mygateway.mypinata.cloud/ipfs/" + cid.replace("ipfs://", "")
         // );
         // console.log(info);
-        const num = await contract.methods
-          .balanceOf(this.connectAddr, 0)
-          .call();
+        let num = await contract.methods.balanceOf(this.connectAddr, 0).call();
+        num = 2;
         console.log("balance of #" + nftId, num);
+        this.total = num;
         let list = [];
-        while (list.length < num) {
+        if (num) {
           list.push({
             title: "Firstlanding",
             id: nftId,
+            num,
             img: "img/bg/firstlanding0.gif",
-            desc: "NFT test",
+            desc: "NFT Firstlanding",
           });
         }
         this.list = list;
