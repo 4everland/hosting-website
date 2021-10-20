@@ -14,7 +14,7 @@
           <div class="mt-5 d-flex al-c">
             <img src="img/icon/metamask.png" style="height: 25px" />
             <b class="ml-4">MetaMask</b>
-            <span class="gray fz-13 ml-5">{{ walletAddr.cutStr(4, 4) }}</span>
+            <span class="gray fz-13 ml-5">{{ connectAddr.cutStr(4, 4) }}</span>
             <v-btn
               :color="isConnect ? '' : 'primary'"
               class="ml-auto"
@@ -50,13 +50,13 @@ export default {
     return {
       showPop: false,
       ethAddr: "",
-      walletAddr: "",
       isConnect: false,
     };
   },
   computed: {
     ...mapState({
       noticeMsg: (s) => s.noticeMsg,
+      connectAddr: (s) => s.connectAddr,
     }),
   },
   watch: {
@@ -70,6 +70,7 @@ export default {
     async isConnect(val) {
       localStorage.isConnectMetaMask = val ? "1" : "";
       // this.onConnect();
+      let connectAddr = "";
       if (val) {
         this.showPop = false;
         window.ethContract = new window.web3.eth.Contract(
@@ -77,14 +78,17 @@ export default {
           actAbi.address
         );
         const accounts = await window.web3.eth.getAccounts();
-        this.walletAddr = accounts[0];
-
-        this.$setState({
-          noticeMsg: {
-            name: "walletConntected",
-          },
-        });
+        connectAddr = accounts[0];
       }
+      this.$setState({
+        noticeMsg: {
+          name: "walletConntect",
+          data: {
+            isConnect: val,
+          },
+        },
+        connectAddr,
+      });
     },
   },
   created() {

@@ -38,7 +38,7 @@
     <v-card outlined>
       <div class="pd-15-20 bdb-1 d-flex al-c">
         <b class="fz-16">My Collections</b>
-        <span class="gray ml-auto fz-14">{{ ethAddr.cutStr(4, 4) }}</span>
+        <span class="gray ml-auto fz-14">{{ connectAddr.cutStr(4, 4) }}</span>
       </div>
       <div class="pd-20">
         <div class="ta-c pa-10" v-if="!list.length">
@@ -76,19 +76,19 @@ export default {
       showPop: false,
       list: [],
       curItem: {},
-      ethAddr: "",
       contractAddr: "",
     };
   },
   computed: {
     ...mapState({
       noticeMsg: (s) => s.noticeMsg,
+      connectAddr: (s) => s.connectAddr,
     }),
     introList() {
       return [
         {
           label: "Owned by",
-          value: this.ethAddr,
+          value: this.connectAddr,
         },
         {
           label: "Contract Address",
@@ -112,7 +112,7 @@ export default {
   watch: {
     noticeMsg({ name }) {
       // console.log(name);
-      if (name == "walletConntected") {
+      if (name == "walletConntect") {
         this.onInit();
       }
     },
@@ -127,18 +127,16 @@ export default {
   },
   methods: {
     async onInit() {
-      if (!this.ethAddr) {
-        await this.getAddr();
-      }
-      if (!window.ethContract) {
-        if (!localStorage.isConnectMetaMask)
-          this.$setState({
-            noticeMsg: {
-              name: "showWalletConnect",
-            },
-          });
+      if (!this.connectAddr) {
+        // this.$setState({
+        //   noticeMsg: {
+        //     name: "showWalletConnect",
+        //   },
+        // });
+        this.list = [];
         return;
       }
+
       try {
         this.$loading();
         const { data } = await this.$http.get(
@@ -152,7 +150,9 @@ export default {
         //   "https://mygateway.mypinata.cloud/ipfs/" + cid.replace("ipfs://", "")
         // );
         // console.log(info);
-        const num = await contract.methods.balanceOf(this.ethAddr, 0).call();
+        const num = await contract.methods
+          .balanceOf(this.connectAddr, 0)
+          .call();
         console.log("balance of #" + nftId, num);
         let list = [];
         while (list.length < num) {
@@ -172,49 +172,6 @@ export default {
     onItem(it) {
       this.curItem = it;
       this.showPop = true;
-    },
-    async getAddr() {
-      const { data } = await this.$http.get("/activity/ethAddress");
-      this.ethAddr = data;
-    },
-    async setAddr() {
-      const tip = "Your ETH Address";
-      let value = "";
-      try {
-        const data = await this.$prompt(tip, "Prompt", {
-          hideTitle: true,
-          defaultValue: this.ethAddr,
-          inputAttrs: {
-            label: "Wallet Adress",
-            require: true,
-            placeholder: "Enter your wallet address",
-            rules: [
-              (v) =>
-                this.$regMap.eth.test(v) ||
-                "Please enter correct eth wallet address.",
-            ],
-            required: true,
-          },
-        });
-        value = data.value;
-      } catch (error) {
-        return;
-      }
-      if (value == this.ethAddr) {
-        return;
-      }
-      try {
-        console.log(value);
-        this.$loading();
-        await this.$http.put(`/activity/bind/eth/${value}`);
-        this.$loading.close();
-        this.$toast(`${!this.ethAddr ? "Added" : "Updated"} successfully`);
-        this.ethAddr = value;
-        this.getAddr();
-      } catch (error) {
-        console.log(error);
-        this.setAddr();
-      }
     },
   },
 };

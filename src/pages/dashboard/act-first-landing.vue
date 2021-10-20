@@ -381,7 +381,7 @@ export default {
           params: {
             type: "ERC20",
             options: {
-              address: "0x7c17dEe8ECD5fCB3A32f2189A1f6859611DA8b11",
+              address: "0x17fF6c00d916553be3cb8Bb4Adb0D0B0783a269f",
               symbol: "TEVER",
               decimals: 18,
               image: location.origin + "/img/icon/tever.jpg",
