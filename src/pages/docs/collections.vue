@@ -1,69 +1,71 @@
 <template>
-  <div>
-    <v-dialog max-width="420" v-model="showPop">
-      <div class="pd-10-20 bg-gray-e d-flex al-c">
-        <b class="fz-14">{{ curItem.title }}</b>
-        <div class="ml-auto pa-1 hover-1" @click="showPop = false">
-          <v-icon size="20">mdi-close</v-icon>
+  <div class="wrap-1">
+    <div class="con-3">
+      <v-dialog max-width="420" v-model="showPop">
+        <div class="pd-10-20 bg-gray-e d-flex al-c">
+          <b class="fz-14">{{ curItem.title }}</b>
+          <div class="ml-auto pa-1 hover-1" @click="showPop = false">
+            <v-icon size="20">mdi-close</v-icon>
+          </div>
         </div>
-      </div>
-      <div class="pd-20">
-        <v-img :src="curItem.img" class="w100p d-b mb-3" max-height="360" />
-        <v-row>
-          <v-col cols="12" md="5">
-            <h4>Description</h4>
-            <div class="pa-1 mt-1 bg-f5 gray-3 fz-13">
-              {{ curItem.desc }}
-            </div>
-          </v-col>
-          <v-col cols="12" md="7">
-            <h4>Details</h4>
-            <div
-              class="mt-2 d-flex al-c space-btw fz-12"
-              v-for="(it, i) in introList"
-              :key="i"
-            >
-              <span class="gray">{{ it.label }}</span>
-              <span
-                class="color-1 hover-1"
-                v-clipboard="it.value"
-                @success="$toast('Copied')"
-                >{{ it.value.cutStr(6, 4) }}</span
-              >
-            </div>
-          </v-col>
-        </v-row>
-      </div>
-    </v-dialog>
-    <v-card outlined>
-      <div class="pd-15-20 bdb-1 d-flex al-c">
-        <b class="fz-16">My Collections</b>
-        <span class="gray ml-auto fz-14">{{ connectAddr.cutStr(4, 4) }}</span>
-      </div>
-      <div class="pd-20">
-        <div class="ta-c pa-10" v-if="!list.length">
-          <img src="img/empty/bill.svg" style="height: 150px" />
-          <p class="mt-4 fw-b">No NFTs to display</p>
-          <p class="mt-1 gray-a fz-14">
-            Please follow us for future limited NFT
-          </p>
-        </div>
-        <div v-else class="pb-3">
-          <p class="fz-14 fw-b mb-4">Total: {{ list.length }}</p>
+        <div class="pd-20">
+          <v-img :src="curItem.img" class="w100p d-b mb-3" max-height="360" />
           <v-row>
-            <v-col cols="12" md="4" v-for="(it, i) in list" :key="i">
-              <v-card @click="onItem(it)">
-                <v-img :src="it.img" height="300"></v-img>
-                <div class="pd-15-20">
-                  <p class="fw-b fz-15 gray-6">{{ it.title }}</p>
-                  <!-- <p class="gray fz-12">{{ it.title }} #{{ it.id }}</p> -->
-                </div>
-              </v-card>
+            <v-col cols="12" md="5">
+              <h4>Description</h4>
+              <div class="pa-1 mt-1 bg-f5 gray-3 fz-13">
+                {{ curItem.desc }}
+              </div>
+            </v-col>
+            <v-col cols="12" md="7">
+              <h4>Details</h4>
+              <div
+                class="mt-2 d-flex al-c space-btw fz-12"
+                v-for="(it, i) in introList"
+                :key="i"
+              >
+                <span class="gray">{{ it.label }}</span>
+                <span
+                  class="color-1 hover-1"
+                  v-clipboard="it.value"
+                  @success="$toast('Copied')"
+                  >{{ it.value.cutStr(6, 4) }}</span
+                >
+              </div>
             </v-col>
           </v-row>
         </div>
-      </div>
-    </v-card>
+      </v-dialog>
+      <v-card outlined>
+        <div class="pd-15-20 bdb-1 d-flex al-c">
+          <b class="fz-16">My Collections</b>
+          <span class="gray ml-auto fz-14">{{ connectAddr.cutStr(4, 4) }}</span>
+        </div>
+        <div class="pd-20">
+          <div class="ta-c pa-10" v-if="!list.length">
+            <img src="img/empty/bill.svg" style="height: 150px" />
+            <p class="mt-4 fw-b">No NFTs to display</p>
+            <p class="mt-1 gray-a fz-14">
+              Please follow us for future limited NFT
+            </p>
+          </div>
+          <div v-else class="pb-3">
+            <p class="fz-14 fw-b mb-4">Total: {{ list.length }}</p>
+            <v-row>
+              <v-col cols="12" md="4" v-for="(it, i) in list" :key="i">
+                <v-card @click="onItem(it)">
+                  <v-img :src="it.img" height="300"></v-img>
+                  <div class="pd-15-20">
+                    <p class="fw-b fz-15 gray-6">{{ it.title }}</p>
+                    <!-- <p class="gray fz-12">{{ it.title }} #{{ it.id }}</p> -->
+                  </div>
+                </v-card>
+              </v-col>
+            </v-row>
+          </div>
+        </div>
+      </v-card>
+    </div>
   </div>
 </template>
 
@@ -164,10 +166,10 @@ export default {
           });
         }
         this.list = list;
-        this.$loading.close();
       } catch (error) {
         console.log(error);
       }
+      this.$loading.close();
     },
     onItem(it) {
       this.curItem = it;

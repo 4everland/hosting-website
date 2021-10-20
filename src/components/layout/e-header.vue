@@ -147,12 +147,12 @@ export default {
           {
             label: "My Collections",
             title: username,
-            to: "/dashboard/collections",
+            to: "/collections",
           },
           {
             label: this.$t("common.Settings"),
             // title: username,
-            to: "/dashboard/settings",
+            to: "/settings",
           },
           {
             label: this.$t("common.Logout"),
