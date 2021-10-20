@@ -146,17 +146,19 @@ export default {
         );
         this.contractAddr = data.address;
         const contract = new window.web3.eth.Contract(data.abi, data.address);
-        // const cid = await contract.methods.uri(0).call();
+        const nftId = 0;
+        // const cid = await contract.methods.uri(nftId).call();
         // const { data: info } = await this.$http.get(
-        //   "https://gateway.pinata.cloud/ipfs/" + cid.replace("ipfs://", "")
+        //   "https://mygateway.mypinata.cloud/ipfs/" + cid.replace("ipfs://", "")
         // );
+        // console.log(info);
         const num = await contract.methods.balanceOf(this.ethAddr, 0).call();
-        console.log("balance of #0", num);
+        console.log("balance of #" + nftId, num);
         let list = [];
         while (list.length < num) {
           list.push({
             title: "Firstlanding",
-            id: 0,
+            id: nftId,
             img: "img/bg/firstlanding0.gif",
             desc: "NFT test",
           });
