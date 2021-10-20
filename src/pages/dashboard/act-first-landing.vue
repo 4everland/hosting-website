@@ -249,7 +249,7 @@ export default {
       ethAddr: "",
       claimLoading: false,
       errAccount: false,
-      claimed: !!localStorage.claimed,
+      claimed: !!localStorage.claimed2,
     };
   },
   watch: {
@@ -354,7 +354,7 @@ export default {
         if (!this.claimed) {
           const isClaimed = await methods.isClaimed(info.index).call();
           if (isClaimed) {
-            localStorage.claimed = 1;
+            localStorage.claimed2 = 1;
             this.claimed = true;
           }
         }
@@ -386,7 +386,7 @@ export default {
             }
           );
         this.$alert("Claim successfully!");
-        localStorage.claimed = 1;
+        localStorage.claimed2 = 1;
         this.claimed = true;
         this.addSymbol();
       } catch (error) {
