@@ -159,7 +159,7 @@
             :loading="claimLoading"
             rounded
             :style="
-              claimed
+              isClaimed
                 ? 'background: #495c84;'
                 : 'background: linear-gradient(90deg, #fa4adc 0%, #de4343 100%)'
             "
@@ -262,7 +262,7 @@ export default {
       ethAddr: "",
       claimLoading: false,
       errAccount: false,
-      isClaimed: !!localStorage.is_claimed,
+      isClaimed: !!localStorage.is_claimed2,
       claimAmount: 0,
       isNetOk: false,
       netTip: "",
@@ -280,7 +280,10 @@ export default {
       }
     },
     isClaimed(val) {
-      localStorage.is_claimed = val ? "1" : "";
+      localStorage.is_claimed2 = val ? "1" : "";
+      if (val && !localStorage.tever_symbol2) {
+        this.addSymbol();
+      }
     },
     connectAddr(val) {
       if (val) this.getClaimInfo();
@@ -318,24 +321,37 @@ export default {
     async getClaimInfo() {
       await this.checkNet();
       if (!this.isNetOk) return;
-      this.$loading();
-      const { data: info } = await this.$http.get("/firstland/claim-info", {
-        params: {
-          addr: this.myEthAddr,
-        },
-        noTip: true,
-      });
-      this.$loading.close();
-      this.claimInfo = info;
-      this.claimAmount = info.amount / 1e18;
-      if (window.ethContract) {
-        this.isClaimed = await window.ethContract.methods
-          .isClaimed(info.index)
-          .call();
+      try {
+        this.$loading();
+        const { data: info } = await this.$http.get("/firstland/claim-info", {
+          params: {
+            addr: this.myEthAddr,
+          },
+          noTip: true,
+        });
+        this.$loading.close();
+        this.claimInfo = info;
+        this.claimAmount = parseInt(info.amount / 1e18);
+        if (window.ethContract) {
+          this.isClaimed = await window.ethContract.methods
+            .isClaimed(info.index)
+            .call();
+        }
+        return info;
+      } catch (error) {
+        this.claimAmount = 0;
+        throw error;
       }
-      return info;
     },
     async checkNet() {
+      if (!localStorage.isConnectMetaMask) {
+        this.$setState({
+          noticeMsg: {
+            name: "showWalletConnect",
+          },
+        });
+        return;
+      }
       const netType = await window.web3.eth.net.getNetworkType();
       let msg = "";
       if (this.$inDev) {
@@ -345,7 +361,7 @@ export default {
           msg = "Wrong network, please connect to Ethereum mainnet";
       }
       this.netTip = msg;
-      if (msg) this.$alert(msg);
+      // if (msg) this.$alert(msg);
       this.isNetOk = !msg;
     },
     async onClaim() {
@@ -373,7 +389,7 @@ export default {
       }
 
       await this.checkNet();
-      if (!this.isNetOk) return;
+      if (!this.isNetOk) return this.$alert(this.netTip);
 
       let accounts = await window.web3.eth.getAccounts();
       const account = accounts[0];
