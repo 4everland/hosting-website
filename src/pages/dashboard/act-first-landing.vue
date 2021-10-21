@@ -464,7 +464,7 @@ export default {
             type: "ERC20",
             options: {
               address: this.$inDev
-                ? "0x88ACE80F1981D7d816887eBfd8a3BD86e7d41842"
+                ? "0xCb33f96167614d000F73703cC4979789516A5eD1"
                 : "0xEAbA187306335dd773Ca8042b3792c46E213636a",
               symbol: "T-4EVER",
               decimals: 18,
