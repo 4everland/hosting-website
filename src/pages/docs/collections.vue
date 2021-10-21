@@ -168,7 +168,7 @@ export default {
             title: "Firstlanding",
             id: nftId,
             num,
-            img: "img/bg/firstlanding0.gif",
+            img: "img/new/nft0.gif",
             desc: "NFT Firstlanding",
           });
         }
