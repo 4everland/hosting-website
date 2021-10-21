@@ -41,6 +41,15 @@
 </style>
 <template>
   <div class="white-0 act-wrap1">
+    <v-alert
+      border="bottom"
+      colored-border
+      type="error"
+      elevation="2"
+      v-if="netTip"
+    >
+      {{ netTip }}
+    </v-alert>
     <div class="ta-r">
       <v-btn
         color="primary"
@@ -204,7 +213,7 @@ export default {
     },
     claimBtnTxt() {
       if (!this.isFinal) return "My rewards";
-      return this.claimed ? "Claimed" : "Claim Now";
+      return this.isClaimed ? "Claimed" : "Claim Now";
     },
   },
   data() {
@@ -253,8 +262,10 @@ export default {
       ethAddr: "",
       claimLoading: false,
       errAccount: false,
-      claimed: !!localStorage.claimed2,
+      isClaimed: !!localStorage.is_claimed,
       claimAmount: 0,
+      isNetOk: false,
+      netTip: "",
     };
   },
   watch: {
@@ -268,16 +279,15 @@ export default {
         this.onRefresh();
       }
     },
-    claimed(val) {
-      if (val) localStorage.claimed2 = 1;
+    isClaimed(val) {
+      localStorage.is_claimed = val ? "1" : "";
     },
-    myEthAddr(val) {
+    connectAddr(val) {
       if (val) this.getClaimInfo();
     },
   },
   created() {
     this.getList();
-    this.getAddr();
   },
   methods: {
     async connectMetaMask() {
@@ -306,6 +316,8 @@ export default {
       }
     },
     async getClaimInfo() {
+      await this.checkNet();
+      if (!this.isNetOk) return;
       this.$loading();
       const { data: info } = await this.$http.get("/firstland/claim-info", {
         params: {
@@ -316,7 +328,25 @@ export default {
       this.$loading.close();
       this.claimInfo = info;
       this.claimAmount = info.amount / 1e18;
+      if (window.ethContract) {
+        this.isClaimed = await window.ethContract.methods
+          .isClaimed(info.index)
+          .call();
+      }
       return info;
+    },
+    async checkNet() {
+      const netType = await window.web3.eth.net.getNetworkType();
+      let msg = "";
+      if (this.$inDev) {
+        if (netType != "ropsten") msg = "Dev: please connect to ropsten";
+      } else {
+        if (netType != "main")
+          msg = "Wrong network, please connect to Ethereum mainnet";
+      }
+      this.netTip = msg;
+      if (msg) this.$alert(msg);
+      this.isNetOk = !msg;
     },
     async onClaim() {
       // if (!this.ethAddr) {
@@ -341,6 +371,9 @@ export default {
         await this.$sleep(100);
         // console.log(window.ethContract);
       }
+
+      await this.checkNet();
+      if (!this.isNetOk) return;
 
       let accounts = await window.web3.eth.getAccounts();
       const account = accounts[0];
@@ -370,25 +403,9 @@ export default {
       //   return this.$alert(`Your Wallet address is not in reward list.`);
       // }
 
-      const netType = await window.web3.eth.net.getNetworkType();
-      let msg = "";
-      if (this.$inDev) {
-        if (netType != "ropsten") msg = "Dev: please connect to ropsten";
-      } else {
-        if (netType != "main")
-          msg = "Wrong network, please connect to Ethereum mainnet";
-      }
-      if (msg) return this.$alert(msg);
-
       const { methods } = window.ethContract;
       try {
-        if (!this.claimed) {
-          const isClaimed = await methods.isClaimed(info.index).call();
-          if (isClaimed) {
-            this.claimed = true;
-          }
-        }
-        if (this.claimed) {
+        if (this.isClaimed) {
           this.$alert("Your wallet address has been claimed.");
           return;
         }
@@ -428,7 +445,7 @@ export default {
             }
           );
 
-        this.claimed = true;
+        this.isClaimed = true;
         this.addSymbol();
         await this.$alert(
           '<div class="mt-5 ta-c"><img src="img/bg/party.gif" style="height: 200px;" /></div>',
@@ -547,6 +564,9 @@ export default {
       }
     },
     async onRefresh() {
+      if (!this.isNetOk) {
+        this.getClaimInfo();
+      }
       // await this.getList();
       // this.$refs.dapp.getList();
       // this.$refs.invite.getList();
@@ -604,13 +624,15 @@ export default {
           });
         }
         this.list = list;
-        if (totalRewards && !this.connectAddr) {
-          this.$setState({
-            noticeMsg: {
-              name: "showWalletConnect",
-            },
-          });
-        }
+        // if (totalRewards && !this.connectAddr) {
+        //   this.$setState({
+        //     noticeMsg: {
+        //       name: "showWalletConnect",
+        //     },
+        //   });
+        // }
+        await this.getAddr();
+        this.getClaimInfo();
       } catch (error) {
         console.log(error);
       }
