@@ -145,13 +145,8 @@ export default {
         } else links.unshift(feedback);
         const subs = [
           {
-            label: "My Collections",
-            title: username,
-            to: "/collections",
-          },
-          {
             label: this.$t("common.Settings"),
-            // title: username,
+            title: username,
             to: "/settings",
           },
           {
@@ -159,6 +154,14 @@ export default {
             name: "logout",
           },
         ];
+        if (this.$inDev) {
+          delete subs[0].title;
+          subs.unshift({
+            label: "My Collections",
+            title: username,
+            to: "/collections",
+          });
+        }
         if (this.asMobile) links = links.concat(subs);
         else
           links.push({
