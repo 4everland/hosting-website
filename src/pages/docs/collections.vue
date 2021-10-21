@@ -159,7 +159,7 @@ export default {
         // );
         // console.log(info);
         let num = await contract.methods.balanceOf(this.connectAddr, 0).call();
-        num = 2;
+        // num = 2;
         console.log("balance of #" + nftId, num);
         this.total = num;
         let list = [];
