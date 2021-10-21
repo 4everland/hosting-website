@@ -431,7 +431,7 @@ export default {
             localStorage.claim_txid
           );
           console.log(trans);
-          if (!trans.blockHash) {
+          if (trans && !trans.blockHash) {
             return this.$alert("The Claim Transaction is running.");
           }
         }
