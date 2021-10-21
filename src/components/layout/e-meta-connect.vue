@@ -44,6 +44,7 @@ import actAbi from "../../plugins/act-abi";
 // https://github.com/dinn2018/airdrop-claim/blob/master/deployments/ropsten/MerkleDistributor.json
 // https://github.com/dinn2018/airdrop-claim/blob/master/deployments/ropsten/TEver.json
 // https://raw.githubusercontent.com/dinn2018/airdrop-claim/master/scripts/result.json
+// https://github.com/dinn2018/airdrop-claim/blob/master/deployments/ropsten/TEver1155.json
 
 export default {
   data() {
