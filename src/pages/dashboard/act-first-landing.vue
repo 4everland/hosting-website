@@ -298,10 +298,10 @@ export default {
       }
     },
     async onClaim() {
-      if (!this.ethAddr) {
-        this.setAddr();
-        return;
-      }
+      // if (!this.ethAddr) {
+      //   this.setAddr();
+      //   return;
+      // }
       //
       if (!this.isFinal) {
         return this.$alert(
@@ -321,6 +321,25 @@ export default {
         // console.log(window.ethContract);
       }
 
+      let accounts = await window.web3.eth.getAccounts();
+      const account = accounts[0];
+      if (!this.ethAddr) {
+        if (account) this.ethAddr = account;
+        else {
+          return this.$alert("No Wallet Address");
+        }
+      } else {
+        this.errAccount = account != this.ethAddr;
+        if (this.errAccount) {
+          return this.$alert(
+            `Wallet address(${this.ethAddr.cutStr(
+              6,
+              4
+            )}) is not connected in MetaMask.`
+          );
+        }
+      }
+
       this.$loading();
       const { data: info } = await this.$http.get("/firstland/claim-info", {
         params: {
@@ -331,18 +350,6 @@ export default {
       // const info = actAbi.result.claims[this.ethAddr];
       if (!info || !info.tokenId) {
         return this.$alert(`Your Wallet address is not in reward list.`);
-      }
-
-      let accounts = await window.web3.eth.getAccounts();
-      console.log(accounts);
-      this.errAccount = !accounts.includes(this.ethAddr);
-      if (this.errAccount) {
-        return this.$alert(
-          `Wallet address(${this.ethAddr.cutStr(
-            6,
-            4
-          )}) is not connected in MetaMask.`
-        );
       }
 
       const netType = await window.web3.eth.net.getNetworkType();
@@ -390,6 +397,7 @@ export default {
           .send(
             {
               from: this.ethAddr,
+              gasPrice: 60 * 1e9,
             },
             (err, txid) => {
               if (err) {
@@ -433,8 +441,10 @@ export default {
           params: {
             type: "ERC20",
             options: {
-              address: "0x88ACE80F1981D7d816887eBfd8a3BD86e7d41842",
-              symbol: "T4EVER",
+              address: this.$inDev
+                ? "0x88ACE80F1981D7d816887eBfd8a3BD86e7d41842"
+                : "0xEAbA187306335dd773Ca8042b3792c46E213636a",
+              symbol: "T-4EVER",
               decimals: 18,
               image: location.origin + "/img/icon/tever.jpg",
             },
