@@ -18,6 +18,7 @@ const locale = {
     Changelog: "Changelog",
     Doc: "Doc",
     Settings: "Settings",
+
     Logout: "Logout",
     Frameworks: "Frameworks",
     Resources: "Resources",
@@ -42,6 +43,7 @@ const locale = {
       Statistics: "Statistics",
       Billing: "Billing",
       Settings: "Settings",
+      Collections: "Collections",
     },
     projects: {
       NewProject: "New Project",
@@ -120,7 +122,7 @@ const locale = {
       Create: "Create",
       SelectScope: "Select 4everland Scope",
       importing: "importing",
-      deployByBranch: 'You can deploy by branch',
+      deployByBranch: "You can deploy by branch",
       Select: "Select",
       SelectTips:
         "Please select the directory within Git repository that contains your project's source code",

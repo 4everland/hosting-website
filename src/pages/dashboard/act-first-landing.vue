@@ -41,6 +41,15 @@
 </style>
 <template>
   <div class="white-0 act-wrap1">
+    <v-alert
+      border="bottom"
+      colored-border
+      type="error"
+      elevation="2"
+      v-if="netTip"
+    >
+      {{ netTip }}
+    </v-alert>
     <div class="ta-r">
       <v-btn
         color="primary"
@@ -88,13 +97,15 @@
           </v-btn> -->
           <v-btn
             class="ml-auto"
-            :color="errAccount ? 'error' : 'primary'"
+            :color="myEthAddr != connectAddr ? 'error' : 'primary'"
             small
             rounded
             @click="setAddr"
           >
             <v-icon size="16" class="mr-1">mdi-wallet</v-icon>
-            <span>{{ ethAddr ? ethAddr.cutStr(6, 4) : "Wallet Address" }}</span>
+            <span>{{
+              myEthAddr ? myEthAddr.cutStr(6, 4) : "Wallet Address"
+            }}</span>
           </v-btn>
         </div>
         <div class="ov-a mt-5 gray-3 ta-c">
@@ -143,15 +154,19 @@
         </div>
         <div class="ta-c mt-10">
           <v-btn
-            :disabled="totalReward == 0"
+            :disabled="claimAmount == 0"
             @click="onClaim"
             :loading="claimLoading"
             rounded
-            style="background: linear-gradient(90deg, #fa4adc 0%, #de4343 100%)"
+            :style="
+              isClaimed
+                ? 'background: #495c84;'
+                : 'background: linear-gradient(90deg, #fa4adc 0%, #de4343 100%)'
+            "
           >
             <span class="white-0 d-ib pl-3 pr-3"
-              >{{ claimed ? "Claimed" : "My rewards" }} :
-              {{ numberComma(totalReward) }}
+              >{{ claimBtnTxt }} :
+              {{ numberComma(claimAmount) }}
               <span class="fz-12">4EVER</span></span
             >
           </v-btn>
@@ -174,7 +189,6 @@
 import { mapState } from "vuex";
 import Web3 from "web3";
 // import WalletConnectProvider from '@walletconnect/web3-provider';
-import actAbi from "../../plugins/act-abi";
 
 export default {
   computed: {
@@ -183,18 +197,29 @@ export default {
       userInfo: (s) => s.userInfo,
       isFocus: (s) => s.isFocus,
       nowDate: (s) => s.nowDate,
+      connectAddr: (s) => s.connectAddr,
     }),
     asMobile() {
       return this.$vuetify.breakpoint.smAndDown;
     },
-    isEnd() {
-      return this.actStatus == 2 || this.nowDate > 1634169600000;
+    noChange() {
+      return this.nowDate > 1634774400000;
+    },
+    // isFinal() {
+    //   return this.$inDev; // || this.nowDate > 1634860800000;
+    // },
+    myEthAddr() {
+      return this.ethAddr || this.connectAddr;
+    },
+    claimBtnTxt() {
+      if (!this.isFinal) return "My rewards";
+      return this.isClaimed ? "Claimed" : "Claim Now";
     },
   },
   data() {
     return {
       loading: false,
-      totalReward: 0,
+      isEnd: true,
       list: [
         {
           type: "OLD_USER_DEPLOY",
@@ -237,7 +262,11 @@ export default {
       ethAddr: "",
       claimLoading: false,
       errAccount: false,
-      claimed: !!localStorage.claimed,
+      isClaimed: !!localStorage.is_claimed2,
+      claimAmount: 0,
+      isNetOk: false,
+      netTip: "",
+      isFinal: true,
     };
   },
   watch: {
@@ -251,13 +280,18 @@ export default {
         this.onRefresh();
       }
     },
-    isEnd() {
-      this.getList();
+    isClaimed(val) {
+      localStorage.is_claimed2 = val ? "1" : "";
+      if (val && !localStorage.tever_symbol2) {
+        this.addSymbol();
+      }
+    },
+    connectAddr(val) {
+      if (val) this.getClaimInfo();
     },
   },
   created() {
     this.getList();
-    this.getAddr();
   },
   methods: {
     async connectMetaMask() {
@@ -285,51 +319,126 @@ export default {
         return false;
       }
     },
-    async onClaim() {
-      if (!this.ethAddr) {
-        this.setAddr();
+    async getClaimInfo() {
+      await this.checkNet();
+      if (!this.isNetOk) return;
+      try {
+        this.$loading();
+        const { data: info } = await this.$http.get("/firstland/claim-info", {
+          params: {
+            addr: this.myEthAddr,
+          },
+          noTip: true,
+        });
+        this.$loading.close();
+        this.claimInfo = info;
+        this.claimAmount = parseInt(info.amount / 1e18);
+        if (window.ethContract) {
+          this.isClaimed = await window.ethContract.methods
+            .isClaimed(info.index)
+            .call();
+        }
+        return info;
+      } catch (error) {
+        this.claimAmount = 0;
+        throw error;
+      }
+    },
+    async checkNet() {
+      if (!localStorage.isConnectMetaMask) {
+        this.$setState({
+          noticeMsg: {
+            name: "showWalletConnect",
+          },
+        });
         return;
       }
-      // && !this.$inDev
-      if (this.actStatus != 3) {
+      const netType = await window.web3.eth.net.getNetworkType();
+      let msg = "";
+      if (this.$inDev) {
+        if (netType != "rinkeby") msg = "Dev: please connect to rinkeby";
+      } else {
+        if (netType != "main")
+          msg = "Wrong network, please connect to Ethereum mainnet";
+      }
+      this.netTip = msg;
+      // if (msg) this.$alert(msg);
+      this.isNetOk = !msg;
+    },
+    async onClaim() {
+      // if (!this.ethAddr) {
+      //   this.setAddr();
+      //   return;
+      // }
+      //
+      if (!this.isFinal) {
         return this.$alert(
           "The claim is expected to start on 21st October, please make sure that you have added your ETH wallet address in time otherwise you might lost your rewards."
         );
       }
 
-      const isOk = await this.connectMetaMask();
-      console.log(isOk);
-      if (!isOk) return;
-
-      // https://github.com/dinn2018/airdrop-claim/blob/master/deployments/ropsten/MerkleDistributor.json
-      // https://github.com/dinn2018/airdrop-claim/blob/master/deployments/ropsten/TEver.json
-      // https://raw.githubusercontent.com/dinn2018/airdrop-claim/master/scripts/result.json
-      const info = actAbi.result.claims[this.ethAddr];
-      if (!info) {
-        return this.$alert(`Your Wallet address is not in reward list.`);
+      if (!window.ethContract) {
+        const isOk = await this.connectMetaMask();
+        if (!isOk) return;
+        this.$setState({
+          noticeMsg: {
+            name: "walletConnect",
+          },
+        });
+        await this.$sleep(100);
+        // console.log(window.ethContract);
       }
+
+      await this.checkNet();
+      if (!this.isNetOk) return this.$alert(this.netTip);
 
       let accounts = await window.web3.eth.getAccounts();
-      console.log(accounts);
-      this.errAccount = !accounts.includes(this.ethAddr);
-      if (this.errAccount) {
-        return this.$alert(
-          `Wallet address(${this.ethAddr.cutStr(
-            6,
-            4
-          )}) is not connected in MetaMask.`
-        );
+      const account = accounts[0];
+      if (!this.ethAddr) {
+        if (account) this.ethAddr = account;
+        else {
+          return this.$alert("No Wallet Address");
+        }
+      } else {
+        this.errAccount = account != this.ethAddr;
+        if (this.errAccount) {
+          return this.$alert(
+            `Wallet address(${this.ethAddr.cutStr(
+              6,
+              4
+            )}) is not connected in MetaMask.`
+          );
+        }
       }
 
-      const contract = new window.web3.eth.Contract(actAbi.abi, actAbi.address);
+      let info = this.claimInfo;
+      if (!info) {
+        info = await this.getClaimInfo();
+      }
+      // const info = actAbi.result.claims[this.ethAddr];
+      // if (!info || !info.tokenId) {
+      //   return this.$alert(`Your Wallet address is not in reward list.`);
+      // }
+
+      const { methods } = window.ethContract;
       try {
-        const isClaimed = await contract.methods.isClaimed(info.index);
-        if (isClaimed) {
+        if (this.isClaimed) {
           this.$alert("Your wallet address has been claimed.");
-          if (!this.$inDev) return;
+          return;
         }
+
+        if (localStorage.claim_txid) {
+          const trans = await window.web3.eth.getTransaction(
+            localStorage.claim_txid
+          );
+          console.log(trans);
+          if (trans && !trans.blockHash) {
+            return this.$alert("The Claim Transaction is running.");
+          }
+        }
+
         this.claimLoading = true;
-        await contract.methods
+        await methods
           .claim(
             info.index,
             this.ethAddr,
@@ -340,29 +449,45 @@ export default {
           .send(
             {
               from: this.ethAddr,
+              gasPrice: 60 * 1e9,
             },
             (err, txid) => {
               if (err) {
                 this.$alert(err.message);
                 return;
               }
-              localStorage.txid = txid;
-              console.log("txid: " + txid);
+              localStorage.claim_txid = txid;
+              console.log("claim_txid: " + txid);
               this.$toast("Transaction start");
             }
           );
-        this.$alert("Claim successfully!");
-        localStorage.claimed = 1;
-        this.claimed = true;
+
+        this.isClaimed = true;
         this.addSymbol();
+        await this.$alert(
+          '<div class="mt-5 ta-c"><img src="img/bg/party.gif" style="height: 200px;" /></div>',
+          "Claim successfully!",
+          {
+            type: "success",
+          }
+        );
+        this.$router.push("/collections");
       } catch (error) {
+        if (localStorage.claim_txid) {
+          localStorage.claim_fail_txid = localStorage.claim_txid;
+          localStorage.claim_txid = "";
+        }
         console.log(error);
+        let msg = error.message;
+        if (/Not Found/i.test(msg)) {
+          msg = "Your Wallet address is not in reward list.";
+        }
         this.$alert(error.message);
       }
       this.claimLoading = false;
     },
     addSymbol() {
-      if (localStorage.tever_symbol) {
+      if (localStorage.tever_symbol2) {
         return;
       }
       // https://github.com/dinn2018/airdrop-claim/blob/master/deployments/ropsten/TEver.json
@@ -372,10 +497,12 @@ export default {
           params: {
             type: "ERC20",
             options: {
-              address: "0x91122227D4b4dbdFE85b9e0D8FbBd8bBeD2F038c",
-              symbol: "TEVER",
+              address: this.$inDev
+                ? "0xCb33f96167614d000F73703cC4979789516A5eD1"
+                : "0xEAbA187306335dd773Ca8042b3792c46E213636a",
+              symbol: "T-4EVER",
               decimals: 18,
-              image: "https://hosting.4everland.org/img/logo.jpg",
+              image: location.origin + "/img/icon/tever.jpg",
             },
           },
         },
@@ -385,7 +512,7 @@ export default {
             return;
           }
           console.log("set symbol", ok);
-          localStorage.tever_symbol = 1;
+          localStorage.tever_symbol2 = 1;
         }
       );
     },
@@ -402,6 +529,18 @@ export default {
       this.ethAddr = data;
     },
     async setAddr() {
+      if (this.noChange) {
+        let tip = this.myEthAddr;
+        if (!this.myEthAddr) {
+          tip = "Unable to set wallet adress after 21st October.";
+        } else if (this.myEthAddr != this.connectAddr) {
+          tip = `Wallet address(${this.ethAddr.cutStr(
+            6,
+            4
+          )}) is not connected in MetaMask.`;
+        }
+        return this.$alert(tip, "Wallet Address");
+      }
       const tip =
         "Submit your ETH Address, rewards available at the end of the 4EVERLAND FirstLanding.";
       let value = "";
@@ -442,9 +581,12 @@ export default {
       }
     },
     async onRefresh() {
-      await this.getList();
-      this.$refs.dapp.getList();
-      this.$refs.invite.getList();
+      if (!this.isNetOk) {
+        this.getClaimInfo();
+      }
+      // await this.getList();
+      // this.$refs.dapp.getList();
+      // this.$refs.invite.getList();
     },
     onClick(row) {
       let { type, link } = row;
@@ -472,7 +614,7 @@ export default {
         } = await this.$http.get("/activity/rewards");
         // rest = 0;
         const list = [];
-        this.totalReward = totalRewards;
+        this.claimAmount = totalRewards;
         for (const row of rows) {
           delete row.title;
           const item = this.list.filter((it) => it.type == row.type)[0];
@@ -499,6 +641,15 @@ export default {
           });
         }
         this.list = list;
+        // if (totalRewards && !this.connectAddr) {
+        //   this.$setState({
+        //     noticeMsg: {
+        //       name: "showWalletConnect",
+        //     },
+        //   });
+        // }
+        await this.getAddr();
+        this.getClaimInfo();
       } catch (error) {
         console.log(error);
       }

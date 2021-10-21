@@ -11,6 +11,8 @@ import Templates from "./solution/templates";
 import Changelog from "./docs/changelog";
 import CloneFlow from "./new/clone-flow";
 import BugBounty from "./docs/bug-bounty";
+import Settings from "./docs/settings";
+import Collections from "./docs/collections";
 
 export default [
   {
@@ -74,5 +76,19 @@ export default [
     path: "/build/:projName/:taskId",
     component: Build,
     children: BuildChildren,
+  },
+  {
+    path: "/settings",
+    component: Settings,
+    meta: {
+      title: "Settings",
+    },
+  },
+  {
+    path: "/collections",
+    component: Collections,
+    meta: {
+      title: "Collections",
+    },
   },
 ];

@@ -91,6 +91,8 @@
           </v-list>
         </v-menu>
       </template>
+
+      <e-meta-connect v-if="userInfo.username"></e-meta-connect>
     </v-app-bar>
   </div>
 </template>
@@ -145,13 +147,21 @@ export default {
           {
             label: this.$t("common.Settings"),
             title: username,
-            to: "/dashboard/settings",
+            to: "/settings",
           },
           {
             label: this.$t("common.Logout"),
             name: "logout",
           },
         ];
+        if (this.$inDev) {
+          delete subs[0].title;
+          subs.unshift({
+            label: "My Collections",
+            title: username,
+            to: "/collections",
+          });
+        }
         if (this.asMobile) links = links.concat(subs);
         else
           links.push({
