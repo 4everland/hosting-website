@@ -88,13 +88,15 @@
           </v-btn> -->
           <v-btn
             class="ml-auto"
-            :color="errAccount ? 'error' : 'primary'"
+            :color="myEthAddr != connectAddr ? 'error' : 'primary'"
             small
             rounded
             @click="setAddr"
           >
             <v-icon size="16" class="mr-1">mdi-wallet</v-icon>
-            <span>{{ ethAddr ? ethAddr.cutStr(6, 4) : "Wallet Address" }}</span>
+            <span>{{
+              myEthAddr ? myEthAddr.cutStr(6, 4) : "Wallet Address"
+            }}</span>
           </v-btn>
         </div>
         <div class="ov-a mt-5 gray-3 ta-c">
@@ -143,19 +145,19 @@
         </div>
         <div class="ta-c mt-10">
           <v-btn
-            :disabled="totalReward == 0"
+            :disabled="claimAmount == 0"
             @click="onClaim"
             :loading="claimLoading"
             rounded
             :style="
               claimed
-                ? 'background: #999;'
+                ? 'background: #495c84;'
                 : 'background: linear-gradient(90deg, #fa4adc 0%, #de4343 100%)'
             "
           >
             <span class="white-0 d-ib pl-3 pr-3"
               >{{ claimBtnTxt }} :
-              {{ numberComma(totalReward) }}
+              {{ numberComma(claimAmount) }}
               <span class="fz-12">4EVER</span></span
             >
           </v-btn>
@@ -186,6 +188,7 @@ export default {
       userInfo: (s) => s.userInfo,
       isFocus: (s) => s.isFocus,
       nowDate: (s) => s.nowDate,
+      connectAddr: (s) => s.connectAddr,
     }),
     asMobile() {
       return this.$vuetify.breakpoint.smAndDown;
@@ -196,7 +199,9 @@ export default {
     isFinal() {
       return this.$inDev; // || this.nowDate > 1634860800000;
     },
-
+    myEthAddr() {
+      return this.ethAddr || this.connectAddr;
+    },
     claimBtnTxt() {
       if (!this.isFinal) return "My rewards";
       return this.claimed ? "Claimed" : "Claim Now";
@@ -205,7 +210,6 @@ export default {
   data() {
     return {
       loading: false,
-      totalReward: 0,
       isEnd: true,
       list: [
         {
@@ -250,6 +254,7 @@ export default {
       claimLoading: false,
       errAccount: false,
       claimed: !!localStorage.claimed2,
+      claimAmount: 0,
     };
   },
   watch: {
@@ -265,6 +270,9 @@ export default {
     },
     claimed(val) {
       if (val) localStorage.claimed2 = 1;
+    },
+    myEthAddr(val) {
+      if (val) this.getClaimInfo();
     },
   },
   created() {
@@ -296,6 +304,19 @@ export default {
         });
         return false;
       }
+    },
+    async getClaimInfo() {
+      this.$loading();
+      const { data: info } = await this.$http.get("/firstland/claim-info", {
+        params: {
+          addr: this.myEthAddr,
+        },
+        noTip: true,
+      });
+      this.$loading.close();
+      this.claimInfo = info;
+      this.claimAmount = info.amount / 1e18;
+      return info;
     },
     async onClaim() {
       // if (!this.ethAddr) {
@@ -340,17 +361,14 @@ export default {
         }
       }
 
-      this.$loading();
-      const { data: info } = await this.$http.get("/firstland/claim-info", {
-        params: {
-          addr: this.ethAddr,
-        },
-      });
-      this.$loading.close();
-      // const info = actAbi.result.claims[this.ethAddr];
-      if (!info || !info.tokenId) {
-        return this.$alert(`Your Wallet address is not in reward list.`);
+      let info = this.claimInfo;
+      if (!info) {
+        info = await this.getClaimInfo();
       }
+      // const info = actAbi.result.claims[this.ethAddr];
+      // if (!info || !info.tokenId) {
+      //   return this.$alert(`Your Wallet address is not in reward list.`);
+      // }
 
       const netType = await window.web3.eth.net.getNetworkType();
       let msg = "";
@@ -426,6 +444,10 @@ export default {
           localStorage.claim_txid = "";
         }
         console.log(error);
+        let msg = error.message;
+        if (/Not Found/i.test(msg)) {
+          msg = "Your Wallet address is not in reward list.";
+        }
         this.$alert(error.message);
       }
       this.claimLoading = false;
@@ -474,9 +496,14 @@ export default {
     },
     async setAddr() {
       if (this.noChange) {
-        let tip = this.ethAddr;
-        if (!this.ethAddr) {
+        let tip = this.myEthAddr;
+        if (!this.myEthAddr) {
           tip = "Unable to set wallet adress after 21st October.";
+        } else if (this.myEthAddr != this.connectAddr) {
+          tip = `Wallet address(${this.ethAddr.cutStr(
+            6,
+            4
+          )}) is not connected in MetaMask.`;
         }
         return this.$alert(tip, "Wallet Address");
       }
@@ -520,9 +547,9 @@ export default {
       }
     },
     async onRefresh() {
-      await this.getList();
-      this.$refs.dapp.getList();
-      this.$refs.invite.getList();
+      // await this.getList();
+      // this.$refs.dapp.getList();
+      // this.$refs.invite.getList();
     },
     onClick(row) {
       let { type, link } = row;
@@ -550,7 +577,7 @@ export default {
         } = await this.$http.get("/activity/rewards");
         // rest = 0;
         const list = [];
-        this.totalReward = totalRewards;
+        this.claimAmount = totalRewards;
         for (const row of rows) {
           delete row.title;
           const item = this.list.filter((it) => it.type == row.type)[0];
@@ -577,6 +604,13 @@ export default {
           });
         }
         this.list = list;
+        if (totalRewards && !this.connectAddr) {
+          this.$setState({
+            noticeMsg: {
+              name: "showWalletConnect",
+            },
+          });
+        }
       } catch (error) {
         console.log(error);
       }
