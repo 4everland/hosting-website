@@ -262,7 +262,7 @@ export default {
       ethAddr: "",
       claimLoading: false,
       errAccount: false,
-      isClaimed: !!localStorage.is_claimed2,
+      isClaimed: !!localStorage.is_claimed3,
       claimAmount: 0,
       isNetOk: false,
       netTip: "",
@@ -281,7 +281,7 @@ export default {
       }
     },
     isClaimed(val) {
-      localStorage.is_claimed2 = val ? "1" : "";
+      localStorage.is_claimed3 = val ? "1" : "";
       if (val && !localStorage.tever_symbol2) {
         this.addSymbol();
       }
