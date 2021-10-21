@@ -355,7 +355,7 @@ export default {
       const netType = await window.web3.eth.net.getNetworkType();
       let msg = "";
       if (this.$inDev) {
-        if (netType != "ropsten") msg = "Dev: please connect to ropsten";
+        if (netType != "rinkeby") msg = "Dev: please connect to rinkeby";
       } else {
         if (netType != "main")
           msg = "Wrong network, please connect to Ethereum mainnet";
