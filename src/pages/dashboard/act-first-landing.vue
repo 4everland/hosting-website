@@ -263,6 +263,9 @@ export default {
         this.onRefresh();
       }
     },
+    claimed(val) {
+      if (val) localStorage.claimed2 = 1;
+    },
   },
   created() {
     this.getList();
@@ -317,11 +320,14 @@ export default {
         await this.$sleep(100);
         // console.log(window.ethContract);
       }
+
+      this.$loading();
       const { data: info } = await this.$http.get("/firstland/claim-info", {
         params: {
           addr: this.ethAddr,
         },
       });
+      this.$loading.close();
       // const info = actAbi.result.claims[this.ethAddr];
       if (!info || !info.tokenId) {
         return this.$alert(`Your Wallet address is not in reward list.`);
@@ -354,7 +360,6 @@ export default {
         if (!this.claimed) {
           const isClaimed = await methods.isClaimed(info.index).call();
           if (isClaimed) {
-            localStorage.claimed2 = 1;
             this.claimed = true;
           }
         }
@@ -362,6 +367,17 @@ export default {
           this.$alert("Your wallet address has been claimed.");
           return;
         }
+
+        if (localStorage.claim_txid) {
+          const trans = await window.web3.eth.getTransaction(
+            localStorage.claim_txid
+          );
+          console.log(trans);
+          if (!trans.blockHash) {
+            return this.$alert("The Claim Transaction is running.");
+          }
+        }
+
         this.claimLoading = true;
         await methods
           .claim(
@@ -380,16 +396,27 @@ export default {
                 this.$alert(err.message);
                 return;
               }
-              localStorage.txid = txid;
-              console.log("txid: " + txid);
+              localStorage.claim_txid = txid;
+              console.log("claim_txid: " + txid);
               this.$toast("Transaction start");
             }
           );
-        this.$alert("Claim successfully!");
-        localStorage.claimed2 = 1;
+
         this.claimed = true;
         this.addSymbol();
+        await this.$alert(
+          '<div class="mt-5 ta-c"><img src="img/bg/party.gif" style="height: 200px;" /></div>',
+          "Claim successfully!",
+          {
+            type: "success",
+          }
+        );
+        this.$router.push("/collections");
       } catch (error) {
+        if (localStorage.claim_txid) {
+          localStorage.claim_fail_txid = localStorage.claim_txid;
+          localStorage.claim_txid = "";
+        }
         console.log(error);
         this.$alert(error.message);
       }
