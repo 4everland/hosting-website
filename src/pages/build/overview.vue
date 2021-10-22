@@ -88,7 +88,7 @@
               <v-skeleton-loader type="article" />
             </div>
             <div class="fz-14" v-else>
-              <div class="d-flex">
+              <div class="d-flex label-dense">
                 <div class="flex-1">
                   <div class="label-1">Status</div>
                   <e-status :val="state"></e-status>
@@ -127,30 +127,29 @@
                 </div>
               </div>
 
-              <div class="label-1 mt-6">Domains</div>
+              <div class="label-1 mt-5">Domains</div>
               <div>
                 <e-domain :val="info.domain" :disabled="!isSuccess"></e-domain>
               </div>
 
-              <div class="label-1 mt-6">Branch</div>
+              <div class="label-1 mt-5">Branch</div>
               <e-branch :info="info"></e-branch>
 
               <div class="mt-2">
                 <e-commit :info="info.commits"></e-commit>
               </div>
 
-              <!-- <div class="label-1 mt-4">IPFS</div>
-              <div>
+              <div class="label-1 mt-4">IPFS</div>
+              <div class="fz-13">
                 <a
                   class="u b"
                   target="_blank"
-                  :href="ipfsPre + info.cid"
+                  :href="`https://${info.cid}.ipfs.dweb.link`"
                   v-if="isSuccess"
                   >{{ ipfsTxt }}</a
                 >
                 <span v-else>{{ ipfsTxt }}</span>
               </div>
-               -->
             </div>
 
             <v-menu v-if="info.taskId" offset-y>
