@@ -202,12 +202,6 @@ export default {
     asMobile() {
       return this.$vuetify.breakpoint.smAndDown;
     },
-    noChange() {
-      return this.nowDate > 1634774400000;
-    },
-    // isFinal() {
-    //   return this.$inDev; // || this.nowDate > 1634860800000;
-    // },
     myEthAddr() {
       return this.ethAddr || this.connectAddr;
     },
@@ -266,6 +260,7 @@ export default {
       claimAmount: 0,
       isNetOk: false,
       netTip: "",
+      noChange: true,
       isFinal: true,
     };
   },
