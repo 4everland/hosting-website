@@ -423,7 +423,7 @@ Are you sure you want to continue?
         type: "success",
       });
       // if (this.$store.state.actStatus == 1) { }
-      this.$router.replace(this.$route.path.replace("/overview", "/success"));
+      // this.$router.replace(this.$route.path.replace("/overview", "/success"));
     },
     async initData() {
       try {
