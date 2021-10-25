@@ -38,6 +38,15 @@ export default {
     return {
       list: [
         {
+          time: "2021-10-25",
+          img: "img/log/2021-10-25.jpeg",
+          con: `<h3>Published new functions in 4EVERLAND-HOSTING.</h3>
+          <ul>
+          <li>Published new gateway </li>
+          <li>Claim' button in First Landing page now available </li>
+          </ul>`,
+        },
+        {
           time: "2021-10-11",
           img: "img/log/2021-10-11.jpeg",
           con: `<h3>More details in 4EVERLAND HOSTING have improved.</h3>
