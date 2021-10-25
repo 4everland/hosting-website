@@ -40,7 +40,7 @@ export default {
         {
           time: "2021-10-11",
           img: "img/log/2021-10-11.jpeg",
-          con: `<h3>More details in 4EVER-HOSTING have improved.</h3>
+          con: `<h3>More details in 4EVERLAND HOSTING have improved.</h3>
           <ul>
           <li>Set the corresponding browser title according to the page route </li>
           <li>Added a prompt of A record or AAAA record conflict when adding a first-level domain name in the project settings</li>
@@ -82,7 +82,7 @@ export default {
         {
           time: "2021-8-31",
           img: "img/log/2021-8-31.jpg",
-          con: `<h3>We have done more functional support and detailed optimization for 4EVER-HOSTING, as follows:</h3>
+          con: `<h3>We have done more functional support and detailed optimization for 4EVERLAND HOSTING, as follows:</h3>
 <ul>
 <li>Support multiple GitHub accounts login and also org Github accounts. </li>
 <li>Enable search on Github projects and display in pages.</li>
@@ -97,7 +97,7 @@ export default {
           time: "2021-8-16",
           img: "https://www.4everland.org/imgs/blogs/Hosting_Launch.png",
           con: `
-<h3>4EVER-HOSTING is officially launched, you can deploy and host your website through "HOSTING" with one click. The specific features are as follows.</h3>
+<h3>4EVERLAND HOSTING is officially launched, you can deploy and host your website through "HOSTING" with one click. The specific features are as follows.</h3>
 <ul>
 <li>Authorize login via github</li>
 <li>Connect to a github repository</li>

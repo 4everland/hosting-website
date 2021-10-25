@@ -3,7 +3,6 @@ import Domains from "./domains";
 import Statistics from "./statistics";
 import Billing from "./billing";
 import FirstLanding from "./act-first-landing";
-import StatisTest from "./statistics-dev";
 
 export default [
   {
@@ -41,9 +40,5 @@ export default [
     meta: {
       title: "FirstLanding",
     },
-  },
-  {
-    path: "statis-test",
-    component: StatisTest,
   },
 ];

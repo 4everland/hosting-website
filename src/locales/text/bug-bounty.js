@@ -1,7 +1,7 @@
 export default {
   en: `Dear users:
 
-4EVERLAND Alpha version has been officially launched on August 16. This version supports DWeb hosting, decentralized gateway, decentralized domain name, data services and other products and protocols, you can quickly access Web3.0 through 4EVER-HOSTING.
+4EVERLAND Alpha version has been officially launched on August 16. This version supports DWeb hosting, decentralized gateway, decentralized domain name, data services and other products and protocols, you can quickly access Web3.0 through 4EVERLAND HOSTING.
 
 To ensure the long-term and stable development of 4EVERLAND, 4EVERLAND is now launching a bug bounty program with total $1 million dollars initial bounty. In addition, we are offering a maximum reward of $20,000 dollars for identified bugs. We hope to have more professional security researchers through this activity and join in the ecological construction of 4EVERLAND together. 
 
@@ -65,7 +65,7 @@ Please include as much bug-related information as possible, including but not li
 `,
   zh: `亲爱的用户：
 
-4EVERLAND Alpha版已于8月16日正式上线。4EVERLAND Alpha 版支持DWeb 托管、去中心化网关、去中心化域名、数据服务等产品和协议，您可通过4EVER-HOSTING 快速接入 Web3.0。
+4EVERLAND Alpha版已于8月16日正式上线。4EVERLAND Alpha 版支持DWeb 托管、去中心化网关、去中心化域名、数据服务等产品和协议，您可通过4EVERLAND HOSTING 快速接入 Web3.0。
 
 为了保障4EVERLAND的长久稳定发展，4EVERLAND现推出漏洞赏金计划，为被确认的 Bug 提供最高2万美元的奖励，赏金计划初始赏金总额为 100 万美元。希望通过活动发掘更多的专业安全研究人员，共同参与到4EVERLAND的生态建设中来。
 

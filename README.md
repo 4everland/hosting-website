@@ -1,4 +1,4 @@
-# 4ever-hosting
+# 4EVERLAND HOSTING
 
 Site: https://hosting.4everland.org
 Docs: https://docs.hosting.4everland.org

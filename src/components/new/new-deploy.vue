@@ -202,7 +202,7 @@
             </v-expansion-panels>
 
             <div class="gray-6 mt-5 fz-14">
-              Tips: 4EVER-Hosting only serves static pages(Server-Side-Rendering
+              Tips: 4EVERLAND HOSTING only serves static pages(Server-Side-Rendering
               is not supported at this time)
             </div>
           </v-form>
