@@ -33,10 +33,7 @@ export default [
       title: "Bug Bounty",
     },
   },
-  {
-    path: "/changelog",
-    component: Changelog,
-  },
+
   {
     path: "/changelog",
     component: Changelog,

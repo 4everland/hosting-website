@@ -11,7 +11,7 @@ Vue.config.productionTip = false;
 router.beforeEach((to, _, next) => {
   // console.log(to);
   let { title } = to.meta || {};
-  const name = "4EVERLAND";
+  const name = "4EVERLAND HOSTING";
   if (title) {
     title += " - " + name;
     for (const key in to.params) {
