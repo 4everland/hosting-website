@@ -388,14 +388,14 @@ export default {
       if (!this.isNetOk) return this.$alert(this.netTip);
 
       let accounts = await window.web3.eth.getAccounts();
-      const account = accounts[0];
+      const account = accounts[0] || "";
       if (!this.ethAddr) {
         if (account) this.ethAddr = account;
         else {
           return this.$alert("No Wallet Address");
         }
       } else {
-        this.errAccount = account != this.ethAddr;
+        this.errAccount = account.toLowerCase() != this.ethAddr.toLowerCase();
         if (this.errAccount) {
           return this.$alert(
             `Wallet address(${this.ethAddr.cutStr(
@@ -528,7 +528,7 @@ export default {
         let tip = this.myEthAddr;
         if (!this.myEthAddr) {
           tip = "Unable to set wallet adress after 21st October.";
-        } else if (this.myEthAddr != this.connectAddr) {
+        } else if (this.errAccount) {
           tip = `Wallet address(${this.ethAddr.cutStr(
             6,
             4
