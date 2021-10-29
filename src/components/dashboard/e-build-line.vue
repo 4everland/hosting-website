@@ -1,9 +1,10 @@
 <template>
   <div class="d-flex al-c mt-2 fz-13" v-if="info && info.domain">
-    <span
+    <!-- <span
       class="dot-1 mr-1"
       :class="'c-' + (info.state || 'empty').toLowerCase()"
-    ></span>
+    ></span> -->
+    <e-status class="mr-1" hide-text :val="info.state"></e-status>
     <template v-if="type == 'Production' && !info.state">
       <span class="gray">No Production Deployment</span>
     </template>

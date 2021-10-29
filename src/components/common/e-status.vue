@@ -1,7 +1,7 @@
 <template>
-  <div v-if="val" class="line-1" style="max-width: 110px">
+  <div v-if="val" class="line-1 shrink-0">
     <span class="dot-1" :class="staCls"></span>
-    <span class="sta-1" :class="staCls">{{ state.capitalize() }}</span>
+    <span class="sta-1" :class="staCls" v-if="!hideText">{{ state.capitalize() }}</span>
   </div>
 </template>
 
@@ -9,6 +9,7 @@
 export default {
   props: {
     val: String,
+    hideText: Boolean,
   },
   computed: {
     state() {
