@@ -210,6 +210,8 @@ export default {
   },
   methods: {
     async getScripts() {
+      const { id } = this.info.repo;
+      if (!id) return;
       try {
         const {
           data: { scripts },
