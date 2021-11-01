@@ -95,8 +95,8 @@ export default {
   created() {
     this.getAddr();
     if (localStorage.isConnectMetaMask) {
-      // this.onConnect();
-      this.isConnect = true;
+      this.onConnect();
+      // this.isConnect = true;
     }
   },
   methods: {
