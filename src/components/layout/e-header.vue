@@ -152,7 +152,7 @@ export default {
           {
             label: this.$t("common.Settings"),
             // title: username,
-            to: "/settings",
+            to: "/dashboard/settings",
           },
           {
             label: this.$t("common.Logout"),

@@ -2,6 +2,7 @@ import Projects from "./projects";
 import Domains from "./domains";
 import Statistics from "./statistics";
 import Billing from "./billing";
+import Settings from "./settings";
 import FirstLanding from "./act-first-landing";
 
 export default [
@@ -33,7 +34,13 @@ export default [
       title: "Billing - Dashboard",
     },
   },
-
+  {
+    path: "settings",
+    component: Settings,
+    meta: {
+      title: "Settings - Dashboard",
+    },
+  },
   {
     path: "first-landing",
     component: FirstLanding,

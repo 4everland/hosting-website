@@ -108,6 +108,7 @@ export default {
       if (!this.isConnect) {
         const isOk = await this.connectMetaMask();
         this.isConnect = isOk;
+        if (!isOk) this.showPop = true;
       } else {
         window.ethereum = null;
         this.isConnect = false;

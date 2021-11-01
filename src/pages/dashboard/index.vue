@@ -73,6 +73,10 @@ export default {
           path: "billing",
         },
         {
+          title: this.$t(`dashboard.index.Settings`),
+          path: "settings",
+        },
+        {
           title: "FirstLanding",
           path: "first-landing",
           icon: this.actStatus == 1 ? "fire" : null,
@@ -80,11 +84,7 @@ export default {
           wrapCls: "bg-act-1",
           // conCls: "act-con",
         },
-        {
-          title: this.$t(`dashboard.index.Settings`),
-          path: "settings",
-          hide: !/settings/.test(this.curPath),
-        },
+
         {
           title: this.$t(`dashboard.index.Collections`),
           path: "collections",
