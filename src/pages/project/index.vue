@@ -35,6 +35,29 @@ export default {
       noticeMsg: (s) => s.noticeMsg,
       buildInfo: (s) => s.buildInfo,
     }),
+    tabs() {
+      const { id } = this.info.repo || {};
+      const tabs = [
+        {
+          title: "Overview",
+          path: "overview",
+        },
+        {
+          title: "Deployments",
+          path: "deployments",
+        },
+        {
+          title: "Commits",
+          path: "commits",
+        },
+        {
+          title: "Settings",
+          path: "settings",
+        },
+      ];
+      if (!id) tabs.splice(2, 1);
+      return tabs;
+    },
     curTab() {
       return (
         this.tabs.filter((it) => {
@@ -68,24 +91,6 @@ export default {
       id,
       projName,
       curPath: "",
-      tabs: [
-        {
-          title: "Overview",
-          path: "overview",
-        },
-        {
-          title: "Deployments",
-          path: "deployments",
-        },
-        {
-          title: "Commits",
-          path: "commits",
-        },
-        {
-          title: "Settings",
-          path: "settings",
-        },
-      ],
     };
   },
   watch: {
