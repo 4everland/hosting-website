@@ -32,11 +32,16 @@
       <v-window v-model="curStep">
         <v-window-item :value="0">
           <div class="pd-20 pt-0">
-            <div class="gray-6 fz-15">{{ $t(`${locales}deployByBranch`) }}</div>
+            <!-- <div class="gray-6 fz-15">{{ $t(`${locales}deployByBranch`) }}</div> -->
+            <v-text-field
+              :disabled="(branchList || []).length < 5"
+              v-model="branchKey"
+              :placeholder="$t(`${locales}deployByBranch`)"
+            ></v-text-field>
             <v-radio-group v-model="form.currentBranch" v-if="branchList">
               <div
                 class="d-flex al-c mb-2"
-                v-for="branch in branchList"
+                v-for="branch in resBranchList"
                 :key="branch"
               >
                 <v-radio :label="branch" :value="branch">
@@ -202,8 +207,8 @@
             </v-expansion-panels>
 
             <div class="gray-6 mt-5 fz-14">
-              Tips: 4EVERLAND HOSTING only serves static pages(Server-Side-Rendering
-              is not supported at this time)
+              Tips: 4EVERLAND HOSTING only serves static
+              pages(Server-Side-Rendering is not supported at this time)
             </div>
           </v-form>
         </v-window-item>
@@ -257,6 +262,7 @@ export default {
         currentBranch: "",
         hookSwitch: false,
       },
+      branchKey: "",
       branchList: null,
       scripts: null,
       envHeaders: [
@@ -274,6 +280,11 @@ export default {
   computed: {
     userInfo() {
       return this.$store.state.userInfo;
+    },
+    resBranchList() {
+      return (this.branchList || []).filter((branch) => {
+        return !this.branchKey || new RegExp(this.branchKey, "i").test(branch);
+      });
     },
     envList2() {
       return this.envList.map((it) => {
@@ -298,7 +309,11 @@ export default {
       this.curStep = 0;
     },
     importItem() {
+      this.branchKey = "";
       this.getBranchList();
+    },
+    resBranchList(arr) {
+      if (arr.length) this.form.currentBranch = arr[0];
     },
   },
   methods: {
