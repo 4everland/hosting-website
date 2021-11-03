@@ -1,9 +1,36 @@
 <template>
   <div class="pos-r">
-    <div class="pos-a top-0 w100p">
+    <div class="pos-a top-0 z-10 w100p d-flex al-c">
       <h4>{{ title }}</h4>
+      <div
+        class="fz-12 gray-a ml-auto"
+        :class="{
+          'mr-5': !asMobile,
+        }"
+      >
+        <span
+          @click="onTime(it)"
+          class="hover-1 pl-1 pr-1"
+          :class="{
+            'color-1': it.value == timeLimit,
+          }"
+          v-for="(it, i) in timeList"
+          :key="i"
+        >
+          {{ it.label }}
+        </span>
+      </div>
     </div>
-    <div ref="chart" style="height: 200px"></div>
+    <div class="pos-r">
+      <div ref="chart" style="height: 200px"></div>
+      <div class="pos-center z-10" v-if="loading">
+        <v-progress-circular
+          :size="40"
+          color="primary"
+          indeterminate
+        ></v-progress-circular>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -17,10 +44,30 @@ export default {
     appId: String,
     reload: Boolean,
   },
+  computed: {
+    asMobile() {
+      return this.$vuetify.breakpoint.smAndDown;
+    },
+  },
   data() {
     return {
-      timeLimit: "HOUR_24", //DAY_7 DAY_30
       list: [],
+      loading: false,
+      timeLimit: "HOUR_24", //DAY_7 DAY_30
+      timeList: [
+        {
+          label: "30Day",
+          value: "DAY_30",
+        },
+        {
+          label: "7Day",
+          value: "DAY_7",
+        },
+        {
+          label: "24H",
+          value: "HOUR_24",
+        },
+      ],
     };
   },
   watch: {
@@ -35,8 +82,12 @@ export default {
     // this.getData();
   },
   methods: {
+    onTime(it) {
+      this.timeLimit = it.value;
+    },
     async getData() {
       try {
+        this.loading = true;
         const {
           data: { data },
         } = await this.$http.get("/analytics/user/view/data", {
@@ -71,6 +122,7 @@ export default {
       } catch (error) {
         //
       }
+      this.loading = false;
     },
     setData(xArr, yArr) {
       const el = this.$refs.chart;
