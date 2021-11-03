@@ -77,6 +77,9 @@ export default {
     reload(val) {
       if (val) this.getData();
     },
+    asMobile() {
+      location.reload();
+    },
   },
   mounted() {
     // this.getData();
