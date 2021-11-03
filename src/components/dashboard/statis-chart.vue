@@ -5,7 +5,7 @@
       <div
         class="fz-12 gray-a ml-auto"
         :class="{
-          'mr-5': !asMobile,
+          'mr-9': !asMobile,
         }"
       >
         <span
