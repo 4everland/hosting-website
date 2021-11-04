@@ -317,6 +317,9 @@ export default {
     },
   },
   methods: {
+    onBuildCmd(val) {
+      if (!val) this.form.framework = null;
+    },
     async getBranchList() {
       this.form.currentBranch = "";
       this.branchList = null;
@@ -386,10 +389,11 @@ export default {
         env: this.envList,
       };
       if (!body.buildCommand) {
-        if (body.framework || this.scripts) {
-          this.$alert("Build Command must not be empty");
-          return;
-        } else if (!body.framework) {
+        // if (body.framework || this.scripts) {
+        //   this.$alert("Build Command must not be empty");
+        //   return;
+        // } else
+        if (!body.framework) {
           body.buildCommand = " ";
         }
       }

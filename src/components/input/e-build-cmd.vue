@@ -8,6 +8,7 @@
       :placeholder="placeholder"
     />
     <v-select
+      clearable
       v-else
       persistent-placeholder
       :menu-props="{ offsetY: true }"
