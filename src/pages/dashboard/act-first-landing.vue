@@ -80,7 +80,7 @@
         class="pos-a z-1 act-gift1"
         :style="asMobile ? 'width: 240px;top:-100px;' : ''"
       />
-      <act-countdown></act-countdown>
+      <!-- <act-countdown></act-countdown> -->
     </div>
     <div class="act-p1 bdrs-10 pos-r">
       <div class="pd-20 pl-0 pr-0">
@@ -607,7 +607,6 @@ export default {
         let {
           data: { myRewards: rows, poolD2E: rest, totalRewards },
         } = await this.$http.get("/activity/rewards");
-        // rest = 0;
         const list = [];
         this.claimAmount = totalRewards;
         for (const row of rows) {

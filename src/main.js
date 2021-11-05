@@ -81,7 +81,7 @@ new Vue({
       const now = Date.now();
       if (this.token) {
         this.initSocket();
-        this.getActStatus();
+        // this.getActStatus();
         await this.getUesrInfo();
         this.$setState({
           noticeMsg: {

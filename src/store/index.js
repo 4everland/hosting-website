@@ -22,7 +22,7 @@ const store = new Vuex.Store({
     alertInfo: {},
     projectInfo: {},
     buildInfo: {},
-    actStatus: 0,
+    actStatus: 2,
     connectAddr: "",
   },
   mutations: {
