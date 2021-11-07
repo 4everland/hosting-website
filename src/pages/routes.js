@@ -11,7 +11,7 @@ import Templates from "./solution/templates";
 import Changelog from "./docs/changelog";
 import CloneFlow from "./new/clone-flow";
 import BugBounty from "./docs/bug-bounty";
-import Collections from "./docs/collections";
+import userRoutes from "./user/routes";
 
 export default [
   {
@@ -73,11 +73,5 @@ export default [
     component: Build,
     children: BuildChildren,
   },
-  {
-    path: "/collections",
-    component: Collections,
-    meta: {
-      title: "Collections",
-    },
-  },
+  ...userRoutes,
 ];
