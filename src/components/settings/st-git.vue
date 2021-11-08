@@ -53,7 +53,7 @@
           </div>
           <template v-else>
             <div class="pd-15-20" v-if="!repoList || !repoList.length">
-              <v-btn :loading="listing" @click="getRepoList">
+              <v-btn color="primary" :loading="listing" @click="getRepoList">
                 <v-icon>mdi-github</v-icon>
                 <span>Connect Github</span>
               </v-btn>
