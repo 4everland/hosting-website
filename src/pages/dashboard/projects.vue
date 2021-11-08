@@ -101,6 +101,14 @@
               <e-time pre="Updated">{{ it.repo.updateAt }}</e-time>
             </span>
           </a>
+          <a
+            v-else
+            :href="`#/project/${it.name}/${it.id}/settings?tab=2`"
+            class="pd-12-15 fz-14 d-flex al-c"
+          >
+            <v-icon :color="$color1" size="18">mdi-github</v-icon>
+            <span class="ml-1 gray color-1">Connect To Git</span>
+          </a>
         </v-card>
       </v-col>
     </v-row>

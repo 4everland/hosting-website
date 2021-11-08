@@ -2,10 +2,22 @@
   <div>
     <div class="bd-1">
       <div class="pd-20">
-        <h3>Connected Git Repository</h3>
-        <div class="gray mt-1 fz-14">
-          Seamlessly create Deployments for any commits pushed to your Git
-          repository.
+        <div class="d-flex al-c">
+          <div>
+            <h3>Connected Git Repository</h3>
+            <div class="gray mt-1 fz-14">
+              Seamlessly create Deployments for any commits pushed to your Git
+              repository.
+            </div>
+          </div>
+          <v-btn
+            v-if="repoList"
+            small
+            :loading="listing"
+            @click="getRepoList"
+            class="ml-auto"
+            >Refresh</v-btn
+          >
         </div>
         <div class="mt-5 bd-1">
           <div class="pd-15-20 d-flex al-c" v-if="repoName">

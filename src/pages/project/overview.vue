@@ -10,11 +10,18 @@
           <a
             class="ml-1 u"
             style="color: inherit"
-            v-if="info.repo"
+            v-if="info.repo && info.repo.id"
             :href="`https://github.com/` + info.repo.pathPre"
             target="_blank"
           >
             {{ info.repo.pathPre }}
+          </a>
+          <a
+            v-else
+            :href="`#/project/${info.name}/${info.id}/settings?tab=2`"
+            class="ml-1"
+          >
+            <span class="white-8">Connect To Git</span>
           </a>
         </div>
         <template #right>
