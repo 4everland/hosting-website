@@ -11,7 +11,7 @@
   <div>
     <div class="bg-white shadow-1 pos-s z-100" style="top: 0">
       <div class="con-1">
-        <v-tabs :color="$color1">
+        <v-tabs :color="$color1" v-model="curIdx">
           <!-- <v-tabs-slider :color="curTab.color || 'primary'"></v-tabs-slider> -->
           <v-tab
             replace
@@ -45,6 +45,7 @@ export default {
   data() {
     return {
       locales: "dashboard.index.",
+      curIdx: null,
     };
   },
   computed: {
@@ -100,6 +101,11 @@ export default {
           return it.path == this.curPath.replace(/\/.+\//, "");
         })[0] || {}
       );
+    },
+  },
+  watch: {
+    curIdx(val) {
+      console.log(val);
     },
   },
 };
