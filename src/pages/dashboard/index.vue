@@ -12,7 +12,7 @@
     <div class="bg-white shadow-1 pos-s z-100" style="top: 0">
       <div class="con-1">
         <v-tabs :color="$color1">
-          <v-tabs-slider :color="curTab.color || 'primary'"></v-tabs-slider>
+          <!-- <v-tabs-slider :color="curTab.color || 'primary'"></v-tabs-slider> -->
           <v-tab
             replace
             :to="'/dashboard/' + it.path"
@@ -68,10 +68,10 @@ export default {
           title: this.$t(`dashboard.index.Statistics`),
           path: "statistics",
         },
-        {
-          title: this.$t(`dashboard.index.Billing`),
-          path: "billing",
-        },
+        // {
+        //   title: this.$t(`dashboard.index.Billing`),
+        //   path: "billing",
+        // },
         {
           title: this.$t(`dashboard.index.Settings`),
           path: "settings",
@@ -80,15 +80,9 @@ export default {
           title: "FirstLanding",
           path: "first-landing",
           icon: this.actStatus == 1 ? "fire" : null,
-          color: "#ff5252",
+          // color: "#ff5252",
           wrapCls: "bg-act-1",
           // conCls: "act-con",
-        },
-
-        {
-          title: this.$t(`dashboard.index.Collections`),
-          path: "collections",
-          hide: !/collections/.test(this.curPath),
         },
       ];
     },
