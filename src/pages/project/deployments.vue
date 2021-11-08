@@ -195,7 +195,11 @@ export default {
           `/build/${it.buildConfig.name}/${data.taskId}/overview?ftab=deployments`
         );
       } catch (error) {
-        console.log(error, "deploy catch");
+        console.log(error, "deploy");
+        if (error.code == 10014)
+          this.$router.push(
+            `/project/${this.info.name}/${this.info.id}/settings?tab=2`
+          );
       }
       this.$loading.close();
     },

@@ -474,6 +474,10 @@ Are you sure you want to continue?
         }, 800);
       } catch (error) {
         console.log(error, "build err");
+        if (error.code == 10014)
+          this.$router.push(
+            `/project/${this.projInfo.name}/${this.projInfo.id}/settings?tab=2`
+          );
       }
       this.deploying = false;
     },

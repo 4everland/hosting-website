@@ -75,12 +75,15 @@ http.interceptors.response.use(
     if (status == 401) {
       goLogin();
     } else if (msg) {
-      Vue.prototype.$alert(msg).then(() => {
-        if (msg == "Request aborted") {
-          location.reload();
-        }
-      });
+      setTimeout(() => {
+        Vue.prototype.$alert(msg).then(() => {
+          if (msg == "Request aborted") {
+            location.reload();
+          }
+        });
+      }, 10);
     }
+    error.code = data.code;
     return Promise.reject(error);
   }
 );
