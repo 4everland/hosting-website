@@ -103,10 +103,5 @@ export default {
       );
     },
   },
-  watch: {
-    curPath(val) {
-      console.log(val);
-    },
-  },
 };
 </script>

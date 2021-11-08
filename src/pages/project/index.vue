@@ -2,7 +2,7 @@
   <div>
     <div class="bg-white shadow-1 pos-s z-100" style="top: 0">
       <div class="con-1">
-        <v-tabs :color="$color1" v-model="curPath">
+        <v-tabs :color="$color1" :value="curPath">
           <v-tab
             replace
             :to="`/project/${projName}/${id}/${it.path}`"
@@ -58,6 +58,9 @@ export default {
       if (!id) tabs.splice(2, 1);
       return tabs;
     },
+    curPath() {
+      return this.$route.path;
+    },
     curTab() {
       return (
         this.tabs.filter((it) => {
@@ -90,7 +93,6 @@ export default {
     return {
       id,
       projName,
-      curPath: "",
     };
   },
   watch: {

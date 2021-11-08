@@ -2,7 +2,7 @@
   <div>
     <div class="bg-white shadow-1 pos-s z-100 top-0">
       <div class="con-1">
-        <v-tabs :color="$color1" v-model="curPath">
+        <v-tabs :color="$color1" :value="curPath">
           <v-tab
             replace
             :to="`/build/${projName}/${taskId}/${it.path}`"
@@ -30,6 +30,9 @@ export default {
   computed: {
     projInfo() {
       return this.$store.state.projectInfo;
+    },
+    curPath() {
+      return this.$route.path;
     },
     curTab() {
       return (
@@ -78,7 +81,6 @@ export default {
       projName,
       taskId,
       ftab,
-      curPath: "",
       tabs: [
         {
           title: "Overview",
