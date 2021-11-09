@@ -45,7 +45,7 @@
           <v-text-field
             persistent-placeholder
             v-model="form.name"
-            placeholder="New Token"
+            placeholder="Token Name"
             autocomplte="off"
             autofocus
           />
@@ -77,13 +77,15 @@
         <div
           class="pd-10 bd-1 bdrs-3 mt-8 d-flex al-c hover-1"
           v-clipboard="newToken"
-          @success="$toast('Copied to clipboard !')"
+          @success="onCopied"
         >
           <span class="el-label-1 fz-14">{{ newToken.cutStr(20, 10) }}</span>
           <v-icon size="16" class="ml-auto">mdi-content-copy</v-icon>
         </div>
         <div class="mt-8 ta-c">
-          <v-btn color="primary" @click="popCopy = false">Done</v-btn>
+          <v-btn color="primary" @click="popCopy = false" :disabled="!copied"
+            >Done</v-btn
+          >
         </div>
       </div>
     </v-dialog>
@@ -110,12 +112,17 @@ export default {
       adding: false,
       newToken: "",
       popCopy: false,
+      copied: false,
     };
   },
   mounted() {
     this.getList();
   },
   methods: {
+    onCopied() {
+      this.copied = true;
+      this.$toast("Copied to clipboard !");
+    },
     clickAdd() {
       this.popNew = true;
     },
@@ -129,6 +136,7 @@ export default {
         this.newToken = data.token;
         this.popNew = false;
         this.popCopy = true;
+        this.copied = false;
         this.form = {
           name: "",
         };

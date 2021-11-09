@@ -16,7 +16,11 @@ export default {
       info: {
         id: 1,
       },
-      menus: [
+    };
+  },
+  computed: {
+    menus() {
+      const arr = [
         {
           text: "General",
           comp: "ds-general",
@@ -25,13 +29,15 @@ export default {
           text: "Billing",
           comp: "ds-billing",
         },
-        {
+      ];
+      if (this.$inDev) {
+        arr.push({
           text: "Tokens",
           comp: "ds-token",
-        },
-      ],
-    };
+        });
+      }
+      return arr;
+    },
   },
-  computed: {},
 };
 </script>
