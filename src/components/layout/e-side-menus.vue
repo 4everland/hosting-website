@@ -10,7 +10,7 @@
             :is="it.comp"
             :info="info"
             :active="i == curIdx"
-            v-if="it.comp && info.id"
+            v-if="it.comp && info.id && activeIdxList.includes(i)"
           ></component>
         </v-expansion-panel-content>
       </v-expansion-panel>
@@ -35,7 +35,7 @@
         :info="info"
         :active="curItem.comp == it.comp"
         v-show="curItem.comp == it.comp"
-        v-for="(it, i) in list"
+        v-for="(it, i) in activeList"
         :key="i"
       ></component>
     </div>
@@ -50,12 +50,17 @@ export default {
   },
   data() {
     const { tab = 0 } = this.$route.query;
+    let curIdx = tab * 1;
     return {
-      curIdx: tab * 1,
+      curIdx,
+      activeIdxList: [curIdx],
     };
   },
   watch: {
     curIdx(tab) {
+      if (!this.activeIdxList.includes(tab)) {
+        this.activeIdxList.push(tab);
+      }
       this.$router.replace({
         query: {
           tab,
@@ -74,6 +79,11 @@ export default {
     },
     curItem() {
       return this.list[this.curIdx] || {};
+    },
+    activeList() {
+      return this.list.filter((_, i) => {
+        return this.activeIdxList.includes(i);
+      });
     },
   },
 };
