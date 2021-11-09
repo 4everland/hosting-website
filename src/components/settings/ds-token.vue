@@ -142,12 +142,12 @@ export default {
     async onDelete() {
       try {
         const suffix = this.selected.length > 1 ? "s" : "";
-        let html = `The token${suffix} will be permanently deleted. Are you sure you want to continue?<ul class='mt-4'>`;
+        let html = `The following token${suffix} will be permanently deleted, are you sure you want to continue?<ul class='mt-4'>`;
         for (const row of this.selected) {
           html += "<li>" + row.name + "</li>";
         }
         html += "</ul>";
-        await this.$confirm(html, "Remove token" + suffix);
+        await this.$confirm(html, "Delete token" + suffix);
         this.deleting = true;
         for (const row of this.selected) {
           await this.$http.delete("/user/token/" + row.id);
