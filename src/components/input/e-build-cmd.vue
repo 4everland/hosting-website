@@ -8,7 +8,6 @@
       :placeholder="placeholder"
     />
     <v-select
-      clearable
       v-else
       persistent-placeholder
       :menu-props="{ offsetY: true }"
@@ -20,7 +19,7 @@
     >
       <template #item="{ item }">
         <span>{{ item.key }}</span>
-        <span class="gray ml-1 mr-2">:</span>
+        <span class="gray ml-1 mr-2" v-if="item.key">:</span>
         <span class="gray fz-13 line-1" style="max-width: 320px">{{
           item.script
         }}</span>
@@ -77,6 +76,12 @@ export default {
           });
         }
       }
+      res.unshift({
+        key: "",
+        text: "",
+        value: "",
+        script: "empty",
+      });
       return res;
     },
   },

@@ -392,10 +392,7 @@ export default {
         // if (body.framework || this.scripts) {
         //   this.$alert("Build Command must not be empty");
         //   return;
-        // } else
-        if (!body.framework) {
-          body.buildCommand = " ";
-        }
+        // }
       }
       if (!body.outputDirectory) {
         body.outputDirectory = "dist";
