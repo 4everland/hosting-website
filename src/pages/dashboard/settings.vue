@@ -25,10 +25,10 @@ export default {
           text: "Billing",
           comp: "ds-billing",
         },
-        // {
-        //   text: "Tokens",
-        //   comp: "ds-token",
-        // },
+        {
+          text: "Tokens",
+          comp: "ds-token",
+        },
       ],
     };
   },

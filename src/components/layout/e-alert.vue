@@ -162,8 +162,8 @@ export default {
             this.$refs.form.reset();
           }, 5);
           setTimeout(() => {
-            let val = config.defaultValue
-            if(val) this.inputVal = val
+            let val = config.defaultValue;
+            if (val) this.inputVal = val;
           }, 10);
         }
         this.$setState({
@@ -226,7 +226,7 @@ export default {
       opts = {}
     ) => {
       this.showSnackbar = false;
-      if ((!color && /success/.test(content)) || color == 1) {
+      if ((!color && /success|copied/i.test(content)) || color == 1) {
         color = "success";
       }
       this.noticeInfo = {

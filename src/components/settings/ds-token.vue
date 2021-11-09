@@ -35,7 +35,7 @@
       </div>
     </div>
 
-    <v-dialog v-model="showPop" max-width="500">
+    <v-dialog v-model="popNew" max-width="500">
       <div class="pd-30">
         <h2>Create Token</h2>
         <div class="gray mt-2 fz-14">
@@ -51,7 +51,7 @@
           />
         </div>
         <div class="mt-5 ta-c">
-          <v-btn small @click="showPop = false"> Cancel </v-btn>
+          <v-btn small @click="popNew = false"> Cancel </v-btn>
           <v-btn
             small
             color="primary"
@@ -61,6 +61,29 @@
           >
             Create
           </v-btn>
+        </div>
+      </div>
+    </v-dialog>
+
+    <v-dialog v-model="popCopy" max-width="500">
+      <div class="pd-30">
+        <h2>Token Created</h2>
+        <div class="mt-2 fz-14">
+          Please copy your token and store it in a safe place.
+          <p>
+            <b>For security reasons we cannot show it again.</b>
+          </p>
+        </div>
+        <div
+          class="pd-10 bd-1 bdrs-3 mt-8 d-flex al-c hover-1"
+          v-clipboard="newToken"
+          @success="$toast('Copied to clipboard !')"
+        >
+          <span class="el-label-1 fz-14">{{ newToken.cutStr(20, 10) }}</span>
+          <v-icon size="16" class="ml-auto">mdi-content-copy</v-icon>
+        </div>
+        <div class="mt-8 ta-c">
+          <v-btn color="primary" @click="popCopy = false">Done</v-btn>
         </div>
       </div>
     </v-dialog>
@@ -74,16 +97,19 @@ export default {
       loading: false,
       headers: [
         { text: "Name", value: "name" },
-        { text: "Last Active", value: "time" },
+        { text: "Last Active", value: "actime" },
+        { text: "CreatedAt", value: "time" },
       ],
       list: [],
       selected: [],
       deleting: false,
-      showPop: false,
+      popNew: false,
       form: {
-        token: "",
+        name: "",
       },
       adding: false,
+      newToken: "",
+      popCopy: false,
     };
   },
   mounted() {
@@ -91,7 +117,7 @@ export default {
   },
   methods: {
     clickAdd() {
-      this.showPop = true;
+      this.popNew = true;
     },
     async onAdd() {
       try {
@@ -99,12 +125,14 @@ export default {
           return this.$toast("Invalid Name");
         }
         this.adding = true;
-        await this.$http.post("/project/env/" + this.info.id, this.form);
-        this.showPop = false;
+        const { data } = await this.$http.post("/user/token/new", this.form);
+        this.newToken = data.token;
+        this.popNew = false;
+        this.popCopy = true;
         this.form = {
           name: "",
         };
-        this.$toast("Added successfully");
+        // this.$toast("Added successfully");
         this.getList();
       } catch (error) {
         //
@@ -114,15 +142,15 @@ export default {
     async onDelete() {
       try {
         const suffix = this.selected.length > 1 ? "s" : "";
-        let html = `The following Environment Variable${suffix} will be permanently deleted. Are you sure you want to continue?<ul class='mt-4'>`;
+        let html = `The token${suffix} will be permanently deleted. Are you sure you want to continue?<ul class='mt-4'>`;
         for (const row of this.selected) {
-          html += "<li>" + row.key + "</li>";
+          html += "<li>" + row.name + "</li>";
         }
         html += "</ul>";
-        await this.$confirm(html, "Remove Environment Variable" + suffix);
+        await this.$confirm(html, "Remove token" + suffix);
         this.deleting = true;
         for (const row of this.selected) {
-          await this.$http.delete("/project/env?id=" + row.id);
+          await this.$http.delete("/user/token/" + row.id);
         }
         this.$toast("Deleted successfully");
       } catch (error) {
@@ -135,10 +163,11 @@ export default {
     async getList() {
       try {
         this.loading = true;
-        const { data } = await this.$http.get(`/project/env/${this.info.id}`);
+        const { data } = await this.$http.get(`/user/token/list`);
         // console.log(data)
-        this.list = data.content.map((it) => {
+        this.list = data.list.map((it) => {
           it.time = new Date(it.createAt).format();
+          it.actime = new Date(it.usedAt).format();
           return it;
         });
       } catch (error) {
