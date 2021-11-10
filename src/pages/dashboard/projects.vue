@@ -1,8 +1,25 @@
 <template>
   <div>
     <e-storage ref="stor"></e-storage>
-    <div class="ta-r mb-5">
-      <v-btn small depressed color="primary" @click="addNew">{{
+
+    <div class="mb-5 d-flex al-c">
+      <v-alert
+        v-if="showBadAlert"
+        class="mr-5 mt-3"
+        type="warning"
+        outlined
+        border="left"
+        icon="mdi-alert-circle-outline"
+        dense
+        dismissible
+      >
+        <span class="fz-14"
+          >Your project xxx has been removed due to the violation issue. Please
+          check your email for prompt action.</span
+        >
+      </v-alert>
+
+      <v-btn class="ml-auto" small depressed color="primary" @click="addNew">{{
         $t(`${locales}NewProject`)
       }}</v-btn>
     </div>
@@ -40,9 +57,9 @@
               lazy-src="img/empty/cover.jpg"
               height="155"
             ></v-img>
-            <!-- <div class="bg-black-3 pos-mask">
+            <div class="bg-black-3 pos-mask" v-if="it.online === false">
               <b class="pos-center white-0 fz-20">Removed</b>
-            </div> -->
+            </div>
           </a>
 
           <div class="d-flex al-c pl-4 pr-4 pt-3 bdt-1">
@@ -128,6 +145,7 @@ export default {
       list: null,
       loading: false,
       lastState: "",
+      showBadAlert: false,
     };
   },
   computed: {
@@ -175,6 +193,7 @@ export default {
       try {
         this.loading = true;
         const { data } = await this.$http.get("/project");
+        this.showBadAlert = data.filter((it) => it.online === false).length > 0;
         this.list = data;
         // console.log(data)
       } catch (error) {

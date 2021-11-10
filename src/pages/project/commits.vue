@@ -35,7 +35,7 @@
                   }}</span>
                 </div>
               </div>
-              <div class="ml-auto">
+              <div class="ml-auto" v-if="info.online !== false">
                 <v-btn color="primary" small @click="onDeploy(row)"
                   >Deploy</v-btn
                 >

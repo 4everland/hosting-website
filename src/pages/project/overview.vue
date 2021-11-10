@@ -62,9 +62,9 @@
               color="primary"
               @click="onBuild"
               :loading="building"
-              v-else
+              v-else-if="info.online !== false"
             >
-              Start Build
+              Build Now
             </v-btn>
             <v-btn class="ml-5" small :to="getLink('domain')">
               View Domains
@@ -124,7 +124,9 @@
                 <div class="d-flex mt-6">
                   <div class="flex-1">
                     <div class="label-1">State</div>
-                    <e-status :val="state"></e-status>
+                    <e-status
+                      :val="info.online === false ? 'Removed' : state"
+                    ></e-status>
                   </div>
                   <div class="flex-1">
                     <div class="label-1">Created</div>
