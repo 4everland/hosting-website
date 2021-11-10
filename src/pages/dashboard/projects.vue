@@ -39,9 +39,8 @@
         src="img/empty/proj.png"
         class="m-auto mt-10"
         max-width="220"
-        v-if="actStatus == 0"
       ></v-img>
-      <img src="img/empty/act-proj.png" class="m-auto w100p" v-else />
+      <!-- <img src="img/empty/act-proj.png" class="m-auto w100p" v-else /> -->
       <div class="gray mt-10">{{ $t(`${locales}NoDeployments`) }}</div>
       <div class="mt-6">
         <v-btn outlined color="primary" @click="addNew" :loading="loading">{{
