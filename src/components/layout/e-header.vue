@@ -159,6 +159,11 @@ export default {
             name: "logout",
           },
         ];
+        if (this.$inDev)
+          subs.splice(1, 0, {
+            label: "My Referrals",
+            to: "/user/refer",
+          });
         if (this.asMobile) links = links.concat(subs);
         else
           links.push({

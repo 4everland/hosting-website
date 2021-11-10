@@ -55,17 +55,28 @@
     <div class="wrap-1">
       <div class="con-2">
         <v-card outlined>
-          <div class="pd-20 bdb-1">My Referrals</div>
+          <div class="pd-20 bdb-1 d-flex al-c">
+            <span>My Referrals</span>
+            <v-btn icon small class="ml-2" @click="getList" :loading="loading">
+              <v-icon>mdi-refresh</v-icon>
+            </v-btn>
+          </div>
           <div class="pd-20">
             <div
               style="background: #4f80ac"
               class="pd-20 white-0 d-flex space-btw"
             >
-              <div class="ta-c" v-for="i in 3" :key="i">
-                <p class="op-7" :class="asMobile ? 'fz-12' : 'fz-13'">
-                  Total Referrals
+              <div class="ta-c" v-for="(it, i) in statisList" :key="i">
+                <p class="op-7 mb-5" :class="asMobile ? 'fz-12' : 'fz-13'">
+                  {{ it.label }}
                 </p>
-                <p class="fz-18 fw-b">0</p>
+                <v-badge
+                  :content="'+' + it.badge"
+                  :value="it.badge > 0"
+                  color="error"
+                >
+                  <p class="fz-25 fw-b">{{ it.value || 0 }}</p>
+                </v-badge>
               </div>
             </div>
 
@@ -96,7 +107,7 @@
               </table>
               <div class="pa-3 ta-c" v-if="!list.length">
                 <div class="op-5 fz-14 mt-8">
-                  {{ loading ? "Loading" : "No Referrals Now" }}
+                  {{ loading ? "Loading..." : "No Referrals Now" }}
                 </div>
               </div>
             </div>
@@ -166,9 +177,36 @@ export default {
     shareUrl() {
       return location.origin + "/#/?invite=" + this.code;
     },
+    statisList() {
+      const {
+        bindDomain,
+        deployToday,
+        deployTotal,
+        invitesToday,
+        invitesTotal,
+      } = this.statisData;
+      return [
+        {
+          label: "Total Referrals",
+          value: invitesTotal,
+          badge: invitesToday,
+        },
+        {
+          label: "Total Deployments",
+          value: deployTotal,
+          badge: deployToday,
+        },
+        {
+          label: "Added Domains",
+          value: bindDomain,
+          // badge: 1,
+        },
+      ];
+    },
   },
   data() {
     return {
+      statisData: JSON.parse(localStorage.referrals_data || "{}"),
       code: null,
       list: [],
       page: 1,
@@ -265,6 +303,11 @@ export default {
       const { data } = await this.$http.get("/invite/code");
       this.code = data;
     },
+    async getData() {
+      const { data } = await this.$http.get("/invite/day/analytics");
+      this.statisData = data;
+      localStorage.referrals_data = JSON.stringify(data);
+    },
     async getList() {
       try {
         this.loading = true;
@@ -272,12 +315,13 @@ export default {
           page: this.page - 1,
           size: 10,
         };
-        const { data } = await this.$http.get("/activity/invites", {
+        const { data } = await this.$http.get("/invite/list", {
           params,
         });
         // console.log(data);
         this.list = [...data.page];
         this.pageLen = Math.max(1, Math.ceil(data.total / params.size));
+        await this.getData();
       } catch (error) {
         //
       }
