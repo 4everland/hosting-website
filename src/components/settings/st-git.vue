@@ -11,7 +11,7 @@
             </div>
           </div>
           <v-btn
-            v-if="repoList"
+            v-if="!repoName && repoList"
             small
             :loading="listing"
             @click="getRepoList"
