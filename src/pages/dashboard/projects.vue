@@ -4,7 +4,7 @@
 
     <div class="mb-5 d-flex al-c">
       <v-alert
-        v-if="showBadAlert"
+        v-if="badProjects.length"
         class="mr-5 mt-3"
         type="warning"
         outlined
@@ -14,8 +14,10 @@
         dismissible
       >
         <span class="fz-14"
-          >Your project xxx has been removed due to the violation issue. Please
-          check your email for prompt action.</span
+          >The project{{ badProjects.length > 1 ? "s" : "" }}
+          <b>{{ badProjects.join(", ") }}</b>
+          {{ badProjects.length > 1 ? "have" : "has" }} been removed due to the
+          violation issue. Please check your email for prompt action.</span
         >
       </v-alert>
 
@@ -145,7 +147,7 @@ export default {
       list: null,
       loading: false,
       lastState: "",
-      showBadAlert: false,
+      badProjects: [],
     };
   },
   computed: {
@@ -193,7 +195,9 @@ export default {
       try {
         this.loading = true;
         const { data } = await this.$http.get("/project");
-        this.showBadAlert = data.filter((it) => it.online === false).length > 0;
+        this.badProjects = data
+          .filter((it) => it.online === false)
+          .map((it) => it.name);
         this.list = data;
         // console.log(data)
       } catch (error) {
