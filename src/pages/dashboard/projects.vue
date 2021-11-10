@@ -34,12 +34,15 @@
       <!-- :md="6"  -->
       <v-col cols="12" :md="6" :lg="4" v-for="it in list" :key="it.id">
         <v-card outlined class="hover-c1 trans-200 ov-h">
-          <a :href="`#/project/${it.name}/${it.id}/overview`">
+          <a :href="`#/project/${it.name}/${it.id}/overview`" class="pos-r d-b">
             <v-img
               :src="$getImgSrc(it.production.screenshot)"
               lazy-src="img/empty/cover.jpg"
               height="155"
             ></v-img>
+            <!-- <div class="bg-black-3 pos-mask">
+              <b class="pos-center white-0 fz-20">Removed</b>
+            </div> -->
           </a>
 
           <div class="d-flex al-c pl-4 pr-4 pt-3 bdt-1">
