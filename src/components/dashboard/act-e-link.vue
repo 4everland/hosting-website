@@ -1,6 +1,13 @@
 <template>
   <div class="d-flex al-c f-center" v-if="domain">
-    <a style="color: white" class="u line-1" :href="domain" target="_blank">
+    <a
+      :style="{
+        color,
+      }"
+      class="u line-1"
+      :href="domain"
+      target="_blank"
+    >
       <slot>
         {{ domain.replace("https://", "").cutStr(12, 13) }}
       </slot>
@@ -14,7 +21,7 @@
       }"
       v-clipboard="domain"
       @success="$toast('Copied to clipboard !')"
-      color="white"
+      :color="color"
       >mdi-content-copy</v-icon
     >
   </div>
@@ -26,6 +33,10 @@ export default {
     domain: String,
     notice: Boolean,
     noCopy: Boolean,
+    color: {
+      type: String,
+      default: "white",
+    },
   },
 };
 </script>
