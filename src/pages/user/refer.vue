@@ -7,6 +7,13 @@
     background-size: contain;
   }
 }
+.refer-qr-img {
+  right: 15px;
+  bottom: 36px;
+  $size: 53px;
+  width: $size;
+  height: $size;
+}
 .page-refer {
   .link-wrap {
     max-width: 600px;
@@ -136,11 +143,11 @@
               <div class="pos-r" ref="imgWrap">
                 <img
                   @load="isBgLoad = true"
-                  src="img/bg/act-share.png"
-                  style="width: 200px"
+                  src="img/bg/refer-share.jpg"
+                  style="width: 220px"
                   class="ev-n"
                 />
-                <img v-if="qrImg" :src="qrImg" class="pos-a qr-img" />
+                <img v-if="qrImg" :src="qrImg" class="pos-a refer-qr-img" />
               </div>
               <div class="pos-mask share-img-wrap" v-if="shareImg">
                 <img :src="shareImg" class="w100p" />
