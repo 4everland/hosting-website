@@ -129,6 +129,11 @@ export default {
     },
   },
   watch: {
+    noticeMsg({ name }) {
+      if (name == "walletConntect") {
+        this.onInit();
+      }
+    },
     walletTip(val) {
       // console.log(name);
       if (!val) {
