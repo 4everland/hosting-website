@@ -77,11 +77,8 @@
                 <p class="op-7 mb-5" :class="asMobile ? 'fz-12' : 'fz-13'">
                   {{ it.label }}
                 </p>
-                <v-badge
-                  :content="'+' + it.badge"
-                  :value="it.badge > 0"
-                  color="error"
-                >
+                <!-- it.badge > 0 -->
+                <v-badge :content="'+' + it.badge" :value="false" color="error">
                   <p class="fz-25 fw-b">{{ it.value || 0 }}</p>
                 </v-badge>
               </div>

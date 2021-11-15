@@ -80,6 +80,11 @@ export default {
         );
         const accounts = await window.web3.eth.getAccounts();
         connectAddr = accounts[0];
+        window.ethereum.on("networkChanged", (networkId) => {
+          console.log("networkChanged", networkId);
+          this.checkNet();
+        });
+        this.checkNet();
       }
       this.$setState({
         noticeMsg: {
@@ -113,6 +118,20 @@ export default {
         window.ethereum = null;
         this.isConnect = false;
       }
+    },
+    async checkNet() {
+      const netType = await window.web3.eth.net.getNetworkType();
+      let msg = "";
+      if (this.$inDev) {
+        if (netType != "rinkeby") msg = "Dev: please connect to rinkeby";
+      } else {
+        if (netType != "main")
+          msg = "Wrong network, please connect to Ethereum mainnet";
+      }
+      this.$setState({
+        walletTip: msg,
+      });
+      // if (msg) this.$alert(msg);
     },
     async connectMetaMask() {
       if (window.ethereum) {

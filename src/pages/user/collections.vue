@@ -36,6 +36,16 @@
           </v-row>
         </div>
       </v-dialog>
+
+      <v-alert
+        border="bottom"
+        colored-border
+        type="error"
+        elevation="2"
+        v-if="walletTip"
+      >
+        {{ walletTip }}
+      </v-alert>
       <v-card outlined>
         <div class="pd-15-20 bdb-1 d-flex al-c">
           <b class="fz-16">My Collections</b>
@@ -91,6 +101,7 @@ export default {
     ...mapState({
       noticeMsg: (s) => s.noticeMsg,
       connectAddr: (s) => s.connectAddr,
+      walletTip: (s) => s.walletTip,
     }),
     introList() {
       return [
@@ -118,9 +129,9 @@ export default {
     },
   },
   watch: {
-    noticeMsg({ name }) {
+    walletTip(val) {
       // console.log(name);
-      if (name == "walletConntect") {
+      if (!val) {
         this.onInit();
       }
     },

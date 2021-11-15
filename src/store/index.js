@@ -24,6 +24,7 @@ const store = new Vuex.Store({
     buildInfo: {},
     actStatus: 2,
     connectAddr: "",
+    walletTip: "",
   },
   mutations: {
     [SET_DATA](state, data) {
