@@ -150,7 +150,7 @@ export default {
             to: "/collections",
           },
           {
-            label: "Referrals",
+            label: "Referral",
             to: "/user/refer",
           },
           {
