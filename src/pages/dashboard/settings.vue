@@ -29,13 +29,11 @@ export default {
           text: "Billing",
           comp: "ds-billing",
         },
-      ];
-      if (this.$inDev) {
-        arr.push({
+        {
           text: "Tokens",
           comp: "ds-token",
-        });
-      }
+        },
+      ];
       return arr;
     },
   },

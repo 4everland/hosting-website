@@ -145,12 +145,12 @@ export default {
         } else links.unshift(feedback);
         const subs = [
           {
-            label: "My Collections",
+            label: "Collections",
             title: username,
             to: "/collections",
           },
           {
-            label: "My Referrals",
+            label: "Referrals",
             to: "/user/refer",
           },
           {
