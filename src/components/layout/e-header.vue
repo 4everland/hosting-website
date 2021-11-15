@@ -150,6 +150,10 @@ export default {
             to: "/collections",
           },
           {
+            label: "My Referrals",
+            to: "/user/refer",
+          },
+          {
             label: this.$t("common.Settings"),
             // title: username,
             to: "/dashboard/settings",
@@ -159,11 +163,8 @@ export default {
             name: "logout",
           },
         ];
-        if (this.$inDev)
-          subs.splice(1, 0, {
-            label: "My Referrals",
-            to: "/user/refer",
-          });
+        // if (this.$inDev)
+        //   subs.splice(1, 0, );
         if (this.asMobile) links = links.concat(subs);
         else
           links.push({
