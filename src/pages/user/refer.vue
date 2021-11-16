@@ -48,12 +48,16 @@
             <p>Refer Friends.</p>
             <p>Enter Web3.0 Together.</p>
           </div>
-          <div class="link-wrap d-flex al-c bg-white-9 bdrs-5">
-            <span class="pd-10 gray fz-14 mr-auto line-1 shrink-1">
+          <div class="link-wrap d-flex al-c bg-white bdrs-5">
+            <span class="pd-10 gray fz-16 mr-auto line-1 shrink-1">
               {{ shareUrl }}
             </span>
-            <v-btn plain color="primary" small @click="onCopy">Copy</v-btn>
-            <v-btn plain color="primary" small @click="onInvite">Share</v-btn>
+            <v-btn small color="primary" @click="onCopy">
+              <b class="white-0">Copy</b>
+            </v-btn>
+            <v-btn plain color="primary" @click="onInvite">
+              <b>Share</b>
+            </v-btn>
           </div>
         </div>
       </div>
