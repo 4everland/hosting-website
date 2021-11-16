@@ -117,7 +117,7 @@ export default {
         },
         {
           icon: "mdi-reddit",
-          href: "https://www.reddit.com/user/4everland_org/",
+          href: "https://www.reddit.com/r/4everland/",
           color: "#eb443b",
         },
         {
@@ -128,7 +128,7 @@ export default {
         },
         {
           icon: "mdi-discord",
-          href: "https://discord.gg/sxtHDvvpuT",
+          href: "https://discord.gg/Cun2VpsdjF",
           color: "#714bdf",
         },
         {
