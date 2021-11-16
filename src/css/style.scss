@@ -31,6 +31,7 @@ body {
   }
   .v-dialog {
     background: #fff;
+    flex-grow: 1;
   }
   .v-slide-group__next, .v-slide-group__prev {
     display: none!important;
