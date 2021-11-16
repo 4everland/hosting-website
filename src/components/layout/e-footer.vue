@@ -20,14 +20,16 @@
           </a>
           <div class="mt-10">
             <v-btn
-              icon
+              :color="item.color"
+              x-small
               :href="item.href"
               target="_blank"
-              class="mr-2"
+              class="mr-4 pa-2 bdrs-10"
+              style="height: auto"
               v-for="(item, i) in links"
               :key="i"
             >
-              <v-icon>{{ item.icon }}</v-icon>
+              <v-icon size="18">{{ item.icon }}</v-icon>
             </v-btn>
           </div>
         </div>
