@@ -124,6 +124,8 @@ export default {
       this.$toast("Copied to clipboard !");
     },
     clickAdd() {
+      if (this.list.length >= 10)
+        return this.$alert("You can add 10 tokens at maximum.");
       this.popNew = true;
     },
     async onAdd() {
