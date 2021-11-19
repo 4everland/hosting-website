@@ -13,7 +13,7 @@ export default [
     path: "/user/refer",
     component: Refer,
     meta: {
-      title: "Refrrals",
+      title: "Refrral",
     },
   },
 ];
