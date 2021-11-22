@@ -1,5 +1,6 @@
 import Refer from "./refer";
 import Collections from "./collections";
+import Pricing from "./pricing";
 
 export default [
   {
@@ -14,6 +15,13 @@ export default [
     component: Refer,
     meta: {
       title: "Refrral",
+    },
+  },
+  {
+    path: "/pricing",
+    component: Pricing,
+    meta: {
+      title: "Pricing",
     },
   },
 ];

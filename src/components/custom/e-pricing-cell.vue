@@ -1,0 +1,28 @@
+<template>
+  <div>
+    <v-icon
+      v-if="typeof value == 'boolean'"
+      :color="value ? '#67C669' : '#F15C5C'"
+      >mdi-{{ value ? "check" : "close" }}</v-icon
+    >
+    <span v-else v-html="html"></span>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    value: null,
+  },
+  computed: {
+    html() {
+      let val = this.value;
+      const mat = /^(\d+)\s+(\S+)/.exec(val);
+      if (mat) {
+        return `<b>${mat[1]}</b><span class="gray ml-1">${mat[2]}</span>`;
+      }
+      return `<b>${val}</b>`;
+    },
+  },
+};
+</script>
