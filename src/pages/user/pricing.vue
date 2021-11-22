@@ -12,11 +12,18 @@
   .bg-th1 {
     background: #f1f6fb;
   }
+  .bd-1 {
+    border: 1px solid #c6d1d7;
+  }
   .bdt-1 {
     border-top: 1px solid #c6d1d7;
   }
+  h2 {
+    margin: 50px 0 10px;
+    padding: 20px;
+    line-height: 1;
+  }
   .plan-table {
-    border: 1px solid #c6d1d7;
     table {
       border-spacing: 0;
     }
@@ -28,21 +35,39 @@
       border-bottom: none;
     }
   }
+  .plan-item {
+    &.clickable {
+      cursor: pointer;
+      &:hover {
+        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+      }
+    }
+    &.free {
+      background: #f1f6fb;
+    }
+    &.active {
+      background: #4a96fa;
+      color: #fff;
+      a {
+        color: #fff;
+      }
+    }
+  }
 }
 </style>
 
 <template>
   <div class="pricing" :class="{ m: asMobile }">
-    <div class="bg-white pb-4">
+    <div class="bg-white pb-3">
       <div class="head-bg pos-r">
         <div class="wrap-1">
           <div class="con-3">
-            <h1 class="fz-40">
+            <h1 class="fz-50">
               <span style="color: #7175ff">Simple, </span>Flexible Pricing
             </h1>
             <div class="gray mt-3">
-              A better experience for developers <br />
-              creates a better experience for users.
+              A better experience for developers creates <br />
+              a better experience for users.
             </div>
             <v-img
               src="img/bg/pricing-1.svg"
@@ -57,11 +82,81 @@
       <div class="wrap-1">
         <div class="con-3">
           <v-row>
-            <v-col> </v-col>
+            <v-col
+              cols="6"
+              md="3"
+              v-for="(it, i) in planList"
+              :key="i"
+              @click="onPlan(it, i)"
+            >
+              <div
+                class="plan-item bd-1 bdrs-10"
+                :class="{
+                  active: i == curIdx,
+                  free: i == 0,
+                  clickable: i > 0 && i < planList.length - 1,
+                }"
+              >
+                <div class="pa-3">
+                  <div class="d-flex al-c">
+                    <b class="fz-20 mr-auto">{{ it.title }}</b>
+                    <e-pricing-cell
+                      v-if="it.isCustom"
+                      class="fz-12"
+                      :value="it.price"
+                    ></e-pricing-cell>
+                  </div>
+                  <div class="mt-2 op-5 fz-12 lh-12">
+                    {{ it.desc }}
+                  </div>
+                </div>
+                <div class="pa-4 bdt-1">
+                  <ul style="min-height: 260px">
+                    <li
+                      class="mb-2"
+                      v-for="(txt, j) in getPlanList(i)"
+                      :key="j"
+                    >
+                      <!-- <v-icon>mdi-check</v-icon> -->
+                      <span class="fz-13">{{ txt }}</span>
+                    </li>
+                  </ul>
+                  <a
+                    class="fw-b"
+                    :target="it.isCustom ? '_blank' : ''"
+                    :href="
+                      it.isCustom
+                        ? 'https://forms.gle/xyadYsQQVzXJbhDv5'
+                        : '#plan-table'
+                    "
+                  >
+                    {{ it.isCustom ? "Contact Sales" : "See all features" }} >>
+                  </a>
+                </div>
+              </div>
+            </v-col>
           </v-row>
 
-          <h2>Plan Details</h2>
-          <div class="ta-c plan-table bdrs-10 mt-8 ov-a">
+          <div class="ta-c">
+            <h2>With Crypto Support</h2>
+            <div class="gray lh-1">
+              DAI、USDC、USDT are accepted by 4EVERLAND
+            </div>
+            <div style="max-width: 500px" class="m-auto">
+              <v-row class="mt-6">
+                <v-col v-for="(it, i) in coins" :key="i">
+                  <img
+                    :src="`img/icon/c-${it.toLowerCase()}.svg`"
+                    height="80"
+                  />
+                  <div class="fw-b mt-3">{{ it }}</div>
+                </v-col>
+              </v-row>
+            </div>
+          </div>
+
+          <h2 class="ta-c" id="plan-table">Plan Details</h2>
+          <div class="ta-c plan-table bd-1 bdrs-10 ov-a">
             <table class="w100p nowrap">
               <thead class="bg-th1">
                 <tr>
@@ -111,6 +206,7 @@ export default {
   },
   data() {
     return {
+      coins: ["DAI", "USDC", "USDT"],
       planHeaders: [
         {
           text: "Bandwith",
@@ -161,6 +257,7 @@ export default {
         {
           title: "Free",
           price: "0 USD/mo",
+          desc: "For both non-commercial and personal projects",
           band: "100 GB",
           stor: "4 GB",
           build: "250 included/month",
@@ -176,6 +273,7 @@ export default {
         {
           title: "Pro",
           price: "40 USD/mo",
+          desc: "For 4everland hosting  projects that are growing",
           band: "300 GB",
           stor: "40 GB",
           build: "500 included/month",
@@ -191,6 +289,7 @@ export default {
         {
           title: "Business",
           price: "190 USD/mo",
+          desc: "For large teams dependent on 4everland hosting",
           band: "1 TB",
           stor: "4100 GB",
           build: "2000 included/month",
@@ -205,7 +304,9 @@ export default {
         },
         {
           title: "Custom",
+          isCustom: true,
           price: "Custom Pricing",
+          desc: "All the Performance plan features plus",
           band: "Custom",
           stor: "Custom",
           build: "Custom",
@@ -219,7 +320,31 @@ export default {
           premium: true,
         },
       ],
+      curIdx: 1,
     };
+  },
+  methods: {
+    onPlan(it, i) {
+      if (!i == 0 && !it.isCustom) this.curIdx = i;
+    },
+    getPlanList(i) {
+      const obj = this.planList[i];
+      const res = [];
+      for (const row of this.planHeaders) {
+        let { text } = row;
+        const val = obj[row.value];
+        if (val === false) continue;
+        if (obj.title == "Custom" && val === true && row.value != "premium")
+          continue;
+        if (["statis", "community"].includes(row.value)) continue;
+        if (typeof val == "string") {
+          text =
+            val.replace("included/month", "").replace(" ", "") + " " + text;
+        }
+        res.push(text);
+      }
+      return res;
+    },
   },
 };
 </script>
