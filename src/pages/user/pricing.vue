@@ -29,13 +29,16 @@
     }
     td {
       border-bottom: 1px solid #c6d1d7;
-      padding: 8px;
+      padding: 10px;
     }
     tbody tr:last-of-type td {
       border-bottom: none;
     }
   }
   .plan-item {
+    ul {
+      min-height: 270px;
+    }
     &.clickable {
       cursor: pointer;
       &:hover {
@@ -48,6 +51,7 @@
     &.active {
       background: #4a96fa;
       color: #fff;
+      cursor: default;
       a {
         color: #fff;
       }
@@ -90,7 +94,7 @@
               @click="onPlan(it, i)"
             >
               <div
-                class="plan-item bd-1 bdrs-10"
+                class="plan-item trans-200 bd-1 bdrs-10"
                 :class="{
                   active: i == curIdx,
                   free: i == 0,
@@ -99,9 +103,9 @@
               >
                 <div class="pa-3">
                   <div class="d-flex al-c">
-                    <b class="fz-20 mr-auto">{{ it.title }}</b>
+                    <b class="fz-18 mr-auto">{{ it.title }}</b>
                     <e-pricing-cell
-                      v-if="it.isCustom"
+                      v-if="i > 0 && !it.isCustom"
                       class="fz-12"
                       :value="it.price"
                     ></e-pricing-cell>
@@ -111,7 +115,7 @@
                   </div>
                 </div>
                 <div class="pa-4 bdt-1">
-                  <ul style="min-height: 260px">
+                  <ul>
                     <li
                       class="mb-2"
                       v-for="(txt, j) in getPlanList(i)"
@@ -127,7 +131,7 @@
                     :href="
                       it.isCustom
                         ? 'https://forms.gle/xyadYsQQVzXJbhDv5'
-                        : '#plan-table'
+                        : '#pricing'
                     "
                   >
                     {{ it.isCustom ? "Contact Sales" : "See all features" }} >>
@@ -155,7 +159,7 @@
             </div>
           </div>
 
-          <h2 class="ta-c" id="plan-table">Plan Details</h2>
+          <h2 class="ta-c" id="pricing">Plan Details</h2>
           <div class="ta-c plan-table bd-1 bdrs-10 ov-a">
             <table class="w100p nowrap">
               <thead class="bg-th1">
@@ -256,7 +260,7 @@ export default {
       planList: [
         {
           title: "Free",
-          price: "0 USD/mo",
+          price: "0 USD/mon",
           desc: "For both non-commercial and personal projects",
           band: "100 GB",
           stor: "4 GB",
@@ -272,7 +276,7 @@ export default {
         },
         {
           title: "Pro",
-          price: "40 USD/mo",
+          price: "40 USD/mon",
           desc: "For 4everland hosting  projects that are growing",
           band: "300 GB",
           stor: "40 GB",
@@ -288,7 +292,7 @@ export default {
         },
         {
           title: "Business",
-          price: "190 USD/mo",
+          price: "190 USD/mon",
           desc: "For large teams dependent on 4everland hosting",
           band: "1 TB",
           stor: "4100 GB",

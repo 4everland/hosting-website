@@ -17,7 +17,7 @@ export default {
       let val = this.value;
       const mat = /^(\d+)\s+(\S+)/.exec(val);
       if (mat) {
-        return `<b>${mat[1]}</b><span class="op-5 ml-1">${mat[2]}</span>`;
+        return `<b>${mat[1]}</b><span class="op-5 ml-1 scale-9 d-ib">${mat[2]}</span>`;
       }
       return `<b>${val}</b>`;
     },
