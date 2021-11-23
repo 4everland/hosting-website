@@ -1,6 +1,9 @@
 <style lang="scss">
 .pricing {
   color: #495667;
+  .gray {
+    color: #7f8489;
+  }
   .head-bg {
     height: 280px;
     background: linear-gradient(137deg, #ffffff 0%, #f1f6fb 60%);
@@ -197,7 +200,47 @@
       </div>
     </div>
 
-    <div class="bg-th1 bdt-1 wrap-1 pos-s btm-0"></div>
+    <div class="bg-th1 bdt-1 wrap-2 pos-s btm-0">
+      <div class="con-3">
+        <v-row>
+          <v-col>
+            <div class="d-flex al-c">
+              <span class="mr-2">Duration</span>
+              <v-select
+                style="max-width: 150px"
+                v-model="duration"
+                :items="durationList"
+                item-text="text"
+                item-value="value"
+                label="Duration"
+                single-line
+                dense
+                :menu-props="{ offsetY: true }"
+              ></v-select>
+            </div>
+            <div class="fz-13 gray">
+              Billing period runs from Aug 30, 2021 to Sep 3, 2021
+              <br />(Including the remaining 3 days of Pro)
+            </div>
+          </v-col>
+          <v-col
+            :style="{
+              'padding-left': asMobile ? null : '120px',
+            }"
+          >
+            <div class="fz-13 gray">
+              DAI、USDC、USDT are accepted by 4EVERLAND
+            </div>
+            <div class="d-flex al-c mt-2">
+              <span>Total:</span>
+              <b class="ml-5 mr-3 fz-30">199</b>
+              <span class="gray fz-14">USD</span>
+              <v-btn color="primary" class="ml-auto">Preview</v-btn>
+            </div>
+          </v-col>
+        </v-row>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -325,6 +368,17 @@ export default {
         },
       ],
       curIdx: 1,
+      duration: 1,
+      durationList: [
+        {
+          text: "1 Month",
+          value: 1,
+        },
+        {
+          text: "3 Months",
+          value: 3,
+        },
+      ],
     };
   },
   methods: {
