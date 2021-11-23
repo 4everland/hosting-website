@@ -59,18 +59,18 @@
               v-on="on"
               :class="it.outlined ? '' : 'op-6'"
             >
-              <v-img
+              <img
                 v-if="it.img"
                 :src="it.img"
-                width="16"
-                height="16"
+                width="24"
+                height="24"
                 class="bdrs-100 mr-1"
-              ></v-img>
-              <v-icon size="16" class="mr-1" v-else-if="it.icon"
+              />
+              <v-icon size="20" class="mr-1" v-else-if="it.icon"
                 >mdi-{{ it.icon }}</v-icon
               >
-              <span class="">{{ it.label }}</span>
-              <v-icon v-if="it.subs">mdi-chevron-down</v-icon>
+              <span class="" v-if="it.label">{{ it.label }}</span>
+              <!-- <v-icon v-if="it.subs">mdi-chevron-down</v-icon> -->
             </v-btn>
           </template>
           <v-list v-if="it.subs">
@@ -112,37 +112,40 @@ export default {
     links() {
       let links = [
         {
-          label: this.$t("common.Changelog"),
-          to: "/changelog",
-        },
-        {
           label: this.$t("common.Doc"),
           href: "https://docs.hosting.4everland.org/guide/",
         },
       ];
+      if (this.$inDev) {
+        links.push({
+          label: "Pricing",
+          to: "/pricing",
+        });
+      }
       const { username, avatar } = this.userInfo;
       if (username) {
         let feedback = {
-          label: this.$t("common.Contact"),
-          icon: "message-processing-outline",
+          icon: "dots-horizontal",
           // name: "feedback",
           subs: [
             {
               label: this.$t("common.Bugbounty"),
               to: "/bug-bounty",
-              icon: "bug-outline",
             },
             {
               label: this.$t("common.Report"),
               name: "feedback",
-              icon: "alert-octagon-outline",
+            },
+            {
+              label: this.$t("common.Changelog"),
+              to: "/changelog",
             },
           ],
         };
         if (this.asMobile) {
           feedback = feedback.subs;
           links = feedback.concat(links);
-        } else links.unshift(feedback);
+        } else links.push(feedback);
         const subs = [
           {
             label: "Collections",
@@ -168,11 +171,11 @@ export default {
         if (this.asMobile) links = links.concat(subs);
         else
           links.push({
-            label: username,
+            // label: username,
             icon: "github",
             img: avatar,
-            color: "#4A96FA",
-            outlined: true,
+            // color: "#4A96FA",
+            // outlined: true,
             subs,
           });
       } else {

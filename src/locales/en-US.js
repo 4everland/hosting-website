@@ -16,7 +16,7 @@ const locale = {
     Bugbounty: "Bug Bounty",
     Report: "Report",
     Changelog: "Changelog",
-    Doc: "Doc",
+    Doc: "Docs",
     Settings: "Settings",
 
     Logout: "Logout",
