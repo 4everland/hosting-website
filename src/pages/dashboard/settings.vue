@@ -27,7 +27,7 @@ export default {
         },
         {
           text: "Billing",
-          comp: "ds-billing",
+          comp: "ds-bill2",
         },
         {
           text: "Tokens",
