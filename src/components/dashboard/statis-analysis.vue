@@ -1,0 +1,70 @@
+<template>
+  <div>
+    <v-row class="mb-6">
+      <v-col cols="12" md="6" v-for="(it, i) in chartList" :key="i">
+        <statis-chart
+          :reload="isReload"
+          :appId="appId"
+          :title="it.title"
+          :type="it.type"
+        ></statis-chart>
+      </v-col>
+    </v-row>
+
+    <h4 class="mb-2">Retention Rate</h4>
+    <v-skeleton-loader type="article" v-if="tableLoading"></v-skeleton-loader>
+    <statis-table :list="tableList" v-else></statis-table>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    appId: String,
+    isReload: Boolean,
+  },
+  data() {
+    return {
+      chartList: [
+        {
+          title: this.$tc(`dashboard.statistics.TotalUser`),
+          type: "TOTAL_USERS",
+        },
+        { title: this.$t(`dashboard.statistics.NewUsers`), type: "NEW_USERS" },
+        {
+          title: this.$t(`dashboard.statistics.UniqueVisitor`),
+          type: "UNIQUE_VISITOR",
+        },
+        { title: this.$t(`dashboard.statistics.PageView`), type: "PAGE_VIEW" },
+      ],
+      tableList: [],
+      tableLoading: false,
+    };
+  },
+  watch: {
+    appId() {
+      this.getData();
+    },
+  },
+  created() {
+    this.getData();
+  },
+  methods: {
+    async getData() {
+      try {
+        this.tableLoading = true;
+        const { data: list } = await this.$http.get(
+          "/analytics/user/retention/project/" + this.appId
+        );
+        this.tableList = list.map((it) => {
+          it.date = new Date(it.createAt * 1e3).format("date");
+          return it;
+        });
+      } catch (error) {
+        console.log(error);
+      }
+      this.tableLoading = false;
+    },
+  },
+};
+</script>

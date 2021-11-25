@@ -85,20 +85,22 @@
         </v-col>
       </v-row>
 
-      <v-row class="mb-6">
-        <v-col cols="12" md="6" v-for="(it, i) in chartList" :key="i">
-          <statis-chart
-            :reload="!loading"
-            :appId="appId"
-            :title="it.title"
-            :type="it.type"
-          ></statis-chart>
-        </v-col>
-      </v-row>
-
-      <h4 class="mb-2">Retention Rate</h4>
-      <v-skeleton-loader type="article" v-if="tableLoading"></v-skeleton-loader>
-      <statis-table :list="tableList" v-else></statis-table>
+      <v-tabs v-model="tabIdx" background-color="transparent" color="primary">
+        <v-tab v-for="(it, i) in tabList" :key="i">
+          {{ it.label }}
+        </v-tab>
+      </v-tabs>
+      <div class="mt-8">
+        <component
+          :is="it.comp"
+          :appId="appId"
+          :active="i == tabIdx"
+          :isReload="!loading"
+          v-show="i == tabIdx"
+          v-for="(it, i) in activeTabList"
+          :key="i"
+        ></component>
+      </div>
     </div>
   </v-card>
 </template>
@@ -115,20 +117,22 @@ export default {
       apps: null,
       info: null,
       loading: false,
-      chartList: [
+      tabList: [
         {
-          title: this.$tc(`dashboard.statistics.TotalUser`),
-          type: "TOTAL_USERS",
+          label: "User Analysis",
+          comp: "statis-analysis",
         },
-        { title: this.$t(`dashboard.statistics.NewUsers`), type: "NEW_USERS" },
         {
-          title: this.$t(`dashboard.statistics.UniqueVisitor`),
-          type: "UNIQUE_VISITOR",
+          label: "Request",
+          comp: "statis-request",
         },
-        { title: this.$t(`dashboard.statistics.PageView`), type: "PAGE_VIEW" },
+        {
+          label: "Data Transfer",
+          comp: "statis-data",
+        },
       ],
-      tableList: [],
-      tableLoading: false,
+      tabIdx: 0,
+      activeIdxList: [0],
     };
   },
   computed: {
@@ -180,8 +184,18 @@ export default {
         },
       ];
     },
+    activeTabList() {
+      return this.tabList.filter((_, i) => {
+        return this.activeIdxList.includes(i);
+      });
+    },
   },
   watch: {
+    tabIdx(tab) {
+      if (!this.activeIdxList.includes(tab)) {
+        this.activeIdxList.push(tab);
+      }
+    },
     inTab(val) {
       if (this.appId && val) this.getApps();
     },
@@ -191,7 +205,6 @@ export default {
           appId: val,
         },
       });
-      this.getData();
     },
     "$route.query.appId"(val) {
       if (val) {
@@ -224,24 +237,14 @@ export default {
     },
     async getData() {
       try {
-        if (!this.appId) return;
         this.loading = true;
         const { data } = await this.$http.get(
           "/analytics/user/data/project/" + this.appId
         );
         this.info = data;
-        this.tableLoading = true;
-        const { data: list } = await this.$http.get(
-          "/analytics/user/retention/project/" + this.appId
-        );
-        this.tableList = list.map((it) => {
-          it.date = new Date(it.createAt * 1e3).format("date");
-          return it;
-        });
       } catch (error) {
         console.log(error);
       }
-      this.tableLoading = false;
       this.loading = false;
     },
   },
