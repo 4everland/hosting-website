@@ -42,7 +42,8 @@ export default {
     title: String,
     type: String,
     appId: String,
-    reload: Boolean,
+    reloadAt: null,
+    lazy: Boolean,
   },
   computed: {
     asMobile() {
@@ -74,15 +75,14 @@ export default {
     timeLimit() {
       this.getData();
     },
-    reload(val) {
+    reloadAt(val) {
       if (val) this.getData();
-    },
-    asMobile() {
-      location.reload();
     },
   },
   mounted() {
-    // this.getData();
+    if (!this.lazy) {
+      this.getData();
+    }
   },
   methods: {
     onTime(it) {

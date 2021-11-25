@@ -90,12 +90,12 @@
           {{ it.label }}
         </v-tab>
       </v-tabs>
-      <div class="mt-8">
+      <div class="mt-10">
         <component
           :is="it.comp"
           :appId="appId"
           :active="i == tabIdx"
-          :isReload="!loading"
+          :reloadAt="reloadAt"
           v-show="i == tabIdx"
           v-for="(it, i) in activeTabList"
           :key="i"
@@ -117,6 +117,7 @@ export default {
       apps: null,
       info: null,
       loading: false,
+      reloadAt: 0,
       tabList: [
         {
           label: "User Analysis",
@@ -139,6 +140,9 @@ export default {
     ...mapState({
       isFocus: (s) => s.isFocus,
     }),
+    asMobile() {
+      return this.$vuetify.breakpoint.smAndDown;
+    },
     inTab() {
       return this.$route.path == "/dashboard/statistics";
     },
@@ -191,6 +195,9 @@ export default {
     },
   },
   watch: {
+    asMobile() {
+      location.reload();
+    },
     tabIdx(tab) {
       if (!this.activeIdxList.includes(tab)) {
         this.activeIdxList.push(tab);
@@ -205,6 +212,7 @@ export default {
           appId: val,
         },
       });
+      this.getData();
     },
     "$route.query.appId"(val) {
       if (val) {
@@ -246,6 +254,7 @@ export default {
         console.log(error);
       }
       this.loading = false;
+      this.reloadAt = Date.now();
     },
   },
 };
