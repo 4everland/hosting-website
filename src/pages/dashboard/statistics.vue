@@ -1,12 +1,17 @@
 
 <template>
   <v-card outlined>
+    <e-card-head-1 title="Statistics">
+      <div>Statistics for your projects</div>
+    </e-card-head-1>
     <div class="pd-20">
-      <div class="mb-6">
-        <h3>Statistics</h3>
-        <div class="gray mt-1 fz-14">Do statistics for your project</div>
-      </div>
-      <v-data-table :loading="loading" :headers="headers" :items="list">
+      <v-data-table
+        class="elevation-1"
+        :loading="loading"
+        :headers="headers"
+        :items="list"
+        hide-default-footer
+      >
         <template v-slot:item.projectName="{ item }">
           <v-chip
             color="primary"
@@ -17,6 +22,17 @@
           </v-chip>
         </template>
       </v-data-table>
+
+      <div class="mt-6" v-if="pageLen > 1">
+        <v-pagination
+          @input="onPage"
+          v-model="page"
+          :length="pageLen"
+          prev-icon="mdi-menu-left"
+          next-icon="mdi-menu-right"
+          :total-visible="7"
+        ></v-pagination>
+      </div>
     </div>
   </v-card>
 </template>
@@ -34,6 +50,8 @@ export default {
         { text: "Total PV", value: "queryCount" },
       ],
       list: [],
+      page: 1,
+      pageLen: 1,
     };
   },
   computed: {
@@ -50,13 +68,24 @@ export default {
     this.getList();
   },
   methods: {
+    onPage() {
+      this.getList();
+    },
     async getList() {
       try {
         this.loading = true;
+        const params = {
+          page: this.page - 1,
+          size: 5,
+        };
         let { data } = await this.$http.get(
-          "/analytics/user/project/page/list"
+          "/analytics/user/project/page/list",
+          {
+            params,
+          }
         );
         this.list = data.content;
+        this.pageLen = Math.max(1, Math.ceil(data.total / params.size));
       } catch (error) {
         console.log(error);
       }
