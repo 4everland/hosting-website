@@ -2,8 +2,10 @@
 <template>
   <v-card outlined>
     <div class="pd-20">
-      <h3>Statistics</h3>
-      <div class="gray mt-1 fz-14 mb-6">Do statistics for your project</div>
+      <div class="mb-6">
+        <h3>Statistics</h3>
+        <div class="gray mt-1 fz-14">Do statistics for your project</div>
+      </div>
       <v-data-table :loading="loading" :headers="headers" :items="list">
         <template v-slot:item.projectName="{ item }">
           <v-chip
