@@ -12,6 +12,7 @@ import Changelog from "./docs/changelog";
 import CloneFlow from "./new/clone-flow";
 import BugBounty from "./docs/bug-bounty";
 import userRoutes from "./user/routes";
+import StatisDetail from "./docs/statis-detail.vue";
 
 export default [
   {
@@ -72,6 +73,13 @@ export default [
     path: "/build/:projName/:taskId",
     component: Build,
     children: BuildChildren,
+  },
+  {
+    path: "/statistics/:projName/:id",
+    component: StatisDetail,
+    meta: {
+      title: "{projName} - Statistic",
+    },
   },
   ...userRoutes,
 ];

@@ -121,7 +121,9 @@ export default {
           // it.num = (Math.random() * 20) | 0;
           yArr.push(it.num);
         }
-        this.setData(xArr, yArr);
+        this.$nextTick(() => {
+          this.setData(xArr, yArr);
+        });
       } catch (error) {
         //
       }
@@ -130,7 +132,9 @@ export default {
     setData(xArr, yArr) {
       const el = this.$refs.chart;
       // console.log(el, echarts)
-      const chart = echarts.init(el);
+      if (!this.chart) {
+        this.chart = echarts.init(el);
+      }
       const option = {
         // title: {
         //   text: this.title,
@@ -171,7 +175,7 @@ export default {
           },
         ],
       };
-      chart.setOption(option);
+      this.chart.setOption(option);
     },
   },
 };

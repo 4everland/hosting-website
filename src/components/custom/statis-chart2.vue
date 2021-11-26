@@ -53,14 +53,23 @@ export default {
             sourceType: this.type,
           },
         });
-        this.setData(
-          data.content.map((it) => {
-            return {
-              name: it.sourceName,
-              value: it.sourceNum,
-            };
-          })
-        );
+        // const data = {
+        //   content: [
+        //     {
+        //       sourceName: "test",
+        //       sourceNum: 10,
+        //     },
+        //   ],
+        // };
+        const arr = data.content.map((it) => {
+          return {
+            name: it.sourceName,
+            value: it.sourceNum,
+          };
+        });
+        this.$nextTick(() => {
+          this.setData(arr);
+        });
       } catch (error) {
         console.log(error);
       }
@@ -68,7 +77,9 @@ export default {
     },
     setData(data) {
       const el = this.$refs.chart;
-      const chart = echarts.init(el);
+      if (!this.chart) {
+        this.chart = echarts.init(el);
+      }
       const option = {
         tooltip: {
           trigger: "item",
@@ -93,7 +104,7 @@ export default {
           },
         ],
       };
-      chart.setOption(option);
+      this.chart.setOption(option);
     },
   },
 };

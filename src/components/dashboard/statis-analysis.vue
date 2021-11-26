@@ -1,13 +1,12 @@
 <template>
   <div>
     <v-row class="mb-6">
-      <v-col cols="12" md="4" v-for="(it, i) in chartList" :key="i">
+      <v-col cols="12" md="6" v-for="(it, i) in chartList" :key="i">
         <statis-chart
           :reloadAt="reloadAt"
           :appId="appId"
           :title="it.title"
           :type="it.type"
-          lazy
         ></statis-chart>
       </v-col>
     </v-row>
