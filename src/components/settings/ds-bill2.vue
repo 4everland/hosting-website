@@ -25,7 +25,8 @@
         <h3>Usage</h3>
       </div>
       <div class="bdt-1 pd-20 ta-c">
-        <v-row>
+        <v-skeleton-loader type="article" v-if="loadingInfo" />
+        <v-row v-else>
           <v-col v-for="(it, i) in usageList" :key="i">
             <h4 class="mb-3">{{ it.title }}</h4>
             <v-progress-circular
@@ -43,21 +44,43 @@
           </v-col>
         </v-row>
       </div>
-      <div class="bdt-1 pd-15-20 d-flex al-c">
+      <div class="bdt-1 pd-15-20 d-flex al-c" v-if="info.plan">
         <div class="mr-auto">
           <p>
             <span class="label-1">Plan:</span>
-            <b class="ml-2">Free</b>
+            <b class="ml-2">{{ info.plan }}</b>
           </p>
-          <p class="gray fz-14">Current billing period starts from xx to xx.</p>
+          <p class="gray fz-14" v-if="info.startTime">
+            Current billing period starts from
+            {{ new Date(info.startTime).format("date") }} to
+            {{ new Date(info.endTime).format("date") }}.
+          </p>
         </div>
-        <v-btn color="primary" small>Change Plan</v-btn>
+        <v-btn color="primary" small to="/pricing">Change Plan</v-btn>
       </div>
     </v-card>
 
     <v-card outlined class="mt-5">
       <div class="pd-20">
         <h3>Activity History</h3>
+
+        <v-data-table
+          class="elevation-1 mt-4"
+          :loading="loadingList"
+          :headers="headers"
+          :items="list"
+          hide-default-footer
+        >
+          <template v-slot:item.txHash="{ item }">
+            <v-chip
+              small
+              :href="`https://goerli.etherscan.io/tx/${item.txHash}`"
+              target="_blank"
+            >
+              {{ item.txHash.cutStr(5, 5) }}
+            </v-chip>
+          </template>
+        </v-data-table>
       </div>
     </v-card>
   </div>
@@ -68,36 +91,76 @@ export default {
   data() {
     return {
       value: 10,
+      info: {},
+      loadingInfo: false,
+      loadingList: false,
+      headers: [
+        { text: "Pay", value: "pay" },
+        { text: "Hash", value: "txHash" },
+        { text: "createAt", value: "createAt" },
+        { text: "status", value: "status" },
+      ],
+      list: [],
     };
   },
   computed: {
     usageList() {
+      const info = this.info;
       return [
         {
           title: "Bandwidth",
-          total: 100,
-          used: 80,
-          value: 80,
+          total: info.totalBandwidth,
+          used: info.usedBandwidth,
+          value: parseInt((info.usedBandwidth * 100) / info.totalBandwidth),
           unit: "GB",
           color: "primary",
         },
         {
           title: "Storage",
-          total: 4,
-          used: 2.9,
-          value: 80,
+          total: info.totalStorage,
+          used: info.usedStorage,
+          value: parseInt((info.usedStorage * 100) / info.totalStorage),
           unit: "GB",
           color: "success",
         },
         {
           title: "Build Minutes",
-          total: 250,
-          used: 125,
-          value: 50,
+          total: info.totalBuildMinutes,
+          used: info.usedBuildMinutes,
+          value: parseInt(
+            (info.usedBuildMinutes * 100) / info.totalBuildMinutes
+          ),
           unit: "Min",
           color: "#BA79D2",
         },
       ];
+    },
+  },
+  created() {
+    this.getData();
+  },
+  methods: {
+    async getList() {
+      try {
+        this.loadingList = true;
+        let { data } = await this.$http.get("/payment/activity/history");
+        this.list = data;
+      } catch (error) {
+        console.log(error);
+      }
+      this.loadingList = false;
+    },
+    async getData() {
+      try {
+        this.loadingInfo = true;
+        const { data } = await this.$http.get("/consumption/info");
+        this.info = data;
+        this.loadingInfo = false;
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
+      this.getList();
     },
   },
 };
