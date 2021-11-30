@@ -80,8 +80,8 @@ export default {
         );
         const accounts = await window.web3.eth.getAccounts();
         connectAddr = accounts[0];
-        window.ethereum.on("networkChanged", (networkId) => {
-          console.log("networkChanged", networkId);
+        window.ethereum.on("chainChanged", (networkId) => {
+          console.log("chainChanged", networkId);
           this.checkNet();
         });
         this.checkNet();
@@ -115,7 +115,6 @@ export default {
         this.isConnect = isOk;
         if (!isOk) this.showPop = true;
       } else {
-        window.ethereum = null;
         this.isConnect = false;
       }
     },
@@ -128,7 +127,9 @@ export default {
         if (netType != "main")
           msg = "Wrong network, please connect to Ethereum mainnet";
       }
+      console.log("netType", netType);
       this.$setState({
+        netType,
         walletTip: msg,
       });
       // if (msg) this.$alert(msg);
@@ -148,8 +149,8 @@ export default {
         window.web3 = new Web3(window.web3.currentProvider);
         return true;
       } else {
-        this.$confirm("Metamask is not installed", {
-          confirnText: "Install",
+        this.$confirm("Metamask is not installed", "Tip", {
+          confirmText: "Install",
         }).then(() => {
           window.open(
             "https://chrome.google.com/webstore/detail/nkbihfbeogaeaoehlefnkodbefgpgknn"

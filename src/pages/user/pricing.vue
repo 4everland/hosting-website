@@ -130,7 +130,7 @@
               <span>Total:</span>
               <b class="ml-5 mr-3 fz-30">{{ planUSD }}</b>
               <span class="gray fz-14">USD</span>
-              <v-btn color="primary" class="ml-auto" @click="popPay = true"
+              <v-btn color="primary" class="ml-auto" @click="onPrepare"
                 >Preview</v-btn
               >
             </div>
@@ -142,18 +142,13 @@
 </template>
 
 <script>
-import { erc20, payment, paymentAddress, provider } from "../../plugins/pay";
+import { mapState } from "vuex";
+import { paymentAddress, getClient } from "../../plugins/pay";
 import { uint256Max } from "../../plugins/pay/utils";
 
 export default {
   data() {
     return {
-      popPay: false,
-      tokenIdx: 0,
-      planIdx: 1,
-      tokenList: JSON.parse(localStorage.pay_token_list || "[]"),
-      shouldApprove: false,
-      checking: true,
       duration: 1,
       durationList: [1, 2, 3, 6].map((i) => {
         return {
@@ -161,9 +156,22 @@ export default {
           value: i,
         };
       }),
+      popPay: false,
+      tokenIdx: 0,
+      planIdx: 1,
+      tokenList: JSON.parse(localStorage.pay_token_list || "[]"),
+      shouldApprove: false,
+      checking: true,
+      payment: null,
+      erc20: null,
+      provider: null,
     };
   },
   computed: {
+    ...mapState({
+      netType: (s) => s.netType,
+      connectAddr: (s) => s.connectAddr,
+    }),
     asMobile() {
       return this.$vuetify.breakpoint.smAndDown;
     },
@@ -182,17 +190,35 @@ export default {
       this.checkApprove();
     },
   },
-  mounted() {
-    this.getTokenList();
-  },
   methods: {
+    onPrepare() {
+      if (!this.connectAddr) {
+        this.$setState({
+          noticeMsg: {
+            name: "showWalletConnect",
+          },
+        });
+        return;
+      }
+      let msg = "";
+      if (this.netType != "goerli") {
+        msg = "Dev: please connect to goerli";
+      }
+      if (msg) {
+        return this.$alert(msg);
+      }
+      Object.assign(this, getClient());
+      this.popPay = true;
+      this.checkApprove();
+      this.getTokenList();
+    },
     async checkApprove() {
-      if (!this.selectedToken) return;
+      if (!this.selectedToken || !this.provider) return;
       try {
         this.checking = true;
-        const signer = provider.getSigner();
+        const signer = this.provider.getSigner();
         const from = await signer.getAddress();
-        const erc = erc20(this.selectedToken.address);
+        const erc = this.erc20(this.selectedToken.address);
         const allowance = await erc.allowance(from, paymentAddress);
         const minAllowance = uint256Max.shr(1);
         this.shouldApprove = allowance.lt(minAllowance);
@@ -205,12 +231,12 @@ export default {
     async onApprove() {
       try {
         this.checking = true;
-        const erc = erc20(this.selectedToken.address);
+        const erc = this.erc20(this.selectedToken.address);
         const data = erc.interface.encodeFunctionData("approve", [
           paymentAddress,
           uint256Max,
         ]);
-        const signer = provider.getSigner();
+        const signer = this.provider.getSigner();
         const from = await signer.getAddress();
         console.log("approve from", from);
         const tx = await signer.sendTransaction({
@@ -232,12 +258,12 @@ export default {
       this.checkApprove();
     },
     async getTokenList() {
-      let len = await payment.tokenLength();
+      let len = await this.payment.tokenLength();
       len = len.toNumber();
       const list = [];
       for (let i = 0; i < len; i++) {
-        let address = await payment.tokens(i);
-        const erc = erc20(address);
+        let address = await this.payment.tokens(i);
+        const erc = this.erc20(address);
         const name = await erc.name();
         const symbol = await erc.symbol();
         list.push({
