@@ -96,10 +96,10 @@ export default {
           label: "Request",
           comp: "statis-request",
         },
-        {
-          label: "Data Transfer",
-          comp: "statis-data",
-        },
+        // {
+        //   label: "Data Transfer",
+        //   comp: "statis-data",
+        // },
       ],
       tabIdx: 0,
       activeIdxList: [0],
