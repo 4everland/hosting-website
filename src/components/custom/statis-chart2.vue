@@ -92,7 +92,7 @@ export default {
           {
             name: this.title,
             type: "pie",
-            radius: ["40%", "70%"],
+            radius: ["50%", "70%"],
             data, // [{name, value}]
             emphasis: {
               itemStyle: {

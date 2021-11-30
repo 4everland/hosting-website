@@ -51,6 +51,10 @@ export default {
           title: "Path",
           type: "Path",
         },
+        {
+          title: "IP From",
+          type: "IP",
+        },
       ],
     };
   },

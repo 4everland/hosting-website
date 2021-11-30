@@ -106,6 +106,9 @@ export default {
     };
   },
   computed: {
+    asMobile() {
+      return this.$vuetify.breakpoint.smAndDown;
+    },
     summaryList() {
       if (!this.info) return [];
       return [
@@ -168,6 +171,9 @@ export default {
     },
   },
   watch: {
+    asMobile() {
+      location.reload();
+    },
     tabIdx(tab) {
       if (!this.activeIdxList.includes(tab)) {
         this.activeIdxList.push(tab);

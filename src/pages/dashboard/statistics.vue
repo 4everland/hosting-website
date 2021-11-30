@@ -54,16 +54,6 @@ export default {
       pageLen: 1,
     };
   },
-  computed: {
-    asMobile() {
-      return this.$vuetify.breakpoint.smAndDown;
-    },
-  },
-  watch: {
-    asMobile() {
-      location.reload();
-    },
-  },
   mounted() {
     this.getList();
   },
