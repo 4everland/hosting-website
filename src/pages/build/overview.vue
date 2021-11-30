@@ -68,6 +68,7 @@
                   class="flex-1 mr-5"
                   :loading="deploying"
                   @click="onBtn1"
+                  v-if="!info.cli"
                 >
                   {{ btn1Txt }}
                 </v-btn>

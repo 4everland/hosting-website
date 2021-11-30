@@ -90,6 +90,7 @@
                     v-clipboard="opt.name == 'copy' ? it.domain || '' : ''"
                     @click="onOpt(opt, it)"
                     v-for="(opt, i) in optList"
+                    v-show="getShow(opt, it)"
                     :key="i"
                   >
                     <v-list-item-title>
@@ -167,6 +168,10 @@ export default {
     this.getList();
   },
   methods: {
+    getShow(opt, it) {
+      if (it.cli && opt.name == "deploy") return false;
+      return true;
+    },
     onOpt(opt, it) {
       let { name, link } = opt;
       if (link) {
