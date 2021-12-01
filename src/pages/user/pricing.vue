@@ -85,7 +85,14 @@
           >
             <b>Approve</b>
           </v-btn>
-          <v-btn v-else class="mt-3" block color="primary" :loading="checking">
+          <v-btn
+            v-else
+            class="mt-3"
+            block
+            color="primary"
+            :loading="checking"
+            @click="onPay"
+          >
             Preview
           </v-btn>
         </div>
@@ -259,7 +266,7 @@ export default {
     async getUUID() {
       const skey = "pay_uuid";
       let uuid = localStorage[skey];
-      uuid = "0x8f4e36b495d4456aaf975e06e35af232ab4747b6bc464f0ca5f7896d";
+      // uuid = "0x8f4e36b495d4456aaf975e06e35af232ab4747b6bc464f0ca5f7896d";
       if (uuid) {
         this.uuid = uuid;
         await this.getBillInfo();
@@ -319,47 +326,34 @@ export default {
     afterPay() {
       this.$router.push("/dashboard/settings?tab=1");
     },
-    async buy() {
+    async onPay() {
       try {
+        let act = "buy";
+        if (this.canUpgrade) act = "upgrade";
+        else if (this.canRenew) act = "renew";
         let level = this.planIdx - 1;
         const signer = this.provider.getSigner();
-        const data = this.payment.interface.encodeFunctionData("buy", [
+        let params = [
           this.uuid,
           this.selectedToken.index,
           level,
           this.expireVal,
-        ]);
+        ];
+        if (act == "renew") {
+          const nonce = await this.payment.nonces(this.uuid);
+          params = [nonce, this.uuid, this.selectedToken.index, this.expireVal];
+        }
+        const data = this.payment.interface.encodeFunctionData(act, params);
         this.$loading();
         const tx = await signer.sendTransaction({
           from: this.connectAddr,
           to: paymentAddress,
           data,
         });
+        localStorage.pay_hash = tx.hash;
         await tx.wait();
         this.$loading.close();
         this.afterPay();
-      } catch (e) {
-        this.popError(e);
-      }
-    },
-    async renew() {
-      try {
-        const from = this.uuid;
-        const signer = this.provider.getSigner();
-        const payment = this.payment;
-        const nonce = await payment.nonces(from);
-        const data = payment.interface.encodeFunctionData("renew", [
-          nonce,
-          from,
-          this.selectedToken.index,
-          this.expireVal,
-        ]);
-        const tx = await signer.sendTransaction({
-          from,
-          to: paymentAddress,
-          data,
-        });
-        await tx.wait();
       } catch (e) {
         this.popError(e);
       }
@@ -394,6 +388,7 @@ export default {
         const signer = this.provider.getSigner();
         const from = await signer.getAddress();
         const erc = this.erc20(this.selectedToken.address);
+        // console.log(from, this.selectedToken.address, erc);
         const allowance = await erc.allowance(from, paymentAddress);
         const minAllowance = uint256Max.shr(1);
         this.shouldApprove = allowance.lt(minAllowance);

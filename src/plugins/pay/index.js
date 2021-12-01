@@ -2,7 +2,7 @@ import { providers } from "ethers";
 import { HostingPayment__factory } from "./HostingPayment__factory";
 import { ERC20__factory } from "./ERC20__factory";
 
-export const paymentAddress = "0x4663B1fC1180B28D9D158E79FD87830477dBAdD6";
+export const paymentAddress = "0x526210781b9B6CA708274E58D277FB150ffE8D6a";
 
 export function getClient() {
   const provider = new providers.Web3Provider(window.ethereum);

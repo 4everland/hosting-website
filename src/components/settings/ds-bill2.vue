@@ -74,7 +74,9 @@
           <template v-slot:item.txHash="{ item }">
             <v-chip
               small
-              :href="`https://goerli.etherscan.io/tx/${item.txHash}`"
+              :href="`https://${$inDev ? 'goerli.' : ''}etherscan.io/tx/${
+                item.txHash
+              }`"
               target="_blank"
             >
               {{ item.txHash.cutStr(5, 5) }}
@@ -144,7 +146,12 @@ export default {
       try {
         this.loadingList = true;
         let { data } = await this.$http.get("/payment/activity/history");
-        this.list = data;
+        this.list = data.map((it) => {
+          it.createAt = new Date(it.createAt).format();
+          it.pay = parseInt(it.pay / 1e18) + " USD";
+          it.status = it.status ? "success" : "pending";
+          return it;
+        });
       } catch (error) {
         console.log(error);
       }
