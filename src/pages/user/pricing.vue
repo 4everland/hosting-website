@@ -247,6 +247,10 @@ export default {
     planIdx() {
       this.checkPlan();
     },
+    netType() {
+      this.$loading.close();
+      this.checkPlan();
+    },
   },
   mounted() {
     this.getUUID();
@@ -290,10 +294,12 @@ export default {
       }
     },
     async checkPlan() {
+      if (!this.checkNet()) return;
       const payment = this.payment;
       if (!payment || !this.uuid) {
         return;
       }
+      console.log("check plan");
       try {
         this.loadingPrice = true;
         const level = this.planIdx - 1;
@@ -365,18 +371,23 @@ export default {
         },
       });
     },
-    onPrepare() {
-      if (!this.connectAddr) {
-        this.showConnect();
-        return;
-      }
+    checkNet() {
+      if (!this.netType) return false;
       let msg = "";
       if (this.netType != "goerli") {
         msg = "Dev: please connect to goerli";
       }
       if (msg) {
-        return this.$alert(msg);
+        this.$alert(msg);
       }
+      return !msg;
+    },
+    onPrepare() {
+      if (!this.connectAddr) {
+        this.showConnect();
+        return;
+      }
+      if (!this.checkNet()) return;
       this.popPay = true;
       this.checkApprove();
       this.getTokenList();
