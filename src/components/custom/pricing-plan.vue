@@ -288,7 +288,7 @@ export default {
           price: "199 USD/mon",
           desc: "For large teams dependent on 4everland hosting",
           band: "1 TB",
-          stor: "4100 GB",
+          stor: "100 GB",
           build: "2000 included/month",
           global: true,
           ddos: true,

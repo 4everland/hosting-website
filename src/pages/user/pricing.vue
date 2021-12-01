@@ -266,6 +266,7 @@ export default {
     async getBillInfo() {
       const { data } = await this.$http.get("/consumption/info");
       this.billInfo = data;
+      if (data.plan == "Business") this.planIdx = 2;
     },
     async getUUID() {
       const skey = "pay_uuid";
@@ -308,6 +309,8 @@ export default {
         this.canRenew = false;
         this.canBuy = await payment.canBuy(from, level);
         this.canUpgrade = await payment.canUpgrade(from, level);
+        // const receipt = await payment.receipts(from);
+        // console.log("receipt", receipt);
         if (this.canUpgrade) {
           const upgraded = await payment.getUpgradeExchange(from, level);
           this.upgradingExp = upgraded.toNumber();
@@ -333,6 +336,7 @@ export default {
       this.$router.push("/dashboard/settings?tab=1");
     },
     async onPay() {
+      // let msg = ''
       try {
         let act = "buy";
         if (this.canUpgrade) act = "upgrade";
