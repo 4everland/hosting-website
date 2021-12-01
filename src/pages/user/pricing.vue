@@ -114,8 +114,19 @@
               ></v-select>
             </div>
             <div class="fz-13 gray">
-              Billing period runs from Aug 30, 2021 to Sep 3, 2021
-              <br />(Including the remaining 3 days of Pro)
+              <p>
+                Billing period runs from {{ billStart.format("date") }} to
+                {{ billEnd.format("date") }}
+              </p>
+              <p v-if="canRenew && billInfo.endTime">
+                (Previos period was from
+                {{ new Date(billInfo.startTime).format("date") }} to
+                {{ new Date(billInfo.endTime).format("date") }})
+              </p>
+              <p v-if="extraDay">
+                (Including the remaining
+                {{ extraDay }} days of Pro)
+              </p>
             </div>
           </v-col>
           <v-col
@@ -130,7 +141,11 @@
               <span>Total:</span>
               <b class="ml-5 mr-3 fz-30">{{ planUSD }}</b>
               <span class="gray fz-14">USD</span>
-              <v-btn color="primary" class="ml-auto" @click="onPrepare"
+              <v-btn
+                color="primary"
+                class="ml-auto"
+                @click="onPrepare"
+                :loading="loadingPrice"
                 >Preview</v-btn
               >
             </div>
@@ -149,6 +164,8 @@ import { uint256Max } from "../../plugins/pay/utils";
 export default {
   data() {
     return {
+      uuid: null,
+      billInfo: {},
       duration: 1,
       durationList: [1, 2, 3, 6].map((i) => {
         return {
@@ -165,13 +182,33 @@ export default {
       payment: null,
       erc20: null,
       provider: null,
+      canBuy: true,
+      canUpgrade: false,
+      canRenew: false,
+      loadingPrice: false,
+      upgradingExp: 0,
     };
   },
   computed: {
     ...mapState({
       netType: (s) => s.netType,
       connectAddr: (s) => s.connectAddr,
+      nowDate: (s) => s.nowDate,
     }),
+    extraDay() {
+      return Math.round(this.upgradingExp / 86400);
+    },
+    billStart() {
+      let date = this.nowDate;
+      const { endTime } = this.billInfo;
+      if (this.canRenew && endTime) date = new Date(this.billInfo.endTime);
+      return date;
+    },
+    billEnd() {
+      return new Date(
+        this.billStart * 1 + this.expireVal * 1e3 + this.upgradingExp * 1e3
+      );
+    },
     asMobile() {
       return this.$vuetify.breakpoint.smAndDown;
     },
@@ -184,20 +221,159 @@ export default {
     planUSD() {
       return this.planUnit * this.duration;
     },
+    expireVal() {
+      return this.duration * 86400 * 30;
+    },
   },
   watch: {
+    connectAddr(val) {
+      if (val) {
+        this.onConnect();
+      }
+    },
     selectedToken() {
       this.checkApprove();
     },
+    duration() {
+      this.checkPlan();
+    },
+    planIdx() {
+      this.checkPlan();
+    },
+  },
+  mounted() {
+    this.getUUID();
+    if (this.connectAddr) {
+      this.onConnect();
+    }
   },
   methods: {
+    onConnect() {
+      Object.assign(this, getClient());
+      this.checkPlan();
+    },
+    async getBillInfo() {
+      const { data } = await this.$http.get("/consumption/info");
+      this.billInfo = data;
+    },
+    async getUUID() {
+      const skey = "pay_uuid";
+      let uuid = localStorage[skey];
+      uuid = "0x8f4e36b495d4456aaf975e06e35af232ab4747b6bc464f0ca5f7896d";
+      if (uuid) {
+        this.uuid = uuid;
+        await this.getBillInfo();
+        this.checkPlan();
+        if (!this.connectAddr) {
+          this.showConnect();
+        }
+        return;
+      }
+      try {
+        this.$loading();
+        const { data: id } = await this.$http.get("/user/payment/uuid");
+        localStorage[skey] = "0x" + id;
+        this.$loading.close();
+        this.getUUID();
+      } catch (error) {
+        console.log(error);
+        this.$alert(error.message).then(() => {
+          this.getUUID();
+        });
+      }
+    },
+    async checkPlan() {
+      const payment = this.payment;
+      if (!payment || !this.uuid) {
+        return;
+      }
+      try {
+        this.loadingPrice = true;
+        const level = this.planIdx - 1;
+        const from = this.uuid;
+        this.upgradingExp = 0;
+        this.canRenew = false;
+        this.canBuy = await payment.canBuy(from, level);
+        this.canUpgrade = await payment.canUpgrade(from, level);
+        if (this.canUpgrade) {
+          const upgraded = await payment.getUpgradeExchange(from, level);
+          this.upgradingExp = upgraded.toNumber();
+          const max = await payment.maxTotalUpgradeExpiration(from, level);
+          this.maxUpgradingExp = max.toNumber();
+        } else {
+          this.canRenew = await payment.canRenew(from);
+        }
+        console.log(
+          level,
+          this.canBuy,
+          this.canRenew,
+          this.canUpgrade,
+          this.upgradingExp,
+          this.maxUpgradingExp
+        );
+      } catch (e) {
+        this.popError(e);
+      }
+      this.loadingPrice = false;
+    },
+    afterPay() {
+      this.$router.push("/dashboard/settings?tab=1");
+    },
+    async buy() {
+      try {
+        let level = this.planIdx - 1;
+        const signer = this.provider.getSigner();
+        const data = this.payment.interface.encodeFunctionData("buy", [
+          this.uuid,
+          this.selectedToken.index,
+          level,
+          this.expireVal,
+        ]);
+        this.$loading();
+        const tx = await signer.sendTransaction({
+          from: this.connectAddr,
+          to: paymentAddress,
+          data,
+        });
+        await tx.wait();
+        this.$loading.close();
+        this.afterPay();
+      } catch (e) {
+        this.popError(e);
+      }
+    },
+    async renew() {
+      try {
+        const from = this.uuid;
+        const signer = this.provider.getSigner();
+        const payment = this.payment;
+        const nonce = await payment.nonces(from);
+        const data = payment.interface.encodeFunctionData("renew", [
+          nonce,
+          from,
+          this.selectedToken.index,
+          this.expireVal,
+        ]);
+        const tx = await signer.sendTransaction({
+          from,
+          to: paymentAddress,
+          data,
+        });
+        await tx.wait();
+      } catch (e) {
+        this.popError(e);
+      }
+    },
+    showConnect() {
+      this.$setState({
+        noticeMsg: {
+          name: "showWalletConnect",
+        },
+      });
+    },
     onPrepare() {
       if (!this.connectAddr) {
-        this.$setState({
-          noticeMsg: {
-            name: "showWalletConnect",
-          },
-        });
+        this.showConnect();
         return;
       }
       let msg = "";
@@ -207,7 +383,6 @@ export default {
       if (msg) {
         return this.$alert(msg);
       }
-      Object.assign(this, getClient());
       this.popPay = true;
       this.checkApprove();
       this.getTokenList();
@@ -245,7 +420,7 @@ export default {
           data,
         });
         await tx.wait();
-        this.checkBuy();
+        this.checkApprove();
       } catch (e) {
         this.popError(e);
         this.checking = false;
@@ -253,9 +428,6 @@ export default {
     },
     popError(e) {
       this.$alert(e.message);
-    },
-    async checkBuy() {
-      this.checkApprove();
     },
     async getTokenList() {
       let len = await this.payment.tokenLength();
