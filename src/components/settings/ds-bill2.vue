@@ -21,8 +21,12 @@
 <template>
   <div class="billing2">
     <v-card outlined>
-      <div class="pd-20">
+      <div class="pd-20 d-flex al-end lh-1">
         <h3>Usage</h3>
+        <span class="ml-2 gray fz-12" v-if="info.info.indexStartTime"
+          >{{ new Date(info.indexStartTime).format("date") }} to
+          {{ new Date(info.indexEndTime).format("date") }}</span
+        >
       </div>
       <div class="bdt-1 pd-20 ta-c">
         <v-skeleton-loader type="article" v-if="loadingInfo" />
@@ -50,7 +54,7 @@
             <span class="label-1">Plan:</span>
             <b class="ml-2">{{ info.plan }}</b>
           </p>
-          <p class="gray fz-14" v-if="info.startTime">
+          <p class="gray fz-14" v-if="info.startTime && info.plan != 'Free'">
             Current billing period starts from
             {{ new Date(info.startTime).format("date") }} to
             {{ new Date(info.endTime).format("date") }}.
