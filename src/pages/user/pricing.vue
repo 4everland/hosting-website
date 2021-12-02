@@ -26,7 +26,7 @@
 
 <template>
   <div class="pricing" :class="{ m: asMobile }">
-    <pricing-plan v-model="planIdx" />
+    <pricing-plan :isBusiness="isBusiness" v-model="planIdx" />
 
     <v-dialog v-model="popPay" max-width="420">
       <div class="pd-20 pricing lh-1">
@@ -115,14 +115,11 @@
                 label="Duration"
                 single-line
                 dense
-                :menu-props="{
-                  offsetY: true,
-                }"
               ></v-select>
             </div>
             <div class="fz-13 gray">
               <p>
-                Billing period runs from {{ billStart.format("date") }} to
+                Billing period starts from {{ billStart.format("date") }} to
                 {{ billEnd.format("date") }}
               </p>
               <p v-if="canRenew && billInfo.endTime">
@@ -167,6 +164,7 @@
 import { mapState } from "vuex";
 import { paymentAddress, getClient } from "../../plugins/pay";
 import { uint256Max } from "../../plugins/pay/utils";
+const MON_SEC = 86400 * 30;
 
 export default {
   data() {
@@ -174,12 +172,6 @@ export default {
       uuid: null,
       billInfo: {},
       duration: 1,
-      durationList: [1, 2, 3, 6].map((i) => {
-        return {
-          text: `${i} Month${i > 1 ? "s" : ""}`,
-          value: i,
-        };
-      }),
       popPay: false,
       tokenIdx: 0,
       planIdx: 1,
@@ -202,6 +194,24 @@ export default {
       connectAddr: (s) => s.connectAddr,
       nowDate: (s) => s.nowDate,
     }),
+    durationList() {
+      const { endTime = 0 } = this.billInfo;
+      const restTime = endTime - Date.now();
+      return [1, 2, 3, 6]
+        .map((i) => {
+          return {
+            text: `${i} Month${i > 1 ? "s" : ""}`,
+            time: i * MON_SEC * 1e3,
+            value: i,
+          };
+        })
+        .filter((it) => {
+          if (endTime && it.time + restTime > 6 * MON_SEC * 1e3) {
+            return false;
+          }
+          return true;
+        });
+    },
     extraDay() {
       return Math.round(this.upgradingExp / 86400);
     },
@@ -230,6 +240,9 @@ export default {
     },
     expireVal() {
       return this.duration * 86400 * 30;
+    },
+    isBusiness() {
+      return this.billInfo.plan == "Business";
     },
   },
   watch: {
@@ -266,7 +279,7 @@ export default {
     async getBillInfo() {
       const { data } = await this.$http.get("/consumption/info");
       this.billInfo = data;
-      if (data.plan == "Business") this.planIdx = 2;
+      if (this.isBusiness) this.planIdx = 2;
     },
     async getUUID() {
       const skey = "pay_uuid";

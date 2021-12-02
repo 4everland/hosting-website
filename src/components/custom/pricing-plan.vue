@@ -99,8 +99,8 @@
               class="plan-item trans-200 bd-1 bdrs-10"
               :class="{
                 active: i == value,
-                free: i == 0,
-                clickable: i > 0 && i < planList.length - 1,
+                free: getDisabled(i),
+                clickable: !getDisabled(i) && i < planList.length - 1,
               }"
             >
               <div class="pa-3">
@@ -117,9 +117,14 @@
                 </div>
               </div>
               <div class="pa-4 bdt-1">
-                <ul>
+                <ul class="ls-none">
                   <li class="mb-2" v-for="(txt, j) in getPlanList(i)" :key="j">
-                    <!-- <v-icon>mdi-check</v-icon> -->
+                    <v-icon
+                      size="14"
+                      class="mr-2"
+                      :color="i == value ? '#fff' : ''"
+                      >mdi-check-circle</v-icon
+                    >
                     <span class="fz-13">{{ txt }}</span>
                   </li>
                 </ul>
@@ -195,6 +200,7 @@
 export default {
   props: {
     value: Number,
+    isBusiness: Boolean,
   },
   computed: {
     asMobile() {
@@ -206,7 +212,7 @@ export default {
       coins: ["DAI", "USDC", "USDT"],
       planHeaders: [
         {
-          text: "Bandwith",
+          text: "Bandwidth",
           value: "band",
         },
         {
@@ -234,7 +240,7 @@ export default {
           value: "ipfs",
         },
         {
-          text: "Statistic",
+          text: "Statistics",
           value: "statis",
         },
         {
@@ -253,7 +259,7 @@ export default {
       planList: [
         {
           title: "Free",
-          price: "0 USD/mon",
+          price: "0 USD/mo",
           desc: "For both non-commercial and personal projects",
           band: "100 GB",
           stor: "4 GB",
@@ -269,7 +275,7 @@ export default {
         },
         {
           title: "Pro",
-          price: "40 USD/mon",
+          price: "40 USD/mo",
           desc: "For 4everland hosting  projects that are growing",
           band: "300 GB",
           stor: "40 GB",
@@ -285,7 +291,7 @@ export default {
         },
         {
           title: "Business",
-          price: "199 USD/mon",
+          price: "199 USD/mo",
           desc: "For large teams dependent on 4everland hosting",
           band: "1 TB",
           stor: "100 GB",
@@ -317,22 +323,14 @@ export default {
           premium: true,
         },
       ],
-      duration: 1,
-      durationList: [
-        {
-          text: "1 Month",
-          value: 1,
-        },
-        {
-          text: "3 Months",
-          value: 3,
-        },
-      ],
     };
   },
   methods: {
+    getDisabled(i) {
+      return i == 0 || (i == 1 && this.isBusiness);
+    },
     onPlan(it, i) {
-      if (!i == 0 && !it.isCustom) {
+      if (!this.getDisabled(i) && !it.isCustom) {
         this.$emit("input", i);
       }
     },
