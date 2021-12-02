@@ -81,7 +81,7 @@
           :items="list"
           hide-default-footer
         >
-          <template v-slot:item.payment="{ item }">
+          <template v-slot:item.pay="{ item }">
             <div class="d-flex al-c">
               <img
                 :src="`img/icon/c-${item.token.toLowerCase()}.svg`"
@@ -130,7 +130,7 @@ export default {
       loadingInfo: false,
       loadingList: false,
       headers: [
-        { text: "Payment", value: "payment" },
+        { text: "Payment", value: "pay" },
         { text: "Hash", value: "txHash" },
         { text: "createAt", value: "createAt" },
         { text: "status", value: "status" },
