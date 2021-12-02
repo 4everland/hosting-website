@@ -112,16 +112,15 @@
                 :items="durationList"
                 item-text="text"
                 item-value="value"
-                label="Duration"
                 single-line
                 dense
               ></v-select>
             </div>
             <div class="fz-13 gray">
-              <p>
-                Billing period starts from {{ billStart.format("date") }} to
-                {{ billEnd.format("date") }}
+              <p v-if="durationList.length">
+                {{ billPeriod }}
               </p>
+              <p v-else class="red-1">Max billing period is one year</p>
               <p v-if="canRenew && billInfo.endTime">
                 (Previos period was from
                 {{ new Date(billInfo.startTime).format("date") }} to
@@ -150,6 +149,7 @@
                 class="ml-auto"
                 @click="onPrepare"
                 :loading="loadingPrice"
+                :disabled="!durationList.length"
                 >Preview</v-btn
               >
             </div>
@@ -206,7 +206,7 @@ export default {
           };
         })
         .filter((it) => {
-          if (endTime && it.time + restTime > 6 * MON_SEC * 1e3) {
+          if (endTime && it.time + restTime > 12 * MON_SEC * 1e3) {
             return false;
           }
           return true;
@@ -225,6 +225,11 @@ export default {
       return new Date(
         this.billStart * 1 + this.expireVal * 1e3 + this.upgradingExp * 1e3
       );
+    },
+    billPeriod() {
+      return `Billing period starts from ${this.billStart.format(
+        "date"
+      )} to ${this.billEnd.format("date")}`;
     },
     asMobile() {
       return this.$vuetify.breakpoint.smAndDown;
@@ -345,10 +350,14 @@ export default {
       }
       this.loadingPrice = false;
     },
-    afterPay() {
+    async afterPay() {
+      await this.$alert(this.billPeriod, "Payment Submmited", {
+        type: "success",
+      });
       this.$router.push("/dashboard/settings?tab=1");
     },
     async onPay() {
+      // if (Date.now) return this.afterPay();
       // let msg = ''
       try {
         let act = "buy";
