@@ -131,9 +131,9 @@ export default {
       loadingList: false,
       headers: [
         { text: "Payment", value: "pay" },
-        { text: "Hash", value: "txHash" },
-        { text: "createAt", value: "createAt" },
-        { text: "status", value: "status" },
+        { text: "TxHash", value: "txHash" },
+        { text: "CreateAt", value: "createAt" },
+        { text: "Status", value: "status" },
       ],
       list: [],
     };

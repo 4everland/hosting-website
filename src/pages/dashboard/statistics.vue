@@ -48,7 +48,10 @@ export default {
         { text: "Total Users", value: "totalUsers" },
         { text: "Total UV", value: "totalUv" },
         { text: "Total PV", value: "queryCount" },
-      ],
+      ].map((it) => {
+        it.align = "center";
+        return it;
+      }),
       list: [],
       page: 1,
       pageLen: 1,
