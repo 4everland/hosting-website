@@ -54,6 +54,16 @@
             Current billing period starts from
             {{ new Date(info.startTime).format("date") }} to
             {{ new Date(info.endTime).format("date") }}.
+            <e-tooltip right max-width="300" v-if="info.totalStorage == 40">
+              <v-icon slot="ref" size="16" class="pa-1 d-ib"
+                >mdi-help-circle-outline</v-icon
+              >
+              <span
+                >Subscribers who register before December 2, 2021 will have
+                access to 100M bandwidth and 40G storage until December 31,
+                2021.</span
+              >
+            </e-tooltip>
           </p>
         </div>
         <v-btn color="primary" small to="/pricing">Change Plan</v-btn>
@@ -71,6 +81,15 @@
           :items="list"
           hide-default-footer
         >
+          <template v-slot:item.payment="{ item }">
+            <div class="d-flex al-c">
+              <img
+                :src="`img/icon/c-${item.token.toLowerCase()}.svg`"
+                height="20"
+              />
+              <span class="ml-2">{{ item.pay }} {{ item.token }}</span>
+            </div>
+          </template>
           <template v-slot:item.txHash="{ item }">
             <v-chip
               small
@@ -79,6 +98,7 @@
               }`"
               target="_blank"
             >
+              <v-icon size="14" class="mr-1">mdi-link-variant</v-icon>
               {{ item.txHash.cutStr(5, 5) }}
             </v-chip>
           </template>
@@ -110,8 +130,7 @@ export default {
       loadingInfo: false,
       loadingList: false,
       headers: [
-        { text: "Token", value: "token" },
-        { text: "Amount", value: "pay" },
+        { text: "Payment", value: "payment" },
         { text: "Hash", value: "txHash" },
         { text: "createAt", value: "createAt" },
         { text: "status", value: "status" },

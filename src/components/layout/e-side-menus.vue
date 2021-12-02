@@ -47,9 +47,10 @@ export default {
   props: {
     list: Array,
     info: Object,
+    defTab: Number,
   },
   data() {
-    const { tab = 0 } = this.$route.query;
+    const { tab = this.defTab || 0 } = this.$route.query;
     let curIdx = tab * 1;
     return {
       curIdx,
