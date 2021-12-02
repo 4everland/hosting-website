@@ -23,7 +23,7 @@
     <v-card outlined>
       <div class="pd-20 d-flex al-end lh-1">
         <h3>Usage</h3>
-        <span class="ml-2 gray fz-12" v-if="info.info.indexStartTime"
+        <span class="ml-2 gray fz-12" v-if="info.indexStartTime"
           >{{ new Date(info.indexStartTime).format("date") }} to
           {{ new Date(info.indexEndTime).format("date") }}</span
         >
