@@ -122,7 +122,7 @@
               </p>
               <p v-else class="red-1">Max billing period is one year</p>
               <p v-if="canRenew && billInfo.endTime">
-                (Previos period was from
+                (Previous period was from
                 {{ new Date(billInfo.startTime).format("date") }} to
                 {{ new Date(billInfo.endTime).format("date") }})
               </p>
