@@ -2,29 +2,27 @@
   <div>
     <e-date-range class="mb-3" val="24h" @dates="onDates"></e-date-range>
 
-    <template v-if="dates">
-      <statis-chart
-        :reloadAt="reloadAt"
-        :appId="appId"
-        title="Total requests"
-        type="PAGE_VIEW"
-        :dates="dates"
-      ></statis-chart>
+    <statis-chart
+      v-if="dates"
+      :reloadAt="reloadAt"
+      :appId="appId"
+      title="Total requests"
+      type="PAGE_VIEW"
+      :dates="dates"
+    ></statis-chart>
 
-      <div class="mt-10">
-        <v-row>
-          <v-col cols="12" md="6" v-for="(it, i) in reqList" :key="i">
-            <statis-chart2
-              :appId="appId"
-              :title="it.title"
-              :type="it.type"
-              :reloadAt="reloadAt"
-              :dates="dates"
-            ></statis-chart2>
-          </v-col>
-        </v-row>
-      </div>
-    </template>
+    <div class="mt-10">
+      <v-row>
+        <v-col cols="12" md="6" v-for="(it, i) in reqList" :key="i">
+          <statis-chart2
+            :appId="appId"
+            :title="it.title"
+            :type="it.type"
+            :reloadAt="reloadAt"
+          ></statis-chart2>
+        </v-col>
+      </v-row>
+    </div>
   </div>
 </template>
 

@@ -92,7 +92,7 @@ export default {
         this.showPop = true;
         this.preDate = oldVal;
         this.date = null;
-      } else {
+      } else if (val) {
         this.onInput(val);
       }
     },
@@ -105,24 +105,25 @@ export default {
       return val.toDate() < now;
     },
     onInput(val) {
+      if (val == "24h") {
+        this.$emit("dates", val);
+        return;
+      }
       const mat = /^(\d+)(\D)$/.exec(val);
       let start, end;
       if (mat) {
         let num = mat[1];
-        if (num == 24) {
-          const date = new Date();
-          end = date * 1;
-          start = new Date(end - 86400e3) * 1;
-        } else {
-          const date = new Date().getToday();
-          end = date * 1;
-          start = date.getNextDay(-num) * 1;
-        }
+        const date = new Date().getToday();
+        end = date * 1;
+        start = date.getNextDay(-num) * 1;
       } else {
         const arr = val.split(",");
         start = arr[0].toDate() * 1;
         end = arr[1].toDate().getDayEnd() * 1;
       }
+      const offset = now.getTimezoneOffset() * 60e3;
+      end -= offset;
+      start -= offset;
       this.$emit("dates", [parseInt(start / 1e3), parseInt(end / 1e3)]);
     },
     onCancel() {

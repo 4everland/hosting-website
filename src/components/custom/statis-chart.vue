@@ -32,6 +32,9 @@ export default {
     asMobile() {
       return this.$vuetify.breakpoint.smAndDown;
     },
+    isHour() {
+      return this.dates == "24h";
+    },
   },
   data() {
     return {
@@ -81,12 +84,12 @@ export default {
           viewType: this.type,
           projectId: this.appId,
         };
-        if (this.dates) {
+        if (this.isHour) {
+          params.timeLimit = this.timeLimit;
+        } else {
           params.startTime = this.dates[0];
           params.endTime = this.dates[1];
           params.timeLimit = "CUSTOM_TIME";
-        } else {
-          params.timeLimit = this.timeLimit;
         }
         const {
           data: { data },
@@ -109,7 +112,7 @@ export default {
         });
         this.list = list;
         for (const it of list) {
-          const fmt = /hour/i.test(this.timeLimit) ? "HH:mm" : "MM-dd";
+          const fmt = this.isHour ? "HH:mm" : "MM-dd";
           xArr.push(it.time.format(fmt));
           // it.num = (Math.random() * 20) | 0;
           yArr.push(it.num);
