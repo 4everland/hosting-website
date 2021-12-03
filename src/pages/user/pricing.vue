@@ -368,6 +368,7 @@ export default {
       // if (Date.now) return this.afterPay();
       // let msg = ''
       try {
+        this.paying = true;
         let act = "buy";
         if (this.canUpgrade) act = "upgrade";
         else if (this.canRenew) act = "renew";
@@ -384,17 +385,17 @@ export default {
           params = [nonce, this.uuid, this.selectedToken.index, this.expireVal];
         }
         const data = this.payment.interface.encodeFunctionData(act, params);
-        this.paying = true;
+
         const tx = await signer.sendTransaction({
           from: this.connectAddr,
           to: paymentAddress,
           data,
         });
-        this.paying = false;
         localStorage.pay_hash = tx.hash;
         this.$loading(`Transaction(${tx.hash.cutStr(4, 3)}) pending`);
         await tx.wait();
         this.$loading.close();
+        this.paying = false;
         this.afterPay();
       } catch (e) {
         this.popError(e);
