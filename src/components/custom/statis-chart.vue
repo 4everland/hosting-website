@@ -1,25 +1,7 @@
 <template>
   <div class="pos-r">
-    <div class="pos-a top-0 z-10 w100p d-flex al-c">
+    <div class="pos-a top-0 z-1 w100p d-flex al-c">
       <h4>{{ title }}</h4>
-      <div
-        class="fz-12 gray-a ml-auto"
-        :class="{
-          'mr-9': !asMobile,
-        }"
-      >
-        <span
-          @click="onTime(it)"
-          class="hover-1 pl-1 pr-1"
-          :class="{
-            'color-1': it.value == timeLimit,
-          }"
-          v-for="(it, i) in timeList"
-          :key="i"
-        >
-          {{ it.label }}
-        </span>
-      </div>
     </div>
     <div class="pos-r">
       <div ref="chart" style="height: 200px"></div>
@@ -44,6 +26,7 @@ export default {
     appId: String,
     reloadAt: null,
     lazy: Boolean,
+    dates: Array,
   },
   computed: {
     asMobile() {
@@ -78,6 +61,9 @@ export default {
     reloadAt(val) {
       if (val) this.getData();
     },
+    dates() {
+      this.getData();
+    },
   },
   mounted() {
     if (!this.lazy) {
@@ -91,14 +77,20 @@ export default {
     async getData() {
       try {
         this.loading = true;
+        const params = {
+          viewType: this.type,
+          projectId: this.appId,
+        };
+        if (this.dates) {
+          params.startTime = this.dates[0];
+          params.endTime = this.dates[1];
+        } else {
+          params.timeLimit = this.timeLimit;
+        }
         const {
           data: { data },
         } = await this.$http.get("/analytics/user/view/data", {
-          params: {
-            viewType: this.type,
-            projectId: this.appId,
-            timeLimit: this.timeLimit,
-          },
+          params,
         });
         // console.log(data)
         // const now = new Date()

@@ -1,12 +1,14 @@
 <template>
   <div>
-    <v-row class="mb-6">
+    <e-date-range class="mb-3" val="24h" @dates="onDates"></e-date-range>
+    <v-row class="mb-6" v-if="dates">
       <v-col cols="12" md="6" v-for="(it, i) in chartList" :key="i">
         <statis-chart
           :reloadAt="reloadAt"
           :appId="appId"
           :title="it.title"
           :type="it.type"
+          :dates="dates"
         ></statis-chart>
       </v-col>
     </v-row>
@@ -25,6 +27,7 @@ export default {
   },
   data() {
     return {
+      dates: null,
       chartList: [
         {
           title: this.$tc(`dashboard.statistics.TotalUser`),
@@ -50,6 +53,10 @@ export default {
     this.getData();
   },
   methods: {
+    onDates(val) {
+      this.dates = val;
+      console.log(val);
+    },
     async getData() {
       try {
         this.tableLoading = true;

@@ -1,6 +1,6 @@
 <template>
   <div class="pos-r">
-    <div class="pos-a top-0 z-10 w100p d-flex al-c">
+    <div class="pos-a top-0 z-1 w100p d-flex al-c">
       <h4>{{ title }}</h4>
     </div>
     <div class="pos-r">

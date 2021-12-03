@@ -5,7 +5,6 @@
       <div>Statistics for your projects</div>
     </e-card-head-1>
     <div class="pd-20">
-      <!-- <e-date-picker></e-date-picker> -->
       <v-data-table
         class="elevation-1"
         :loading="loading"

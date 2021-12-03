@@ -59,7 +59,7 @@
               {{ it.label }}
             </v-tab>
           </v-tabs>
-          <div class="mt-10" style="min-height: 300px">
+          <div class="mt-5" style="min-height: 300px">
             <component
               :is="it.comp"
               :appId="appId"
