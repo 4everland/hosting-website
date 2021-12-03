@@ -79,18 +79,19 @@
           <v-btn
             block
             color="primary"
-            v-if="shouldApprove"
-            :loading="checking"
+            :disabled="!shouldApprove"
+            :loading="checking || approving"
             @click="onApprove"
           >
             <b>Approve</b>
           </v-btn>
           <v-btn
-            v-else
+            v-show="!checking"
+            :disabled="shouldApprove"
             class="mt-3"
             block
             color="primary"
-            :loading="checking"
+            :loading="paying"
             @click="onPay"
           >
             Preview
@@ -179,6 +180,8 @@ export default {
       tokenList: JSON.parse(localStorage.pay_token_list || "[]"),
       shouldApprove: false,
       checking: false,
+      approving: false,
+      paying: false,
       payment: null,
       erc20: null,
       provider: null,
@@ -381,13 +384,13 @@ export default {
           params = [nonce, this.uuid, this.selectedToken.index, this.expireVal];
         }
         const data = this.payment.interface.encodeFunctionData(act, params);
-        this.checking = true;
+        this.paying = true;
         const tx = await signer.sendTransaction({
           from: this.connectAddr,
           to: paymentAddress,
           data,
         });
-        this.checking = false;
+        this.paying = false;
         localStorage.pay_hash = tx.hash;
         this.$loading(`Transaction(${tx.hash.cutStr(4, 3)}) pending`);
         await tx.wait();
@@ -395,7 +398,7 @@ export default {
         this.afterPay();
       } catch (e) {
         this.popError(e);
-        this.checking = false;
+        this.paying = false;
       }
     },
     showConnect() {
@@ -445,7 +448,7 @@ export default {
     },
     async onApprove() {
       try {
-        this.checking = true;
+        this.approving = true;
         const erc = this.erc20(this.selectedToken.address);
         const data = erc.interface.encodeFunctionData("approve", [
           paymentAddress,
@@ -463,8 +466,8 @@ export default {
         this.checkApprove();
       } catch (e) {
         this.popError(e);
-        this.checking = false;
       }
+      this.approving = false;
     },
     popError(e) {
       this.$alert(e.message);

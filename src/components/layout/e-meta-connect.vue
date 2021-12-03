@@ -82,7 +82,8 @@ export default {
         connectAddr = accounts[0];
         window.ethereum.on("chainChanged", (networkId) => {
           console.log("chainChanged", networkId);
-          this.checkNet();
+          // this.checkNet();
+          location.reload();
         });
         this.checkNet();
       }
