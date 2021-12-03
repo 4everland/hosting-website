@@ -55,7 +55,6 @@ export default {
   methods: {
     onDates(val) {
       this.dates = val;
-      console.log(val);
     },
     async getData() {
       try {

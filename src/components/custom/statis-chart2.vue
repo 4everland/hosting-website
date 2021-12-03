@@ -26,6 +26,7 @@ export default {
     appId: String,
     reloadAt: null,
     lazy: Boolean,
+    dates: Array,
   },
   data() {
     return {
@@ -37,6 +38,9 @@ export default {
     reloadAt(val) {
       if (val) this.getData();
     },
+    dates() {
+      this.getData();
+    },
   },
   mounted() {
     if (!this.lazy) {
@@ -47,20 +51,17 @@ export default {
     async getData() {
       try {
         this.loading = true;
+        const params = {
+          projectId: this.appId,
+          sourceType: this.type,
+        };
+        if (this.dates) {
+          params.startTime = this.dates[0];
+          params.endTime = this.dates[1];
+        }
         const { data } = await this.$http.get("/request/source/list", {
-          params: {
-            projectId: this.appId,
-            sourceType: this.type,
-          },
+          params,
         });
-        // const data = {
-        //   content: [
-        //     {
-        //       sourceName: "test",
-        //       sourceNum: 10,
-        //     },
-        //   ],
-        // };
         const arr = data.content.map((it) => {
           return {
             name: it.sourceName,

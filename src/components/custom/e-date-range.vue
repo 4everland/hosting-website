@@ -17,7 +17,11 @@
     </v-select>
 
     <v-dialog v-model="showPop" max-width="500">
-      <v-date-picker v-model="dates" range></v-date-picker>
+      <v-date-picker
+        v-model="dates"
+        range
+        :allowed-dates="isAllow"
+      ></v-date-picker>
       <div class="ta-r pd-20">
         <v-btn text @click="onCancel">Cancel</v-btn>
         <v-btn
@@ -33,6 +37,8 @@
 </template>
 
 <script>
+let now = new Date();
+
 export default {
   props: {
     val: String,
@@ -95,6 +101,9 @@ export default {
     },
   },
   methods: {
+    isAllow(val) {
+      return val.toDate() < now;
+    },
     onInput(val) {
       const mat = /^(\d+)(\D)$/.exec(val);
       let start, end;

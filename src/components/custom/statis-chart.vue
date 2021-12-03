@@ -84,6 +84,7 @@ export default {
         if (this.dates) {
           params.startTime = this.dates[0];
           params.endTime = this.dates[1];
+          params.timeLimit = "CUSTOM_TIME";
         } else {
           params.timeLimit = this.timeLimit;
         }
