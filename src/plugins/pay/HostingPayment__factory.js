@@ -3,7 +3,8 @@
 /* eslint-disable */
 
 import { utils, Contract, ContractFactory } from "ethers";
-import abiData from "./abi.json";
+import abiData from "./abi";
+
 const _abi = abiData.abi;
 
 const _bytecode = abiData.bytecode;

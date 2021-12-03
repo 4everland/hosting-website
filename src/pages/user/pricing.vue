@@ -62,7 +62,7 @@
                       <p class="fz-13">{{ item.symbol }}</p>
                       <p class="gray fz-12 mt-1">{{ item.name }}</p>
                     </div>
-                    <span class="fz-14 gray">{{ 0 }}</span>
+                    <span class="fz-14 gray">{{ item.balance }}</span>
                   </div>
                 </template>
               </v-select>
@@ -161,6 +161,7 @@
 </template>
 
 <script>
+import { BigNumber } from "ethers";
 import { mapState } from "vuex";
 import { paymentAddress, getClient } from "../../plugins/pay";
 import { uint256Max } from "../../plugins/pay/utils";
@@ -177,7 +178,7 @@ export default {
       planIdx: 1,
       tokenList: JSON.parse(localStorage.pay_token_list || "[]"),
       shouldApprove: false,
-      checking: true,
+      checking: false,
       payment: null,
       erc20: null,
       provider: null,
@@ -195,7 +196,7 @@ export default {
       nowDate: (s) => s.nowDate,
     }),
     durationList() {
-      const { endTime = 0 } = this.billInfo;
+      const { endTime = 0, plan } = this.billInfo;
       const restTime = endTime - Date.now();
       return [1, 2, 3, 6]
         .map((i) => {
@@ -206,7 +207,11 @@ export default {
           };
         })
         .filter((it) => {
-          if (endTime && it.time + restTime > 12 * MON_SEC * 1e3) {
+          if (
+            plan != "Free" &&
+            endTime &&
+            it.time + restTime > 12 * MON_SEC * 1e3
+          ) {
             return false;
           }
           return true;
@@ -376,18 +381,21 @@ export default {
           params = [nonce, this.uuid, this.selectedToken.index, this.expireVal];
         }
         const data = this.payment.interface.encodeFunctionData(act, params);
-        this.$loading();
+        this.checking = true;
         const tx = await signer.sendTransaction({
           from: this.connectAddr,
           to: paymentAddress,
           data,
         });
+        this.checking = false;
         localStorage.pay_hash = tx.hash;
+        this.$loading(`Transaction(${tx.hash.cutStr(4, 3)}) pending`);
         await tx.wait();
         this.$loading.close();
         this.afterPay();
       } catch (e) {
         this.popError(e);
+        this.checking = false;
       }
     },
     showConnect() {
@@ -470,11 +478,14 @@ export default {
         const erc = this.erc20(address);
         const name = await erc.name();
         const symbol = await erc.symbol();
+        let balance = await erc.balanceOf(this.connectAddr);
+        balance = balance.div(BigNumber.from((1e18).toString())) + "";
         list.push({
           index: i,
           name,
           symbol,
           address,
+          balance,
         });
       }
       console.log(list);

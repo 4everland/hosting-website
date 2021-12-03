@@ -1,8 +1,9 @@
 import { providers } from "ethers";
 import { HostingPayment__factory } from "./HostingPayment__factory";
 import { ERC20__factory } from "./ERC20__factory";
+import abiData from "./abi";
 
-export const paymentAddress = "0xf680d03639389c2510C03e38fc6bF768f7F66047";
+export const paymentAddress = abiData.address;
 
 export function getClient() {
   const provider = new providers.Web3Provider(window.ethereum);
