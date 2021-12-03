@@ -115,8 +115,8 @@
 <script>
 const tokenMap1 = {
   "0x998d6e0EFC50A349bCE64cC8d62d17DC2B34cFBF": "DAI",
-  "0xd1C2F175E03aBe8666a5F7054bE2F7B305026c12": "USDC",
-  "0x20d3889d5fd378394452D0f3294dBb6F79822a2C": "USDT",
+  "0x317e9ca06E7b27bb77df8BbA1dcEBB84DDD79CD8": "USDC",
+  "0x742Af74e3f07bD1be9038fF2767ff8BB00424fc8": "USDT",
   "0x6b175474e89094c44da98b954eedeac495271d0f": "DAI",
   "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48": "USDC",
   "0xdac17f958d2ee523a2206206994597c13d831ec7": "USDT",
@@ -185,9 +185,9 @@ export default {
         let { data } = await this.$http.get("/payment/activity/history");
         this.list = data.map((it) => {
           it.createAt = new Date(it.createAt).format();
-          it.pay = parseInt(it.pay / 1e18);
-          it.status = it.status ? "success" : "pending";
           it.token = tokenMap[it.token.toUpperCase()];
+          it.pay = parseInt(it.pay / (it.token == "DAI" ? 1e18 : 1e6));
+          it.status = it.status ? "success" : "pending";
           return it;
         });
       } catch (error) {

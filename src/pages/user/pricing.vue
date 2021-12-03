@@ -482,7 +482,11 @@ export default {
         const name = await erc.name();
         const symbol = await erc.symbol();
         let balance = await erc.balanceOf(this.connectAddr);
-        balance = balance.div(BigNumber.from((1e18).toString())) + "";
+        //
+        balance =
+          balance.div(
+            BigNumber.from((symbol == "DAI" ? 1e18 : 1e6).toString())
+          ) + "";
         list.push({
           index: i,
           name,
