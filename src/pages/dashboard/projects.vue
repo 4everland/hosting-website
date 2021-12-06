@@ -75,7 +75,7 @@
               class="mr-3"
               icon
               v-if="it.production.domain"
-              :to="'/dashboard/statistics?appId=' + it.id"
+              :to="`/statistics/${it.name}/${it.id}`"
             >
               <v-icon :color="$color1">mdi-file-chart-outline</v-icon>
             </v-btn>
