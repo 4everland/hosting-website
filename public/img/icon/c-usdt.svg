@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="100px" height="100px" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 59.1 (86144) - https://sketch.com -->
     <title>USDT</title>
     <desc>Created with Sketch.</desc>
-    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="Pricing" transform="translate(-879.000000, -1241.000000)">
             <g id="USDT" transform="translate(879.000000, 1241.000000)">
                 <path d="M100,49.9999387 C100,77.6150897 77.6150897,100 49.9999387,100 C22.3858917,100 0,77.6150897 0,49.9999387 C0,22.3852783 22.3858917,0 49.9999387,0 C77.6150897,0 100,22.3852783 100,49.9999387" id="Fill-1" fill="#1BA27A"></path>

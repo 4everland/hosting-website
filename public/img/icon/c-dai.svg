@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="100px" height="100px" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 59.1 (86144) - https://sketch.com -->
-    <title>编组</title>
+    <title>group</title>
     <desc>Created with Sketch.</desc>
     <defs>
         <polygon id="path-1" points="0 0 100 0 100 100.000052 0 100.000052"></polygon>
     </defs>
-    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="Pricing" transform="translate(-462.000000, -1241.000000)">
-            <g id="编组" transform="translate(462.000000, 1241.000000)">
+            <g id="group" transform="translate(462.000000, 1241.000000)">
                 <path d="M34.7189525,46.6168278 L34.7189525,52.8476379 L68.687824,52.8476379 C68.8434511,51.8102973 68.9251683,50.7099772 68.9178815,49.541993 C68.9116355,48.5395254 68.8262749,47.5646438 68.6654428,46.6168278 L34.7189525,46.6168278 Z" id="Fill-1" fill="#EFB345"></path>
                 <path d="M34.7189525,68.3117685 L52.3719603,68.3117685 C54.6938752,68.3117685 56.9762328,67.7095592 58.9868935,66.547821 C61.6872061,64.9873859 65.0678019,62.3146593 67.1070897,58.05235 L34.7189525,58.05235 L34.7189525,68.3117685 Z" id="Fill-3" fill="#EFB345"></path>
                 <path d="M61.9949731,35.7182452 C60.6963455,34.6574824 59.3857465,33.8189697 58.242746,33.1808465 C56.4642248,32.1877477 54.4540845,31.6880754 52.4168787,31.6880754 L34.7191087,31.6880754 L34.7191087,41.4119075 L66.8464793,41.4119075 C65.7003559,39.3283779 64.0852691,37.4249385 61.9949731,35.7182452" id="Fill-5" fill="#EFB345"></path>
