@@ -38,6 +38,7 @@
 
 <script>
 let now = new Date();
+const MON_T = 30 * 86400 * 1000;
 
 export default {
   props: {
@@ -102,7 +103,12 @@ export default {
   },
   methods: {
     isAllow(val) {
-      return val.toDate() < now;
+      const date = val.toDate();
+      let isOk = date < now;
+      if (isOk && this.dates.length == 1) {
+        return Math.abs(date - this.dates[0].toDate()) < MON_T;
+      }
+      return isOk;
     },
     onInput(val) {
       if (val == "24h") {
