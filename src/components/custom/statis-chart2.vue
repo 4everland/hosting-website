@@ -99,6 +99,8 @@ export default {
         this.page = 1;
         this.pageLen = 1;
         this.onPage();
+      } else {
+        this.loading = false;
       }
     },
   },
