@@ -24,10 +24,16 @@
           </template>
           <v-list>
             <div v-for="(it, i) in links" :key="i">
-              <div class="gray ml-4 mt-2 mb-1" v-if="it.title">
+              <v-btn
+                text
+                small
+                class="gray mt-2 mb-1"
+                to="/dashboard/settings?tab=0"
+                v-if="it.title"
+              >
                 <v-icon size="16">mdi-github</v-icon>
                 {{ it.title }}
-              </div>
+              </v-btn>
               <v-list-item link :href="it.href" :to="it.to" @click="onMenu(it)">
                 <v-list-item-title>
                   <!-- <v-icon size="16" v-if="it.icon">mdi-{{it.icon}}</v-icon> -->
@@ -81,11 +87,14 @@
               v-for="(sub, j) in it.subs"
               :key="j"
             >
-              <v-list-item-title>
-                <v-icon size="16" class="mr-1" v-if="sub.icon">
+              <v-list-item-title class="d-flex al-c">
+                <v-icon size="20" class="mr-2" v-if="sub.icon">
                   mdi-{{ sub.icon }}
                 </v-icon>
-                <span class="fz-15">{{ sub.label }}</span>
+                <div>
+                  <p class="fz-15">{{ sub.label }}</p>
+                  <p class="gray fz-13 mt-1">{{ sub.desc }}</p>
+                </div>
               </v-list-item-title>
             </v-list-item>
           </v-list>
@@ -120,7 +129,7 @@ export default {
           to: "/pricing",
         },
       ];
-      const { username } = this.userInfo;
+      const { username, email } = this.userInfo;
       // avatar
       if (username) {
         let feedback = {
@@ -147,18 +156,13 @@ export default {
         } else links.push(feedback);
         const subs = [
           {
-            label: "Collections",
+            label: "My Collections",
             title: username,
             to: "/collections",
           },
           {
             label: "Referral",
             to: "/user/refer",
-          },
-          {
-            label: this.$t("common.Settings"),
-            // title: username,
-            to: "/dashboard/settings",
           },
           {
             label: this.$t("common.Logout"),
@@ -168,15 +172,20 @@ export default {
         // if (this.$inDev)
         //   subs.splice(1, 0, );
         if (this.asMobile) links = links.concat(subs);
-        else
-          links.push({
-            // label: username,
+        else {
+          subs.unshift({
+            label: username,
+            desc: email.cutStr(5, 10),
             icon: "github",
+            to: "/dashboard/settings",
+          });
+          links.push({
             img: "img/icon/u-avatar.svg",
             // color: "#4A96FA",
             // outlined: true,
             subs,
           });
+        }
       } else {
         const login = {
           label: "Login",
