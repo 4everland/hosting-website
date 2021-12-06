@@ -250,7 +250,7 @@ export default {
       return this.$vuetify.breakpoint.smAndDown;
     },
     selectedToken() {
-      return this.tokenList[this.tokenIdx];
+      return this.tokenList[this.tokenIdx] || {};
     },
     planUnit() {
       return this.planIdx == 2 ? 199 : 40;
