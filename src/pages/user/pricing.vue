@@ -67,7 +67,13 @@
                 </template>
               </v-select>
             </div>
-            <!-- <div class="gray mt-2 fz-13">Balance: xx</div> -->
+            <div
+              class="mt-3 ml-1 fz-13"
+              :class="selectedToken.balance < planUSD ? 'red-1' : 'gray'"
+              v-if="selectedToken.balance"
+            >
+              Balance: {{ selectedToken.balance }}
+            </div>
           </div>
           <div class="ml-auto">
             <div class="fz-30 fw-b">{{ planUSD }}</div>
@@ -365,8 +371,15 @@ export default {
       this.$router.push("/dashboard/settings?tab=1");
     },
     async onPay() {
-      // if (Date.now) return this.afterPay();
-      // let msg = ''
+      let msg = "";
+      const { balance = 0 } = this.selectedToken || {};
+      if (balance < this.planUSD) {
+        msg = `Insufficient ${this.selectedToken.symbol} Balance`;
+      }
+      if (msg) {
+        return this.$alert(msg);
+      }
+
       try {
         this.paying = true;
         let act = "buy";
