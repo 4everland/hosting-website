@@ -203,6 +203,7 @@ export default {
       netType: (s) => s.netType,
       connectAddr: (s) => s.connectAddr,
       nowDate: (s) => s.nowDate,
+      userInfo: (s) => s.userInfo,
     }),
     durationList() {
       const { endTime = 0, plan } = this.billInfo;
@@ -301,24 +302,16 @@ export default {
       if (this.isBusiness) this.planIdx = 2;
     },
     async getUUID() {
-      const skey = "pay_uuid";
-      let uuid = localStorage[skey];
-      // uuid = "0x8f4e36b495d4456aaf975e06e35af232ab4747b6bc464f0ca5f7896d";
-      if (uuid) {
-        this.uuid = uuid;
+      try {
+        this.$loading();
+        const { data: id } = await this.$http.get("/user/payment/uuid");
+        this.uuid = "0x" + id;
+        this.$loading.close();
         await this.getBillInfo();
         this.checkPlan();
         if (!this.connectAddr) {
           this.showConnect();
         }
-        return;
-      }
-      try {
-        this.$loading();
-        const { data: id } = await this.$http.get("/user/payment/uuid");
-        localStorage[skey] = "0x" + id;
-        this.$loading.close();
-        this.getUUID();
       } catch (error) {
         console.log(error);
         this.$alert(error.message).then(() => {
