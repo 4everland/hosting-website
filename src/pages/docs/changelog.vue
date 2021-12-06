@@ -38,6 +38,36 @@ export default {
     return {
       list: [
         {
+          time: "2021-12-06",
+          img: "img/log/2021-12-06.jpeg",
+          con: `<h3>We offered you pricing plans to subscribe.</h3>
+          <ul>
+          <li>Added pricing plan, you can subscribe it based on your specific needs.</li>
+          <li>Offered four different versions: free, pro, business, and custom.</li>
+          <li>Supported DAI, USDC, and USDT payment methods. </li>
+          </ul>`,
+        },
+        {
+          time: "2021-12-06",
+          img: "img/log/2021-12-06-2.jpeg",
+          con: `<h3>Modified the billing model and bill display page.</h3>
+          <ul>
+          <li>Billing statistics are modified to the three dimensions of bandwidth, storage, and build minutes. Users before the HOSTING beta release will have access to 100M bandwidth and 40G storage until December 31, 2021.</li>
+          <li>Added payment record, you can view payment details.</li>
+          <li>Added status reminder function. </li>
+          </ul>`,
+        },
+        {
+          time: "2021-12-06",
+          img: "img/log/2021-12-06-3.jpeg",
+          con: `<h3>Optimized statistics function.</h3>
+          <ul>
+          <li>Added the function to view new user retention rate by date filter.</li>
+          <li>Added statistics modules of total requests, request by source, and request by county.</li>
+          <li>The source statistics include: References, Browsers, Device types, Operating systems, Paths. </li>
+          </ul>`,
+        },
+        {
           time: "2021-10-25",
           img: "img/log/2021-10-25.jpeg",
           con: `<h3>Published new functions in 4EVERLAND-HOSTING.</h3>
