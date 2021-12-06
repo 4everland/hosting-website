@@ -46,7 +46,7 @@
                   'content-class': 'token-menu_content',
                 }"
               >
-                <template #prepend v-if="selectedToken">
+                <template #prepend v-if="selectedToken.symbol">
                   <img
                     :src="`img/icon/c-${selectedToken.symbol.toLowerCase()}.svg`"
                     style="width: 20px"
@@ -69,10 +69,10 @@
             </div>
             <div
               class="mt-3 ml-1 fz-13"
-              :class="selectedToken.balance < planUSD ? 'red-1' : 'gray'"
-              v-if="selectedToken.balance"
+              :class="balance < planUSD ? 'red-1' : 'gray'"
+              v-if="balance"
             >
-              Balance: {{ selectedToken.balance }}
+              Balance: {{ balance }}
             </div>
           </div>
           <div class="ml-auto">
@@ -251,6 +251,9 @@ export default {
     },
     selectedToken() {
       return this.tokenList[this.tokenIdx] || {};
+    },
+    balance() {
+      return this.selectedToken.balance;
     },
     planUnit() {
       return this.planIdx == 2 ? 199 : 40;
