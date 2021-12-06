@@ -28,11 +28,10 @@
     <div
       @click="showPop = true"
       v-ripple
-      style="background: #ffe9d3; padding: 5px"
       :class="{ 'filter-gray': !isConnect }"
       class="bdrs-3 ml-5 hover-1"
     >
-      <v-img src="img/icon/metamask.png" width="22"></v-img>
+      <v-img src="img/icon/u-wallet.svg" width="22"></v-img>
     </div>
   </div>
 </template>

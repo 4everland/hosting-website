@@ -115,14 +115,13 @@ export default {
           label: this.$t("common.Doc"),
           href: "https://docs.hosting.4everland.org/guide/",
         },
-      ];
-      if (this.$inDev) {
-        links.push({
+        {
           label: "Pricing",
           to: "/pricing",
-        });
-      }
-      const { username, avatar } = this.userInfo;
+        },
+      ];
+      const { username } = this.userInfo;
+      // avatar
       if (username) {
         let feedback = {
           icon: "dots-horizontal",
@@ -173,7 +172,7 @@ export default {
           links.push({
             // label: username,
             icon: "github",
-            img: avatar,
+            img: "img/icon/u-avatar.svg",
             // color: "#4A96FA",
             // outlined: true,
             subs,
