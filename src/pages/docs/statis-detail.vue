@@ -12,7 +12,7 @@
 
 <template>
   <div class="wrap-1">
-    <div class="con-3">
+    <div class="con-1">
       <v-breadcrumbs :items="navItems" class="pl-0 pt-0"></v-breadcrumbs>
 
       <v-card class="pd-20" outlined>

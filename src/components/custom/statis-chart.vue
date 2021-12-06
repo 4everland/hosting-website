@@ -26,7 +26,7 @@ export default {
     appId: String,
     reloadAt: null,
     lazy: Boolean,
-    dates: Array,
+    dates: null,
   },
   computed: {
     asMobile() {
