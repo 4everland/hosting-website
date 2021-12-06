@@ -412,8 +412,10 @@ export default {
     checkNet() {
       if (!this.netType) return false;
       let msg = "";
-      if (this.netType != "goerli") {
-        msg = "Dev: please connect to goerli";
+      if (this.$inDev) {
+        if (this.netType != "goerli") msg = "Dev: please connect to goerli";
+      } else if (this.netType != "main") {
+        msg = "Wrong network, please connect to Ethereum mainnet";
       }
       if (msg) {
         this.$alert(msg);
