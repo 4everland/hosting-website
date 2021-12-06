@@ -442,7 +442,7 @@ export default {
       this.getTokenList();
     },
     async checkApprove() {
-      if (!this.selectedToken || !this.provider) return;
+      if (!this.selectedToken.symbol || !this.provider) return;
       try {
         this.checking = true;
         const signer = this.provider.getSigner();
