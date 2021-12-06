@@ -36,7 +36,7 @@
             <v-progress-circular
               :class="'circular-' + i"
               :rotate="-90"
-              :size="110"
+              :size="136"
               :width="12"
               :value="it.value"
               :color="it.color"
