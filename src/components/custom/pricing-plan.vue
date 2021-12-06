@@ -39,6 +39,7 @@
     }
   }
   .plan-item {
+    transition: box-shadow linear 200ms;
     ul {
       min-height: 270px;
     }
@@ -98,7 +99,7 @@
             @click="onPlan(it, i)"
           >
             <div
-              class="plan-item trans-200 bd-1 bdrs-10"
+              class="plan-item bd-1 bdrs-10"
               :class="{
                 active: i == value,
                 free: getDisabled(i),
