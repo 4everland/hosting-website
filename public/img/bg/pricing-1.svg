@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="387px" height="249px" viewBox="0 0 387 249" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 59.1 (86144) - https://sketch.com -->
     <title>pricing</title>
     <desc>Created with Sketch.</desc>
     <defs>
         <polygon id="path-1" points="0 280 387 280 387 0 0 0"></polygon>
     </defs>
-    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="Pricing" transform="translate(-819.000000, -183.000000)">
             <g id="pricing" transform="translate(819.000000, 152.000000)">
                 <path d="M114.188257,163.764226 C114.18959,161.974519 115.554052,160.524402 117.235851,160.52582 L117.235851,167.005469 C115.553163,167.005942 114.188702,165.554879 114.188257,163.764226 M117.235851,169.287534 L117.235851,172 L129,172 L129,156 L117.235851,156 L117.235851,158.24612 C114.370926,158.217742 112.026452,160.666765 112.000229,163.71551 C111.973562,166.764728 114.27448,169.259629 117.13985,169.287534 C117.17185,169.288007 117.203851,169.288007 117.235851,169.287534" id="Fill-1" fill="#C1D8ED"></path>

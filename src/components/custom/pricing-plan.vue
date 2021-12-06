@@ -52,7 +52,9 @@
       background: #f1f6fb;
     }
     &.active {
-      background: #4a96fa;
+      background: #4a96fa url(/img/icon/pricing-check.svg) right bottom
+        no-repeat;
+      background-size: 30px;
       color: #fff;
       cursor: default;
       a {
