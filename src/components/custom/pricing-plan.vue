@@ -149,7 +149,7 @@
 
         <div class="ta-c">
           <h2>With Crypto Support</h2>
-          <div class="gray lh-1">DAI、USDC、USDT are accepted by 4EVERLAND</div>
+          <div class="gray lh-1">DAI, USDC, USDT are accepted by 4EVERLAND</div>
           <div style="max-width: 500px" class="m-auto">
             <v-row class="mt-6">
               <v-col v-for="(it, i) in coins" :key="i">

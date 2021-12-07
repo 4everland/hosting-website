@@ -145,7 +145,7 @@
             }"
           >
             <div class="fz-13 gray mb-2" v-if="!asMobile">
-              DAI、USDC、USDT are accepted by 4EVERLAND
+              DAI, USDC, USDT are accepted by 4EVERLAND
             </div>
             <div class="d-flex al-c">
               <span>Total:</span>
