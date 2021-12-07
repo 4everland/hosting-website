@@ -46,7 +46,7 @@ http.interceptors.response.use(
                 data.code == 10016 ||
                 /storage has reached the max/.test(msg)
               ) {
-                location.href = "index.html";
+                location.href = "#/dashboard/settings";
               }
             });
           }, 10);

@@ -58,30 +58,10 @@ new Vue({
     },
   },
   methods: {
-    async getActStatus() {
-      try {
-        if (localStorage.actStatus) {
-          this.$setState({
-            actStatus: localStorage.actStatus * 1,
-          });
-        }
-        let { data } = await this.$http.get("/activity/status");
-        if (/localhost/.test(location.origin)) {
-          data = 1;
-        }
-        this.$setState({
-          actStatus: data,
-        });
-        localStorage.actStatus = data;
-      } catch (error) {
-        //
-      }
-    },
     async onInit() {
       const now = Date.now();
       if (this.token) {
         this.initSocket();
-        // this.getActStatus();
         await this.getUesrInfo();
         this.$setState({
           noticeMsg: {
