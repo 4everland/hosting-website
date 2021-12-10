@@ -40,7 +40,7 @@ export default {
         {
           time: "2021-12-10",
           img: "img/log/2021-12-10.gif",
-          con: `<h3>We support the CLI now!</h3>
+          con: `<h3>We support the CLI now !</h3>
           <ul>
           <li>Hosting offers a command-line interface for the 4everland CLI, which enables you to deploy and manage projects with a set of commands. </li>
           <li>Please check the following link to access  <a href="https://docs.hosting.4everland.org/cli/" target="_blank">Docs-Cli</a></li>
