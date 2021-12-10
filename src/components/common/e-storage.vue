@@ -147,7 +147,7 @@ export default {
         let html =
           "In the Beta version, you can get a few free resources for depolyment .";
         html +=
-          '<ul class="mt-4"><li>1. 4G storage for free</li><li>2. Network for free</li></ul>';
+          '<ul class="mt-4"><li>1. 100GB Bandwidth</li><li>2. 4GB Storage</li><li>250 Build Minutes</li></ul>';
         this.$alert(html, "Welcome to 4EVERLAND HOSTING.", {
           type: "success",
         }).then(() => {
@@ -180,6 +180,15 @@ export default {
       }
       return false;
     },
+  },
+  mounted() {
+    let html =
+      "In the Beta version, you can get a few free resources for depolyment .";
+    html +=
+      '<ul class="mt-4"><li>100GB Bandwidth</li><li>4GB Storage</li><li>250 Build Minutes</li></ul>';
+    this.$alert(html, "Welcome to 4EVERLAND HOSTING.", {
+      type: "success",
+    });
   },
 };
 </script>
