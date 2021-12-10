@@ -147,7 +147,7 @@ export default {
         let html =
           "In the ALPHA version, you can get a few free resources for depolyment .If you need more storage space, please contact us for feedback. ";
         html +=
-          '<ul class="mt-4"><li>1. 40G storage for free</li><li>2. Network for free</li></ul>';
+          '<ul class="mt-4"><li>1. 4G storage for free</li><li>2. Network for free</li></ul>';
         html += '<div class="red-1 mt-5 fz-14">Expiry date: 12/31/2021</div>';
         this.$alert(html, "Welcome to 4EVERLAND HOSTING.", {
           type: "success",
