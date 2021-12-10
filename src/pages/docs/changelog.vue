@@ -8,6 +8,7 @@
               <v-img
                 :src="it.img"
                 class="w100p mb-4 bdrs-10 bd-1"
+                contain
                 max-height="360"
                 min-height="300"
                 v-if="it.img"
