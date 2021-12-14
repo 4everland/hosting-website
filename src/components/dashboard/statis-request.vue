@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="isRender">
     <e-date-range class="mb-3" val="24h" @dates="onDates"></e-date-range>
 
     <statis-chart
@@ -32,6 +32,7 @@ export default {
   props: {
     appId: String,
     reloadAt: null,
+    isRender: Boolean,
   },
   data() {
     return {

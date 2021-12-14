@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="isRender">
     <e-date-range class="mb-3" val="24h" @dates="onDates"></e-date-range>
     <v-row class="mb-6" v-if="dates">
       <v-col cols="12" md="6" v-for="(it, i) in chartList" :key="i">
@@ -24,6 +24,7 @@ export default {
   props: {
     appId: String,
     reloadAt: null,
+    isRender: Boolean,
   },
   data() {
     return {

@@ -1,24 +1,30 @@
 <template>
-  <div>
-    <statis-chart
-      :reloadAt="reloadAt"
-      :appId="appId"
-      title="Total Data Transfer"
-      type="DATA_TRANSFER"
-    ></statis-chart>
+  <div v-if="isRender">
+    <e-date-range class="mb-3" val="24h" @dates="onDates"></e-date-range>
 
-    <!-- <div class="mt-10">
-      <v-row>
-        <v-col cols="12" md="6" v-for="(it, i) in reqList" :key="i">
-          <statis-chart2
-            :appId="appId"
-            :title="it.title"
-            :type="it.type"
-            :reloadAt="reloadAt"
-          ></statis-chart2>
-        </v-col>
-      </v-row>
-    </div> -->
+    <template v-if="dates">
+      <statis-chart
+        :dates="dates"
+        :reloadAt="reloadAt"
+        :appId="appId"
+        title="Total Data Transfer"
+        type="DATA_TRANSFER"
+      ></statis-chart>
+
+      <div class="mt-10">
+        <v-row>
+          <v-col cols="12" md="6" v-for="(it, i) in reqList" :key="i">
+            <statis-chart2
+              api="/request/flux/list"
+              :appId="appId"
+              :title="it.title"
+              :type="it.type"
+              :reloadAt="reloadAt"
+            ></statis-chart2>
+          </v-col>
+        </v-row>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -27,9 +33,11 @@ export default {
   props: {
     appId: String,
     reloadAt: null,
+    isRender: Boolean,
   },
   data() {
     return {
+      dates: null,
       reqList: [
         {
           title: "Referers",
@@ -51,6 +59,10 @@ export default {
           title: "Path",
           type: "Path",
         },
+        {
+          title: "IP From",
+          type: "IP",
+        },
       ],
     };
   },
@@ -63,6 +75,9 @@ export default {
     this.getData();
   },
   methods: {
+    onDates(val) {
+      this.dates = val;
+    },
     async getData() {
       try {
         //

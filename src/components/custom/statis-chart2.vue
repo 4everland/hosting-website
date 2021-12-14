@@ -14,7 +14,7 @@
               :key="i"
             >
               <span class="line-1 gray-6 mr-3">{{ it.name }}</span>
-              <b class="ml-auto">{{ it.value }}</b>
+              <b class="ml-auto">{{ it.text }}</b>
             </li>
           </ul>
           <v-btn
@@ -43,7 +43,7 @@
         <ul class="mt-3">
           <li class="fz-14 d-flex al-c mb-2" v-for="(it, i) in list" :key="i">
             <span class="line-1 gray-6 mr-3">{{ it.name }}</span>
-            <b class="ml-auto">{{ it.value }}</b>
+            <b class="ml-auto">{{ it.text }}</b>
           </li>
         </ul>
         <div class="pa-3 ta-c" v-if="loading && showAll">
@@ -74,6 +74,10 @@ import * as echarts from "echarts";
 export default {
   props: {
     title: String,
+    api: {
+      type: String,
+      default: "/request/source/list",
+    },
     type: String,
     appId: String,
     reloadAt: null,
@@ -113,6 +117,12 @@ export default {
     onPage() {
       this.getList(this.page, 10);
     },
+    getSize(num) {
+      const mb = Math.pow(1024, 2);
+      if (num > mb) return (num / mb).toFixed(2) + "MB";
+      if (num > 1024) return (num / 1024).toFixed(2) + "KB";
+      return num + "B";
+    },
     async getList(page = 1, size = 5) {
       const params = {
         projectId: this.appId,
@@ -122,14 +132,16 @@ export default {
       };
       try {
         this.loading = true;
-        const { data } = await this.$http.get("/request/source/list", {
+        const { data } = await this.$http.get(this.api, {
           params,
         });
         this.list = data.content.map((it) => {
-          return {
+          const obj = {
             name: it.sourceName.replace("https://", ""),
-            value: it.sourceNum,
+            value: it.sourceNum || it.sourceSize,
           };
+          obj.text = it.sourceSize ? this.getSize(it.sourceSize) : obj.value;
+          return obj;
         });
         if (size == 5) {
           this.hasMore = data.totalPages > 1;

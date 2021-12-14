@@ -66,7 +66,8 @@
               :active="i == tabIdx"
               :reloadAt="reloadAt"
               v-show="i == tabIdx"
-              v-for="(it, i) in activeTabList"
+              :is-render="activeIdxList.includes(i)"
+              v-for="(it, i) in tabList"
               :key="i"
             ></component>
           </div>
@@ -96,10 +97,10 @@ export default {
           label: "Request",
           comp: "statis-request",
         },
-        // {
-        //   label: "Data Transfer",
-        //   comp: "statis-data",
-        // },
+        {
+          label: "Data Transfer",
+          comp: "statis-data",
+        },
       ],
       tabIdx: 0,
       activeIdxList: [0],
@@ -150,11 +151,6 @@ export default {
           tip: `Page views or clicks are counted once per user visit.`,
         },
       ];
-    },
-    activeTabList() {
-      return this.tabList.filter((_, i) => {
-        return this.activeIdxList.includes(i);
-      });
     },
     navItems() {
       const { id, projName } = this.$route.params;
