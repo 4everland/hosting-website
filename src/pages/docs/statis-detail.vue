@@ -88,7 +88,16 @@ export default {
       info: null,
       loading: false,
       reloadAt: 0,
-      tabList: [
+      tabIdx: 0,
+      activeIdxList: [0],
+    };
+  },
+  computed: {
+    asMobile() {
+      return this.$vuetify.breakpoint.smAndDown;
+    },
+    tabList() {
+      const list = [
         {
           label: "User Analysis",
           comp: "statis-analysis",
@@ -97,18 +106,14 @@ export default {
           label: "Request",
           comp: "statis-request",
         },
-        {
+      ];
+      if (this.$inDev) {
+        list.push({
           label: "Data Transfer",
           comp: "statis-data",
-        },
-      ],
-      tabIdx: 0,
-      activeIdxList: [0],
-    };
-  },
-  computed: {
-    asMobile() {
-      return this.$vuetify.breakpoint.smAndDown;
+        });
+      }
+      return list;
     },
     summaryList() {
       if (!this.info) return [];
