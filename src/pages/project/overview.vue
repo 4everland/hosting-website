@@ -177,7 +177,7 @@ export default {
       return "//" + row.domain;
     },
     state() {
-      const { state = "Wait" } = this.info.latest || {};
+      const { state = "Init" } = this.info.latest || {};
       return state.toLowerCase();
     },
   },
