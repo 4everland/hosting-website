@@ -2,13 +2,14 @@ import Vue from "vue";
 import "./css/style.scss";
 import "./components";
 import "./api";
+
+Vue.prototype.$inDev = /xyz/.test(process.env.VUE_APP_BASE_URL);
+
 import VueClipboards from "vue-clipboards";
 import frameworks from "./assets/frameworks.json";
 import router from "./router";
 
 Vue.use(VueClipboards);
-
-Vue.prototype.$inDev = /xyz/.test(process.env.VUE_APP_BASE_URL);
 
 Vue.prototype.$sleep = (msec = 300) => {
   return new Promise((resolve) => {
