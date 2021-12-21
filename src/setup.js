@@ -77,3 +77,8 @@ Vue.prototype.$utils = {
     return str.substr(0, len);
   },
 };
+
+const offset = new Date().getTimezoneOffset() * 60e3;
+Vue.prototype.$getUTC0 = (date) => {
+  return parseInt((date - offset) / 1e3);
+};

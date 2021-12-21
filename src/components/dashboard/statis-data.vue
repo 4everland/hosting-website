@@ -16,6 +16,8 @@
           <v-col cols="12" md="6" v-for="(it, i) in reqList" :key="i">
             <statis-chart2
               api="/request/flux/list"
+              :show-date="it.date"
+              :lazy="it.date"
               :appId="appId"
               :title="it.title"
               :type="it.type"
@@ -42,6 +44,7 @@ export default {
         {
           title: "Referers",
           type: "Referer",
+          date: true,
         },
         {
           title: "Browsers",
@@ -58,6 +61,7 @@ export default {
         {
           title: "Path",
           type: "Path",
+          date: true,
         },
         {
           title: "IP From",

@@ -1,13 +1,16 @@
 <template>
   <div class="pos-r">
     <div class="pos-a top-0 z-1 w100p d-flex al-c">
-      <v-chip color="primary" small>{{ title }}</v-chip>
+      <v-chip color="primary" small class="ml-5">{{ title }}</v-chip>
+      <div style="max-width: 350px" class="ml-auto mr-3">
+        <e-date-pick v-model="date" v-if="showDate"></e-date-pick>
+      </div>
     </div>
     <div class="pos-r">
       <div class="d-flex pt-6">
         <div ref="chart" style="height: 260px" class="flex-1 pa-2"></div>
         <div style="width: 40%">
-          <ul class="mt-3">
+          <ul class="mt-12">
             <li
               class="fz-14 d-flex al-c mb-2"
               v-for="(it, i) in items"
@@ -82,6 +85,7 @@ export default {
     appId: String,
     reloadAt: null,
     lazy: Boolean,
+    showDate: Boolean,
   },
   data() {
     return {
@@ -92,6 +96,7 @@ export default {
       pageLen: 1,
       hasMore: false,
       showAll: false,
+      date: null,
     };
   },
   watch: {
@@ -106,6 +111,9 @@ export default {
       } else {
         this.loading = false;
       }
+    },
+    date() {
+      this.getData();
     },
   },
   mounted() {
@@ -130,6 +138,9 @@ export default {
         page: page - 1,
         size,
       };
+      if (this.date) {
+        params.createAt = this.date;
+      }
       try {
         this.loading = true;
         const { data } = await this.$http.get(this.api, {
