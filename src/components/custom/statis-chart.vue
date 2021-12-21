@@ -2,6 +2,9 @@
   <div class="pos-r">
     <div class="pos-a top-0 z-1 w100p d-flex al-c">
       <h4>{{ title }}</h4>
+      <div style="max-width: 350px" class="ml-auto">
+        <e-date-pick v-model="date" v-if="showDate"></e-date-pick>
+      </div>
     </div>
     <div class="pos-r">
       <div ref="chart" style="height: 200px"></div>
@@ -27,6 +30,7 @@ export default {
     reloadAt: null,
     lazy: Boolean,
     dates: null,
+    showDate: Boolean,
   },
   computed: {
     asMobile() {
@@ -55,6 +59,7 @@ export default {
           value: "HOUR_24",
         },
       ],
+      date: null,
     };
   },
   watch: {
@@ -90,6 +95,9 @@ export default {
           params.startTime = this.dates[0];
           params.endTime = this.dates[1];
           params.timeLimit = "CUSTOM_TIME";
+        }
+        if (this.date) {
+          params.createAt = this.date;
         }
         const {
           data: { data },

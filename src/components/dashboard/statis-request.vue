@@ -17,6 +17,8 @@
         <v-col cols="12" md="6" v-for="(it, i) in reqList" :key="i">
           <statis-chart2
             :appId="appId"
+            :show-date="it.date"
+            :lazy="it.date"
             :title="it.title"
             :type="it.type"
             :reloadAt="reloadAt"
@@ -41,6 +43,7 @@ export default {
         {
           title: "Referers",
           type: "Referer",
+          date: true,
         },
         {
           title: "Browsers",
@@ -57,6 +60,7 @@ export default {
         {
           title: "Path",
           type: "Path",
+          date: true,
         },
         {
           title: "IP From",

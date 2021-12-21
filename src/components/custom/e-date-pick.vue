@@ -8,6 +8,7 @@
   >
     <template v-slot:activator="{ on, attrs }">
       <v-text-field
+        class="hide-msg"
         :value="date"
         readonly
         prepend-icon="mdi-calendar"

@@ -2,7 +2,7 @@
   <div class="pos-r">
     <div class="pos-a top-0 z-1 w100p d-flex al-c">
       <v-chip color="primary" small class="ml-5">{{ title }}</v-chip>
-      <div style="max-width: 350px" class="ml-auto mr-3">
+      <div style="max-width: 350px" class="ml-auto">
         <e-date-pick v-model="date" v-if="showDate"></e-date-pick>
       </div>
     </div>
