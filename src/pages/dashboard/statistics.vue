@@ -4,7 +4,7 @@
     <e-card-head-1 title="Statistics">
       <div>Statistics for your projects</div>
     </e-card-head-1>
-    <div class="pd-20">
+    <div class="pa-6">
       <v-data-table
         class="elevation-1"
         :loading="loading"

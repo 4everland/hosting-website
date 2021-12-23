@@ -6,7 +6,7 @@
           {{ $t(`${locales}Subhead`) }}
         </div>
       </e-card-head-1>
-      <div class="pd-20">
+      <div class="pa-6">
         <div class="mb-5 ta-r">
           <v-btn small color="primary" @click="showPop = true">
             {{ $t(`${locales}Add`) }}
@@ -24,15 +24,14 @@
           </v-btn>
         </div>
         <v-data-table
-          class="-elevation-1"
+          class="elevation-1"
           v-model="selected"
           :loading="loading"
           :show-select="list.length > 0"
           item-key="domainId"
           :headers="headers"
           :items="list"
-          :page.sync="page"
-          :items-per-page.sync="pageSize"
+          hide-default-footer
         >
           <template v-slot:item.domain="{ item }">
             <v-chip
@@ -46,6 +45,17 @@
             </v-chip>
           </template>
         </v-data-table>
+
+        <div class="mt-6" v-if="pageLen > 1">
+          <v-pagination
+            @input="onPage"
+            v-model="page"
+            :length="pageLen"
+            prev-icon="mdi-menu-left"
+            next-icon="mdi-menu-right"
+            :total-visible="7"
+          ></v-pagination>
+        </div>
       </div>
     </v-card>
 
@@ -158,7 +168,7 @@ export default {
       ],
       list: [],
       page: 1,
-      pageSize: 10,
+      pageLen: 1,
       total: 0,
       selected: [],
       loading: false,
@@ -189,9 +199,6 @@ export default {
     },
     selected(val) {
       console.log(val);
-    },
-    pageSize() {
-      this.getList();
     },
   },
   mounted() {
@@ -260,19 +267,27 @@ export default {
       }
       this.adding = false;
     },
+    onPage() {
+      this.getList();
+    },
     async getList() {
       try {
         this.loading = true;
+        const params = {
+          page: this.page - 1,
+          size: 10,
+        };
         const { data } = await this.$http.get("/domain/list", {
-          params: {
-            page: this.page - 1,
-            size: this.pageSize == -1 ? 20 : this.pageSize,
-          },
+          params,
         });
         this.list = data.content.map((it) => {
           it.createTime = new Date(it.createAt * 1e3).format();
           return it;
         });
+        this.pageLen = Math.max(
+          1,
+          Math.ceil(data.numberOfElements / params.size)
+        );
       } catch (error) {
         console.log(error);
       }
