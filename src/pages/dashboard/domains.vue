@@ -34,15 +34,15 @@
           hide-default-footer
         >
           <template v-slot:item.domain="{ item }">
-            <v-chip
+            <v-btn
+              text
               :color="item.valid ? 'success' : 'error'"
-              small
               :to="`/project/${item.projectName || 'project'}/${
                 item.projectId
               }/settings?tab=1`"
             >
               {{ item.domain }}
-            </v-chip>
+            </v-btn>
           </template>
         </v-data-table>
 

@@ -13,13 +13,13 @@
         hide-default-footer
       >
         <template v-slot:item.projectName="{ item }">
-          <v-chip
+          <v-btn
+            text
             color="primary"
-            small
             :to="`/statistics/${item.projectName}/${item.projectId}`"
           >
             {{ item.projectName }}
-          </v-chip>
+          </v-btn>
         </template>
       </v-data-table>
 
@@ -69,7 +69,7 @@ export default {
         this.loading = true;
         const params = {
           page: this.page - 1,
-          size: 5,
+          size: 10,
         };
         let { data } = await this.$http.get(
           "/analytics/user/project/page/list",
