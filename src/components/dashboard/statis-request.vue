@@ -37,13 +37,14 @@ export default {
     isRender: Boolean,
   },
   data() {
+    const showDate = this.$inDev;
     return {
       dates: null,
       reqList: [
         {
           title: "Referers",
           type: "Referer",
-          date: true,
+          date: showDate,
         },
         {
           title: "Browsers",
@@ -60,7 +61,7 @@ export default {
         {
           title: "Path",
           type: "Path",
-          date: true,
+          date: showDate,
         },
         {
           title: "IP From",
