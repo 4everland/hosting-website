@@ -446,6 +446,7 @@ export default {
         const from = this.uuid;
         this.upgradingExp = 0;
         this.canRenew = false;
+        console.log(from, level);
         this.canBuy = await payment.canBuy(from, level);
         this.canUpgrade = await payment.canUpgrade(from, level);
         // const receipt = await payment.receipts(from);
