@@ -414,7 +414,7 @@ export default {
         const { data: id } = await this.$http.get("/user/payment/uuid");
         this.uuid = "0x" + id;
         const { data } = await this.$http.get("/payment/custom-combo/info");
-        console.log(data);
+        // console.log(data);
         if (data && data.comboId) {
           this.customPlan = data;
         }
