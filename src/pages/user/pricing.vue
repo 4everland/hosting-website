@@ -29,7 +29,7 @@
     <pricing-plan
       ref="plan"
       :planList="planList"
-      :curComboId="curComboId"
+      :curComboIdx="curComboIdx"
       :customPlan="customPlan"
       v-model="planIdx"
     />
@@ -362,7 +362,7 @@ export default {
     expireVal() {
       return this.duration * 86400 * 30;
     },
-    curComboId() {
+    curComboIdx() {
       const { plan } = this.billInfo;
       if (plan == "Business") return 2;
       if (plan == "Custom") return 3;
@@ -391,6 +391,9 @@ export default {
       this.$loading.close();
       this.checkPlan();
     },
+    curComboIdx(val) {
+      this.planIdx = val;
+    },
   },
   mounted() {
     this.getUUID();
@@ -406,7 +409,6 @@ export default {
     async getBillInfo() {
       const { data } = await this.$http.get("/consumption/info");
       this.billInfo = data;
-      if (this.curComboId) this.planIdx = this.curComboId;
     },
     async getUUID() {
       try {

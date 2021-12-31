@@ -102,8 +102,8 @@
               class="plan-item bd-1 bdrs-10"
               :class="{
                 active: i == value,
-                free: i == 0,
-                clickable: !getDisabled(it),
+                free: i < curComboIdx,
+                clickable: !getDisabled(it, i),
               }"
             >
               <div class="pa-3">
@@ -203,7 +203,7 @@
 export default {
   props: {
     value: Number,
-    curComboId: null,
+    curComboIdx: null,
     customPlan: Object,
     planList: Array,
   },
@@ -264,11 +264,11 @@ export default {
     };
   },
   methods: {
-    getDisabled(it) {
-      return !!it.id;
+    getDisabled(it, i) {
+      return i < this.curComboIdx || !it.id;
     },
     onPlan(it, i) {
-      if (it.id) {
+      if (!this.getDisabled(it, i)) {
         this.$emit("input", i);
       }
     },
