@@ -26,7 +26,13 @@
 
 <template>
   <div class="pricing" :class="{ m: asMobile }">
-    <pricing-plan :isBusiness="isBusiness" v-model="planIdx" />
+    <pricing-plan
+      ref="plan"
+      :planList="planList"
+      :curComboId="curComboId"
+      :customPlan="customPlan"
+      v-model="planIdx"
+    />
 
     <v-dialog v-model="popPay" max-width="420">
       <div class="pd-20 pricing lh-1">
@@ -173,6 +179,60 @@ import { mapState } from "vuex";
 import { paymentAddress, getClient } from "../../plugins/pay";
 import { uint256Max } from "../../plugins/pay/utils";
 const MON_SEC = 86400 * 30;
+const list = [
+  {
+    title: "Free",
+    price: "0 USD/mo",
+    desc: "For both non-commercial and personal projects",
+    band: "100 GB",
+    stor: "4 GB",
+    build: "250 included/month",
+    global: true,
+    ddos: false,
+    ssl: true,
+    ipfs: true,
+    statis: true,
+    community: true,
+    email: false,
+    premium: false,
+  },
+  {
+    id: 1,
+    title: "Pro",
+    price: "40 USD/mo",
+    unitPrice: 40,
+    desc: "For 4everland hosting  projects that are growing",
+    band: "300 GB",
+    stor: "40 GB",
+    build: "500 included/month",
+    global: true,
+    ddos: true,
+    ssl: true,
+    ipfs: true,
+    statis: true,
+    community: true,
+    email: true,
+    premium: false,
+  },
+  {
+    id: 2,
+    title: "Business",
+    price: "199 USD/mo",
+    unitPrice: 199,
+    desc: "For large teams dependent on 4everland hosting",
+    band: "1 TB",
+    stor: "100 GB",
+    build: "2000 included/month",
+    global: true,
+    ddos: true,
+    ssl: true,
+    ipfs: true,
+    statis: true,
+    community: true,
+    email: true,
+    premium: false,
+  },
+];
 
 export default {
   data() {
@@ -196,6 +256,7 @@ export default {
       canRenew: false,
       loadingPrice: false,
       upgradingExp: 0,
+      customPlan: null,
     };
   },
   computed: {
@@ -205,6 +266,43 @@ export default {
       nowDate: (s) => s.nowDate,
       userInfo: (s) => s.userInfo,
     }),
+    planList() {
+      const obj = {
+        title: "Custom",
+        isCustom: true,
+        price: "Custom Pricing",
+        desc: "All the Performance plan features plus",
+        band: "Custom",
+        stor: "Custom",
+        build: "Custom",
+        global: true,
+        ddos: true,
+        ssl: true,
+        ipfs: true,
+        statis: true,
+        community: true,
+        email: true,
+        premium: true,
+      };
+      if (this.customPlan) {
+        let { bandwidth, buildTime, storage, unitPrice, comboId } =
+          this.customPlan;
+        const GB = Math.pow(1024, 3);
+        if (unitPrice > 1e18) {
+          unitPrice /= 1e18;
+        }
+        Object.assign(obj, {
+          band: parseInt(bandwidth / GB) + " GB",
+          stor: parseInt(storage / GB) + " GB",
+          build: buildTime + " included/month",
+          unitPrice,
+          price: unitPrice + " USD/mo",
+          id: comboId,
+          isCustom: false,
+        });
+      }
+      return [...list, obj];
+    },
     durationList() {
       const { endTime = 0, plan } = this.billInfo;
       const restTime = endTime - Date.now();
@@ -256,7 +354,7 @@ export default {
       return this.selectedToken.balance;
     },
     planUnit() {
-      return this.planIdx == 2 ? 199 : 40;
+      return this.curPlan.unitPrice || 0;
     },
     planUSD() {
       return this.planUnit * this.duration;
@@ -264,8 +362,14 @@ export default {
     expireVal() {
       return this.duration * 86400 * 30;
     },
-    isBusiness() {
-      return this.billInfo.plan == "Business";
+    curComboId() {
+      const { plan } = this.billInfo;
+      if (plan == "Business") return 2;
+      if (plan == "Custom") return 3;
+      return 1;
+    },
+    curPlan() {
+      return this.planList[this.planIdx];
     },
   },
   watch: {
@@ -302,13 +406,18 @@ export default {
     async getBillInfo() {
       const { data } = await this.$http.get("/consumption/info");
       this.billInfo = data;
-      if (this.isBusiness) this.planIdx = 2;
+      if (this.curComboId) this.planIdx = this.curComboId;
     },
     async getUUID() {
       try {
         this.$loading();
         const { data: id } = await this.$http.get("/user/payment/uuid");
         this.uuid = "0x" + id;
+        const { data } = await this.$http.get("/payment/custom-combo/info");
+        console.log(data);
+        if (data && data.comboId) {
+          this.customPlan = data;
+        }
         this.$loading.close();
         await this.getBillInfo();
         this.checkPlan();
@@ -331,7 +440,7 @@ export default {
       console.log("check plan");
       try {
         this.loadingPrice = true;
-        const level = this.planIdx - 1;
+        const level = this.curPlan.id;
         const from = this.uuid;
         this.upgradingExp = 0;
         this.canRenew = false;
@@ -381,7 +490,7 @@ export default {
         let act = "buy";
         if (this.canUpgrade) act = "upgrade";
         else if (this.canRenew) act = "renew";
-        let level = this.planIdx - 1;
+        let level = this.curPlan.id;
         const signer = this.provider.getSigner();
         let params = [
           this.uuid,

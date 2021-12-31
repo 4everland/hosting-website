@@ -41,7 +41,7 @@
   .plan-item {
     transition: box-shadow linear 200ms;
     ul {
-      min-height: 270px;
+      min-height: 300px;
     }
     &.clickable {
       cursor: pointer;
@@ -102,15 +102,15 @@
               class="plan-item bd-1 bdrs-10"
               :class="{
                 active: i == value,
-                free: getDisabled(i),
-                clickable: !getDisabled(i) && i < planList.length - 1,
+                free: i == 0,
+                clickable: !getDisabled(it),
               }"
             >
               <div class="pa-3">
                 <div class="d-flex al-c">
                   <b class="fz-18 mr-auto">{{ it.title }}</b>
                   <e-pricing-cell
-                    v-if="i > 0 && !it.isCustom"
+                    v-if="it.id"
                     class="fz-12"
                     :value="it.price"
                   ></e-pricing-cell>
@@ -203,7 +203,9 @@
 export default {
   props: {
     value: Number,
-    isBusiness: Boolean,
+    curComboId: null,
+    customPlan: Object,
+    planList: Array,
   },
   computed: {
     asMobile() {
@@ -259,81 +261,14 @@ export default {
           value: "premium",
         },
       ],
-      planList: [
-        {
-          title: "Free",
-          price: "0 USD/mo",
-          desc: "For both non-commercial and personal projects",
-          band: "100 GB",
-          stor: "4 GB",
-          build: "250 included/month",
-          global: true,
-          ddos: false,
-          ssl: true,
-          ipfs: true,
-          statis: true,
-          community: true,
-          email: false,
-          premium: false,
-        },
-        {
-          title: "Pro",
-          price: "40 USD/mo",
-          desc: "For 4everland hosting  projects that are growing",
-          band: "300 GB",
-          stor: "40 GB",
-          build: "500 included/month",
-          global: true,
-          ddos: true,
-          ssl: true,
-          ipfs: true,
-          statis: true,
-          community: true,
-          email: true,
-          premium: false,
-        },
-        {
-          title: "Business",
-          price: "199 USD/mo",
-          desc: "For large teams dependent on 4everland hosting",
-          band: "1 TB",
-          stor: "100 GB",
-          build: "2000 included/month",
-          global: true,
-          ddos: true,
-          ssl: true,
-          ipfs: true,
-          statis: true,
-          community: true,
-          email: true,
-          premium: false,
-        },
-        {
-          title: "Custom",
-          isCustom: true,
-          price: "Custom Pricing",
-          desc: "All the Performance plan features plus",
-          band: "Custom",
-          stor: "Custom",
-          build: "Custom",
-          global: true,
-          ddos: true,
-          ssl: true,
-          ipfs: true,
-          statis: true,
-          community: true,
-          email: true,
-          premium: true,
-        },
-      ],
     };
   },
   methods: {
-    getDisabled(i) {
-      return i == 0 || (i == 1 && this.isBusiness);
+    getDisabled(it) {
+      return !!it.id;
     },
     onPlan(it, i) {
-      if (!this.getDisabled(i) && !it.isCustom) {
+      if (it.id) {
         this.$emit("input", i);
       }
     },
@@ -344,8 +279,7 @@ export default {
         let { text } = row;
         const val = obj[row.value];
         if (val === false) continue;
-        if (obj.title == "Custom" && val === true && row.value != "premium")
-          continue;
+        if (obj.isCustom && val === true && row.value != "premium") continue;
         if (["statis", "community"].includes(row.value)) continue;
         if (typeof val == "string") {
           text =
