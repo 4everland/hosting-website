@@ -197,7 +197,7 @@ const list = [
     premium: false,
   },
   {
-    id: 1,
+    id: 0,
     title: "Pro",
     price: "40 USD/mo",
     unitPrice: 40,
@@ -215,7 +215,7 @@ const list = [
     premium: false,
   },
   {
-    id: 2,
+    id: 1,
     title: "Business",
     price: "199 USD/mo",
     unitPrice: 199,
