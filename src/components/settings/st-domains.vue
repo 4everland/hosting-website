@@ -269,7 +269,7 @@ export default {
     },
     async onRefresh(it) {
       try {
-        this.$set(it, "refreshing", true);
+        this.$set(it, "refreshing1", true);
         const { data } = await this.$http.get("/domain/verify/" + it.domainId, {
           noTip: true,
         });
