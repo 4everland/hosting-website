@@ -294,7 +294,7 @@ export default {
         Object.assign(obj, {
           band: parseInt(bandwidth / GB) + " GB",
           stor: parseInt(storage / GB) + " GB",
-          build: buildTime + " included/month",
+          build: parseInt(buildTime / 60) + " included/month",
           unitPrice,
           price: unitPrice + " USD/mo",
           id: comboId,
