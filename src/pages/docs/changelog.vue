@@ -39,6 +39,15 @@ export default {
     return {
       list: [
         {
+          time: "2022-01-07",
+          img: "img/log/2022-1-7.png",
+          con: `<h3>Improved some details of 4EVERLAND HOSTING</h3>
+          <ul>
+          <li>Optimized the custom pricing plan and its payment process </li>
+          <li>Fixed some known issues</li>
+          </ul>`,
+        },
+        {
           time: "2021-12-10",
           img: "img/log/2021-12-10.gif",
           con: `<h3>We support the CLI now !</h3>
