@@ -84,6 +84,10 @@ export default {
           // this.checkNet();
           location.reload();
         });
+        window.ethereum.on("accountsChanged", (accounts) => {
+          console.log("accountsChanged", accounts);
+          location.reload();
+        });
         this.checkNet();
       }
       this.$setState({

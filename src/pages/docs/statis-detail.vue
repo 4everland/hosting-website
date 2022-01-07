@@ -106,13 +106,11 @@ export default {
           label: "Request",
           comp: "statis-request",
         },
-      ];
-      if (this.$inDev) {
-        list.push({
+        {
           label: "Data Transfer",
           comp: "statis-data",
-        });
-      }
+        },
+      ];
       return list;
     },
     summaryList() {
