@@ -38,6 +38,9 @@
 </template>
 
 <script>
+const contentHash = require("content-hash");
+window.contentHash = contentHash;
+
 export default {
   data() {
     return {
