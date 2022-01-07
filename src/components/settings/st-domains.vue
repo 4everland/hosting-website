@@ -10,126 +10,134 @@
 
 <template>
   <div class="st-domains">
-    <h3>Domains</h3>
-    <div class="gray mt-1 fz-14">
-      These domains are assigned to your Production Deployments.
-      <!-- Optionally, a different Git branch or a redirection to another domain can be configured
+    <div class="bd-1 pd-20">
+      <h3>Domains</h3>
+      <div class="gray mt-1 fz-14">
+        These domains are assigned to your Production Deployments.
+        <!-- Optionally, a different Git branch or a redirection to another domain can be configured
       for each one. -->
-    </div>
-    <div class="mt-5 d-flex">
-      <v-text-field
-        outlined
-        dense
-        v-model.trim="domain"
-        @keyup.enter="onAdd"
-        placeholder="mywebsite.com"
-      >
-      </v-text-field>
-      <v-btn
-        @click="onAdd"
-        :disabled="!domain"
-        :loading="adding"
-        color="primary"
-        class="ml-4"
-        style="margin-top: 2px"
-      >
-        Add
-      </v-btn>
-    </div>
-    <div v-if="!list">
-      <v-skeleton-loader type="article" />
-    </div>
-    <template v-else>
-      <div class="bd-1 mb-6 mt-3" v-for="(it, i) in list" :key="i">
-        <div class="pd-20 d-flex al-c flex-wrap">
-          <div class="mr-auto">
-            <h3 class="mr-auto">{{ it.domain }}</h3>
-            <div class="d-flex al-c mt-2">
-              <v-icon :color="it.valid ? 'success' : 'error'" size="18">
-                mdi-{{ it.valid ? "check-circle" : "information" }}
-              </v-icon>
-              <span
-                class="ml-1 fz-13"
-                :class="it.valid ? 'color-suc' : 'red-1'"
+      </div>
+      <div class="mt-5 d-flex">
+        <v-text-field
+          outlined
+          dense
+          v-model.trim="domain"
+          @keyup.enter="onAdd"
+          placeholder="mywebsite.com"
+        >
+        </v-text-field>
+        <v-btn
+          @click="onAdd"
+          :disabled="!domain"
+          :loading="adding"
+          color="primary"
+          class="ml-4"
+          style="margin-top: 2px"
+        >
+          Add
+        </v-btn>
+      </div>
+      <div v-if="!list">
+        <v-skeleton-loader type="article" />
+      </div>
+      <template v-else>
+        <div class="bd-1 mb-6 mt-3" v-for="(it, i) in list" :key="i">
+          <div class="pd-20 d-flex al-c flex-wrap">
+            <div class="mr-auto">
+              <h3 class="mr-auto">{{ it.domain }}</h3>
+              <div class="d-flex al-c mt-2">
+                <v-icon :color="it.valid ? 'success' : 'error'" size="18">
+                  mdi-{{ it.valid ? "check-circle" : "information" }}
+                </v-icon>
+                <span
+                  class="ml-1 fz-13"
+                  :class="it.valid ? 'color-suc' : 'red-1'"
+                >
+                  {{
+                    it.valid ? "Valid Configuration" : "Invalid Configuration"
+                  }}
+                </span>
+              </div>
+            </div>
+            <div class="mt-2">
+              <v-btn
+                v-if="!it.valid"
+                small
+                class="mr-4"
+                @click="onRefresh(it)"
+                :loading="it.refreshing"
               >
-                {{ it.valid ? "Valid Configuration" : "Invalid Configuration" }}
-              </span>
+                <v-icon>mdi-refresh</v-icon>
+              </v-btn>
+              <v-btn
+                small
+                color="error"
+                @click="onRemove(it)"
+                :loading="it.removing"
+              >
+                Remove
+              </v-btn>
             </div>
           </div>
-          <div class="mt-2">
-            <v-btn
-              v-if="!it.valid"
-              small
-              class="mr-4"
-              @click="onRefresh(it)"
-              :loading="it.refreshing"
-            >
-              <v-icon>mdi-refresh</v-icon>
-            </v-btn>
-            <v-btn
-              small
-              color="error"
-              @click="onRemove(it)"
-              :loading="it.removing"
-            >
-              Remove
-            </v-btn>
-          </div>
-        </div>
-        <div class="pd-20 bdt-1" v-if="!it.valid">
-          <!-- <div class="fz-14">
+          <div class="pd-20 bdt-1" v-if="!it.valid">
+            <!-- <div class="fz-14">
             <b>Nameservers</b>
           </div> -->
-          <template v-if="it.conflicts.length">
-            <p class="gray mt-1 fz-14">
-              Please remove the following conflicting DNS records from your DNS
-              provider:
+            <template v-if="it.conflicts.length">
+              <p class="gray mt-1 fz-14">
+                Please remove the following conflicting DNS records from your
+                DNS provider:
+              </p>
+              <div class="bg-f4 pd-10 fz-14 mt-3 mb-5">
+                <table class="w100p">
+                  <tr class="gray">
+                    <td>Type</td>
+                    <td>Name</td>
+                    <td>Value</td>
+                  </tr>
+                  <tr v-for="(row, j) in it.conflicts" :key="j">
+                    <td>{{ row.type }}</td>
+                    <td>@</td>
+                    <td class="wb-all">{{ row.value }}</td>
+                  </tr>
+                </table>
+              </div>
+            </template>
+            <p class="gray mt-3 fz-14">
+              <span v-if="it.conflicts.length">Afterwards,</span>
+              Set the following record on your DNS provider to continue:
             </p>
-            <div class="bg-f4 pd-10 fz-14 mt-3 mb-5">
+            <div class="bg-f4 pd-10 fz-14 mt-3">
               <table class="w100p">
                 <tr class="gray">
                   <td>Type</td>
                   <td>Name</td>
                   <td>Value</td>
                 </tr>
-                <tr v-for="(row, j) in it.conflicts" :key="j">
-                  <td>{{ row.type }}</td>
-                  <td>@</td>
-                  <td class="wb-all">{{ row.value }}</td>
+                <tr>
+                  <td>{{ it.isA ? "A" : "CNAME" }}</td>
+                  <td>{{ it.pre }}</td>
+                  <td>
+                    <p
+                      class="mt-3 hover-1 wb-all"
+                      v-clipboard="it.isA ? dns.ip : dns.cname"
+                      @success="$toast('Copied to clipboard !')"
+                    >
+                      {{ it.isA ? dns.ip : dns.cname }}
+                      <v-icon size="14" class="ml-1">mdi-content-copy</v-icon>
+                    </p>
+                  </td>
                 </tr>
               </table>
             </div>
-          </template>
-          <p class="gray mt-3 fz-14">
-            <span v-if="it.conflicts.length">Afterwards,</span>
-            Set the following record on your DNS provider to continue:
-          </p>
-          <div class="bg-f4 pd-10 fz-14 mt-3">
-            <table class="w100p">
-              <tr class="gray">
-                <td>Type</td>
-                <td>Name</td>
-                <td>Value</td>
-              </tr>
-              <tr>
-                <td>{{ it.isA ? "A" : "CNAME" }}</td>
-                <td>{{ it.pre }}</td>
-                <td>
-                  <p
-                    class="mt-3 hover-1 wb-all"
-                    v-clipboard="it.isA ? dns.ip : dns.cname"
-                    @success="$toast('Copied to clipboard !')"
-                  >
-                    {{ it.isA ? dns.ip : dns.cname }}
-                    <v-icon size="14" class="ml-1">mdi-content-copy</v-icon>
-                  </p>
-                </td>
-              </tr>
-            </table>
           </div>
         </div>
-      </div>
-    </template>
+      </template>
+    </div>
+
+    <div class="bd-1 pd-20 mt-5">
+      <st-domains-ens></st-domains-ens>
+    </div>
   </div>
 </template>
 
