@@ -177,7 +177,7 @@ export default {
       this.$loading.close();
     },
     onErr(e) {
-      // console.log(e);
+      console.log(e);
       if (e) this.$alert(e.message);
     },
   },
