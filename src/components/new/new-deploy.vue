@@ -308,6 +308,11 @@ export default {
     value() {
       this.curStep = 0;
     },
+    curStep(val) {
+      if (val == 2) {
+        this.getFramework();
+      }
+    },
     importItem() {
       this.branchKey = "";
       this.getBranchList();
@@ -353,8 +358,13 @@ export default {
       try {
         this.scripts = null;
         this.form.buildCommand = "";
+        let params = {};
+        if (this.initSrcDir != this.srcDir) {
+          params.path = this.srcDir.replace(/^\//, "");
+        }
         const { data } = await this.$http.get(
-          "/project/detect-framework/" + this.importItem.id
+          "/project/detect-framework/" + this.importItem.id,
+          { params }
         );
         let { scripts, framework } = data;
         this.form.framework = framework || null;
@@ -444,7 +454,6 @@ export default {
       if (framework == "other") framework = null;
       this.form.framework = framework;
       this.onFramework(framework);
-      this.getFramework();
       try {
         this.selecting = true;
         await this.getRepoDir();
