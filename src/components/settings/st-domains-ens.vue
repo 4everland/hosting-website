@@ -1,7 +1,9 @@
 <template>
   <div>
     <h3>ENS</h3>
-    <div class="gray mt-1 fz-14">Add your ENS to your 4everland site.</div>
+    <div class="gray mt-1 fz-14" v-if="!info || !info.ens">
+      Add your ENS to your 4everland site.
+    </div>
     <div class="mt-5">
       <v-skeleton-loader type="article" v-if="!info" />
       <div class="d-flex" v-else-if="info.ens">
