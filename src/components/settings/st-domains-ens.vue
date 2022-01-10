@@ -4,15 +4,34 @@
     <div class="gray mt-1 fz-14">Add your ENS to your 4everland site.</div>
     <div class="mt-5">
       <v-skeleton-loader type="article" v-if="!info" />
-      <div v-else-if="info.ens">
+      <div class="d-flex" v-else-if="info.ens">
         <v-btn
+          class="mr-auto"
           :href="`https://app.ens.domains/name/${info.ens}/details`"
           target="_blank"
           outlined
-          color="primary"
+          color="success"
         >
           {{ info.ens }}
         </v-btn>
+        <e-menu offset-y open-on-hover>
+          <v-btn slot="ref" icon>
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+          <v-list dense>
+            <v-list-item
+              link
+              v-clipboard="ipnsHash"
+              dense
+              @success="$toast('Copied to clipboard !')"
+            >
+              <span>Copy IPNS</span>
+            </v-list-item>
+            <v-list-item link @click="onRemove">
+              <span class="red-1">Remove</span>
+            </v-list-item>
+          </v-list>
+        </e-menu>
       </div>
       <div class="d-flex" v-else>
         <v-text-field
@@ -43,11 +62,12 @@ import { mapState } from "vuex";
 import { namehash } from "@ensdomains/ensjs";
 import { encode, decode } from "@ensdomains/content-hash";
 import { getProvider, getENSRegistry, getResolver } from "../../plugins/ens";
+const reg = /.+\.eth$/;
 
 export default {
   data() {
     return {
-      domain: "",
+      domain: localStorage.ensDomain || "",
       adding: false,
       ipnsHash: "",
       info: null,
@@ -59,10 +79,29 @@ export default {
       connectAddr: (s) => s.connectAddr,
     }),
   },
+  watch: {
+    domain(val) {
+      if (reg.test(val)) localStorage.ensDomain = val;
+    },
+  },
   created() {
     this.getInfo();
   },
   methods: {
+    async onRemove() {
+      try {
+        await this.$confirm(
+          `${this.info.ens} will be removed. Are you sure you want to continue?`
+        );
+        this.domain = "";
+        this.$loading();
+        await this.getInfo(true);
+        this.$toast("Removed successfully");
+      } catch (error) {
+        //
+      }
+      this.$loading.close();
+    },
     async getInfo(isPut) {
       try {
         const { id } = this.$route.params;
@@ -70,6 +109,7 @@ export default {
         if (isPut) {
           body.ens = this.domain;
         }
+        console.log(body);
         const { data } = await this.$http.put("/project/ipns/" + id, body);
         this.ipnsHash = data.ipns;
         this.info = data;
@@ -103,7 +143,7 @@ export default {
         this.showConnect();
         return;
       }
-      if (!/.+\.eth$/.test(this.domain)) {
+      if (!reg.test(this.domain)) {
         return this.$alert("Invalid ETH Domain");
       }
       this.verify();

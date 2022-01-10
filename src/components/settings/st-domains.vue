@@ -10,7 +10,7 @@
 
 <template>
   <div class="st-domains">
-    <div class="bd-1 pd-20">
+    <div _class="bd-1 pd-20">
       <h3>Domains</h3>
       <div class="gray mt-1 fz-14">
         These domains are assigned to your Production Deployments.
@@ -119,7 +119,7 @@
                   <td>{{ it.pre }}</td>
                   <td>
                     <p
-                      class="mt-3 hover-1 wb-all"
+                      class="hover-1 wb-all"
                       v-clipboard="it.isA ? dns.ip : dns.cname"
                       @success="$toast('Copied to clipboard !')"
                     >
