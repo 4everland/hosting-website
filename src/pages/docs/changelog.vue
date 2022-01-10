@@ -39,6 +39,14 @@ export default {
     return {
       list: [
         {
+          time: "2022-01-10",
+          img: "img/log/2022-1-10.png",
+          con: `<h3>Added some new features</h3>
+          <ul>
+          <li>Support ENS and IPNS</li>
+          </ul>`,
+        },
+        {
           time: "2022-01-07",
           img: "img/log/2022-1-7.png",
           con: `<h3>Improved some details of 4EVERLAND HOSTING</h3>
