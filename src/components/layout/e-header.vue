@@ -129,7 +129,10 @@ export default {
           to: "/pricing",
         },
       ];
-      const { username, email } = this.userInfo;
+      let { username, email } = this.userInfo;
+      if (!username && email) {
+        username = email.split("@")[0] || email;
+      }
       // avatar
       if (username) {
         let feedback = {
