@@ -91,11 +91,13 @@
                   >
                     <v-icon>mdi-folder-outline</v-icon>
                     <span class="ml-2">{{ it.name }}</span>
+
+                    <!-- @click="onSelect(it)" -->
                     <v-btn
                       small
                       color="primary"
                       class="ml-auto"
-                      @click="onSelect(it)"
+                      :to="`/project/${it.name}/${it.id}/settings?tab=1`"
                       >{{ $t(`${locales}Select`) }}</v-btn
                     >
                   </div>
