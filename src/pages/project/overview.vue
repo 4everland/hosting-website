@@ -64,7 +64,7 @@
               :loading="building"
               v-else-if="info.online !== false"
             >
-              Build Now
+              Deploy
             </v-btn>
             <v-btn class="ml-5" small :to="getLink('domain')">
               View Domains
