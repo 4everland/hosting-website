@@ -362,6 +362,7 @@ export default {
         if (this.initSrcDir != this.srcDir) {
           params.path = this.srcDir.replace(/^\//, "");
         }
+        this.selecting = true;
         const { data } = await this.$http.get(
           "/project/detect-framework/" + this.importItem.id,
           { params }
@@ -383,6 +384,7 @@ export default {
       } catch (error) {
         console.log(error);
       }
+      this.selecting = false;
     },
     async onDeploy() {
       if (this.curStep == 0) {
