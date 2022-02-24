@@ -122,7 +122,7 @@ export default {
     },
     async getList() {
       const { repo, config } = this.info;
-      if (!repo) return;
+      if (!repo || !repo.id) return;
       if (this.loading) {
         this.page += 1;
       } else {
