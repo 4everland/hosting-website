@@ -90,7 +90,6 @@ export default {
     },
   },
   mounted() {
-    // console.log(this.info);
     this.getList();
   },
   methods: {
