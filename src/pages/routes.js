@@ -13,6 +13,7 @@ import CloneFlow from "./new/clone-flow";
 import BugBounty from "./docs/bug-bounty";
 import userRoutes from "./user/routes";
 import StatisDetail from "./docs/statis-detail.vue";
+import MintTPL from "./solution/mint-tpl";
 
 export default [
   {
@@ -44,6 +45,10 @@ export default [
   {
     path: "/templates",
     component: Templates,
+  },
+  {
+    path: "/mint-template",
+    component: MintTPL,
   },
   {
     path: "/solution/:name",
