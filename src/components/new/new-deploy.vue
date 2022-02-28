@@ -172,7 +172,7 @@
               </v-expansion-panel>
             </v-expansion-panels>
 
-            <v-expansion-panels class="mt-5">
+            <v-expansion-panels class="mt-5" v-model="pan1Idx">
               <v-expansion-panel>
                 <v-expansion-panel-header>
                   {{ $t(`${locales}EnvironmentVariables`) }}
@@ -253,6 +253,7 @@ export default {
       initSrcDir: srcDir,
       frameworks,
       pan0Idx: 0,
+      pan1Idx: 0,
       buildCommandHint: "",
       form: {
         name: "",
@@ -446,7 +447,7 @@ export default {
       if (!this.form.currentBranch) {
         return this.$toast("Branch must be choosen.");
       }
-      this.envList = [];
+      // this.envList = [];
       let name = this.importItem.name;
       if (/-project$/.test(name)) {
         name += "-" + this.$utils.getNonce(4);

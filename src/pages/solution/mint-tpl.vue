@@ -14,7 +14,7 @@
           color="#A27EC6"
           :to="`/new/clone-flow?s=${encodeURIComponent(
             'https://github.com/Mint-Box/mint-box-template'
-          )}`"
+          )}&e=contractAddr:0x86Bc6E0608C1F2E3507E868526F2653cD411d88C`"
         >
           <span class="white-0">Deploy</span>
         </v-btn>

@@ -137,7 +137,11 @@ export default {
           pushUrl,
           ...this.info,
         });
-        this.$router.replace("/new?c=" + data);
+        let link = "/new?c=" + data;
+        const { e } = this.$route.query;
+        if (e) link += `&e=${encodeURIComponent(e)}`;
+        console.log(link);
+        this.$router.replace(link);
       } catch (error) {
         if (error.code == 10026) {
           this.$confirm(error.message).then(() => {
@@ -171,11 +175,11 @@ export default {
           // noTip: false,
         });
         this.info = data;
-        let name = data.name.replace(/\./g, '-');
-        if(data.dir != '/') {
-          name = /\/([^/]*)$/.exec(data.dir)[1] + '-project'
+        let name = data.name.replace(/\./g, "-");
+        if (data.dir != "/") {
+          name = /\/([^/]*)$/.exec(data.dir)[1] + "-project";
         }
-        this.name = name
+        this.name = name;
       } catch (error) {
         console.log(error);
         this.errMsg = error.message;

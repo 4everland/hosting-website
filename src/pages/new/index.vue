@@ -5,6 +5,7 @@
     <v-dialog v-model="showSelect" max-width="600">
       <e-dialog-close @click="showSelect = false" />
       <new-deploy
+        ref="newDeploy"
         :value="showSelect"
         :clone="!!isClone"
         :importItem="importItem"
@@ -341,6 +342,7 @@ export default {
           it.fwImg = this.$getFramework(it.frameWorkAdvice).logo;
           return it;
         });
+        let envList = [];
         if (this.cloneDir) {
           const item = this.list.filter((it) => it.name == this.cloneDir)[0];
           if (item) {
@@ -348,9 +350,28 @@ export default {
             this.onImport(item);
           }
           this.cloneDir = "";
+          let { e } = this.$route.query;
+          if (e) {
+            envList = decodeURIComponent(e)
+              .split(";")
+              .map((txt) => {
+                return txt.split(":");
+              })
+              .filter((it) => it.length == 2)
+              .map((arr) => {
+                return {
+                  key: arr[0],
+                  value: arr[1],
+                };
+              });
+          }
         }
+        this.$nextTick(() => {
+          this.$refs.newDeploy.envList = envList;
+          console.log(envList);
+        });
       } catch (error) {
-        //
+        console.log(error);
       }
       this.loading = false;
     },
