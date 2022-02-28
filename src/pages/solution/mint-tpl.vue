@@ -8,7 +8,6 @@
           contract address to set environment variables and deploy the project.
           Come and try it out!
         </p>
-        <p class="color-1">Here is the link to the deployment site.</p>
       </div>
       <div class="mt-15">
         <v-btn
