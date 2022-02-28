@@ -201,7 +201,13 @@
                     :items="envList2"
                     hide-default-footer
                     v-show="envList.length"
-                  ></v-data-table>
+                  >
+                    <template v-slot:item.act="{ index }">
+                      <v-btn color="error" icon @click="onDelEnv(index)">
+                        <v-icon size="16">mdi-delete-outline</v-icon>
+                      </v-btn>
+                    </template>
+                  </v-data-table>
                 </v-expansion-panel-content>
               </v-expansion-panel>
             </v-expansion-panels>
@@ -269,6 +275,7 @@ export default {
       envHeaders: [
         { text: "Name", value: "key" },
         { text: "Value", value: "value" },
+        { text: "Action", value: "act" },
       ],
       envList: [],
       envForm: {
@@ -323,6 +330,9 @@ export default {
     },
   },
   methods: {
+    onDelEnv(i) {
+      this.envList.splice(i, 1);
+    },
     onBuildCmd(val) {
       if (!val) this.form.framework = null;
     },
