@@ -39,6 +39,18 @@ export default {
     return {
       list: [
         {
+          time: "2022-03-11",
+          img: "https://docs-images.4everland.store/bucketchangelog.gif",
+          con: `<h3>Add AR storage to 4EVERLAND Bucket</h3>
+          <ul>
+          <li>Added the function to automatically sync to AR when creating a Bucket</li>
+          <li>Add the AR synchronization function for a particular file.</li>
+          <li>Added AR History module.</li>
+          <li>Add AR-related fields to file info.</li>
+          <li>Modified the display style of the remaining storage.</li>
+          </ul>`,
+        },
+        {
           time: "2022-01-10",
           img: "img/log/2022-1-10.png",
           con: `<h3>Added some new features</h3>
