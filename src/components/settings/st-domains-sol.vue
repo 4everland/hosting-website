@@ -148,7 +148,7 @@ export default {
         this.info = data;
         if (data.sns != "") {
           this.domain = data.sns;
-          await this.verifyOwner();
+          this.owner = await this.verifyOwner();
         }
       } catch (error) {
         //
@@ -170,7 +170,9 @@ export default {
     async verifyConfiguration() {
       this.$loading();
       this.resolveData = await getResolveData(this.info.sns);
-      if (this.resolveData === this.info.content) {
+      console.log(this.resolveData);
+      console.log(this.info.content);
+      if (this.resolveData && this.resolveData === this.info.content) {
         this.info.verify = true;
       } else {
         this.info.verify = false;
@@ -193,7 +195,7 @@ export default {
       this.$loading.close();
     },
 
-    onAdd() {
+    async onAdd() {
       let hostnameArray = this.domain.split(".");
       if (!reg.test(this.domain)) {
         return this.$alert("The domain name you entered is invalid.");
@@ -201,27 +203,28 @@ export default {
       if (hostnameArray.length !== 2) {
         return this.$alert("The domain name you entered is invalid.");
       }
-      this.verifyOwner(true).then(() => {
-        this.$confirm(
-          `${this.owner.cutStr(6, 4)} is the owner of ${
-            this.domain
-          }. Is that you?`
-        ).then(() => {
-          this.setInfo();
-        });
+      this.owner = await this.verifyOwner();
+      if (!this.owner) {
+        return this.$alert("Invalid Solana Domain");
+      }
+      this.$confirm(
+        `${this.owner.cutStr(6, 4)} is the owner of ${
+          this.domain
+        }. Is that you?`
+      ).then(async () => {
+        this.resolveData = await getResolveData(this.domain);
+        this.setInfo();
       });
     },
-    async verifyOwner(add) {
+    async verifyOwner() {
       try {
         this.$loading();
-        this.owner = await getOwner(this.domain);
-        if (add && !this.owner) {
-          return this.$alert("Invalid Solana Domain");
-        }
+        const owner = await getOwner(this.domain);
+        this.$loading.close();
+        return owner;
       } catch (error) {
         this.onErr(error);
       }
-      this.$loading.close();
     },
     async setContentHash() {
       this.$loading();
