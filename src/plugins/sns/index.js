@@ -111,15 +111,16 @@ export const getResolveData = async (domain) => {
 };
 
 export const domainUpdate = async (domain, cid) => {
+  const domainObj = await formatterDomainName(domain);
   // ipfs={CID}
   const input_data = Buffer.from(`ipfs=${cid}`);
   let programContent = await splNameService.updateNameRegistryData(
     connection,
-    formatterDomainName(domain).name,
+    domainObj.name,
     0,
     input_data,
     null,
-    formatterDomainName(domain).nameParent
+    domainObj.nameParent
   );
   const recentBlockhash = await connection.getRecentBlockhash();
   const resp = await window.solana.connect();

@@ -215,7 +215,7 @@ export default {
       }
       this.owner = await this.verifyOwner();
       if (!this.owner) {
-        return this.$alert("Invalid Solana Domain");
+        return this.$alert("Invalid SNS Domain");
       }
       this.$confirm(
         `${this.owner.cutStr(6, 4)} is the owner of ${
@@ -238,17 +238,22 @@ export default {
     },
     async setContentHash() {
       this.$loading();
-      const accountAddr = await getConnect();
-      if (accountAddr != this.owner) {
-        return this.$alert(
-          "Connected account is not the controller of the domain. "
-        );
-      }
-      const transaction = await domainUpdate(this.info.sns, this.info.cid);
-      const result = await sendTransaction(transaction);
-      if (result) {
-        this.resolveData = await getResolveData(this.info.sns);
-        this.setInfo();
+      try {
+        const accountAddr = await getConnect();
+        if (accountAddr != this.owner) {
+          return this.$alert(
+            "Connected account is not the controller of the domain. "
+          );
+        }
+        const transaction = await domainUpdate(this.info.sns, this.info.cid);
+        const result = await sendTransaction(transaction);
+        if (result) {
+          this.resolveData = await getResolveData(this.info.sns);
+          this.setInfo();
+        }
+      } catch (error) {
+        console.log(error);
+        return this.$alert(error.message);
       }
       this.$loading.close();
     },
