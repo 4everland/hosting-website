@@ -4,7 +4,7 @@
     <div v-else-if="!info.ens">
       <h3>ENS</h3>
       <div class="gray mt-1 fz-14">
-        Add your ENS to your 4everland site.
+        Add your ENS name to your site.
       </div>
       <div class="mt-5">
         <div class="d-flex">
