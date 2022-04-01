@@ -77,11 +77,7 @@
                     >
                       <span>Copy CID</span>
                     </v-list-item>
-                    <v-list-item
-                      v-if="!info.verify"
-                      link
-                      @click="verifyConfiguration"
-                    >
+                    <v-list-item link @click="verifyConfiguration">
                       <span>Verify Configuration</span>
                     </v-list-item>
                     <v-list-item link @click="onRemove">
@@ -184,10 +180,10 @@ export default {
       console.log(this.info.content);
       if (this.resolveData && this.resolveData === this.info.content) {
         this.info.verify = true;
+        this.setInfo();
       } else {
         this.info.verify = false;
       }
-      this.setInfo();
       this.$loading.close();
     },
     async onRemove() {
@@ -246,7 +242,9 @@ export default {
           );
         }
         const transaction = await domainUpdate(this.info.sns, this.info.cid);
+        console.log(transaction);
         const result = await sendTransaction(transaction);
+        console.log(result);
         if (result) {
           this.resolveData = await getResolveData(this.info.sns);
           this.setInfo();

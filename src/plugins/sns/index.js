@@ -46,7 +46,7 @@ async function getContentFromAccount(connection, publicKey) {
   const data = nameAccount.data
     .toString("ascii")
     .slice(96)
-    .replace(/\0/g, "");
+    .replace(/\0.*$/g, "");
   return data;
 }
 
@@ -113,7 +113,7 @@ export const getResolveData = async (domain) => {
 export const domainUpdate = async (domain, cid) => {
   const domainObj = await formatterDomainName(domain);
   // ipfs={CID}
-  const input_data = Buffer.from(`ipfs=${cid}`);
+  const input_data = Buffer.from(`ipfs=${cid}\0`);
   let programContent = await splNameService.updateNameRegistryData(
     connection,
     domainObj.name,
