@@ -34,7 +34,17 @@
         <div class="mb-6 mt-3">
           <div class="d-flex al-c flex-wrap">
             <div class="mr-auto">
-              <h3 class="mr-auto">{{ info.sns }}</h3>
+              <h3 class="mr-auto">
+                <a
+                  :href="
+                    `https://naming.bonfida.org/#/domain/${
+                      info.sns.split('.')[0]
+                    }`
+                  "
+                  target="_blank"
+                  >{{ info.sns }}</a
+                >
+              </h3>
               <div class="d-flex al-c mt-2">
                 <v-icon :color="info.verify ? 'success' : 'error'" size="18">
                   mdi-{{ info.verify ? "check-circle" : "information" }}
