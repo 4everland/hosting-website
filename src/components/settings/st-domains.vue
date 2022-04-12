@@ -136,6 +136,9 @@
     </div>
 
     <div class="bd-1 pd-20 mt-5">
+      <st-domains-sol></st-domains-sol>
+    </div>
+    <div class="bd-1 pd-20 mt-5">
       <st-domains-ens></st-domains-ens>
     </div>
   </div>
