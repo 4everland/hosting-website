@@ -366,60 +366,54 @@ export default {
       //   return;
       // }
       //
-      if (!this.isFinal) {
-        return this.$alert(
-          "The claim is expected to start on 21st October, please make sure that you have added your ETH wallet address in time otherwise you might lost your rewards."
-        );
-      }
-
-      if (!window.ethContract) {
-        const isOk = await this.connectMetaMask();
-        if (!isOk) return;
-        this.$setState({
-          noticeMsg: {
-            name: "walletConnect",
-          },
-        });
-        await this.$sleep(100);
-        // console.log(window.ethContract);
-      }
-
-      await this.checkNet();
-      if (!this.isNetOk) return this.$alert(this.netTip);
-
-      let accounts = await window.web3.eth.getAccounts();
-      const account = accounts[0] || "";
-      if (!this.ethAddr) {
-        if (account) this.ethAddr = account;
-        else {
-          return this.$alert("No Wallet Address");
-        }
-      } else {
-        this.errAccount = account.toLowerCase() != this.ethAddr.toLowerCase();
-        if (this.errAccount) {
-          return this.$alert(
-            `Wallet address(${this.ethAddr.cutStr(
-              6,
-              4
-            )}) is not connected in MetaMask.`
-          );
-        }
-      }
-
-      let info = this.claimInfo;
-      if (!info) {
-        info = await this.getClaimInfo();
-      }
-      // const info = actAbi.result.claims[this.ethAddr];
-      // if (!info || !info.tokenId) {
-      //   return this.$alert(`Your Wallet address is not in reward list.`);
-      // }
-
-      const { methods } = window.ethContract;
       try {
+        this.claimLoading = true;
+        if (!window.ethContract) {
+          const isOk = await this.connectMetaMask();
+          if (!isOk) return;
+          this.$setState({
+            noticeMsg: {
+              name: "walletConnect",
+            },
+          });
+          await this.$sleep(100);
+          // console.log(window.ethContract);
+        }
+
+        await this.checkNet();
+        if (!this.isNetOk) throw new Error(this.netTip);
+
+        let accounts = await window.web3.eth.getAccounts();
+        const account = accounts[0] || "";
+        if (!this.ethAddr) {
+          if (account) this.ethAddr = account;
+          else {
+            throw new Error("No Wallet Address");
+          }
+        } else {
+          this.errAccount = account.toLowerCase() != this.ethAddr.toLowerCase();
+          if (this.errAccount) {
+            throw new Error(
+              `Wallet address(${this.ethAddr.cutStr(
+                6,
+                4
+              )}) is not connected in MetaMask.`
+            );
+          }
+        }
+
+        let info = this.claimInfo;
+        if (!info) {
+          info = await this.getClaimInfo();
+        }
+        // const info = actAbi.result.claims[this.ethAddr];
+        // if (!info || !info.tokenId) {
+        //   return this.$alert(`Your Wallet address is not in reward list.`);
+        // }
+
+        const { methods } = window.ethContract;
         if (this.isClaimed) {
-          this.$alert("Your wallet address has been claimed.");
-          return;
+          throw new Error("Your wallet address has been claimed.");
         }
 
         if (localStorage.claim_txid) {
@@ -428,11 +422,9 @@ export default {
           );
           console.log(trans);
           if (trans && !trans.blockHash) {
-            return this.$alert("The Claim Transaction is running.");
+            throw new Error("The Claim Transaction is running.");
           }
         }
-
-        this.claimLoading = true;
         await methods
           .claim(
             info.index,
@@ -460,7 +452,7 @@ export default {
         this.isClaimed = true;
         this.addSymbol();
         await this.$alert(
-          '<div class="mt-5 ta-c"><img src="img/bg/party.gif" style="height: 200px;" /></div>',
+          '<div class="mt-5 ta-c"><img src="https://4ever-web.4everland.store/bg/party.gif" style="height: 200px;" /></div>',
           "Claim successfully!",
           {
             type: "success",
@@ -468,16 +460,16 @@ export default {
         );
         this.$router.push("/collections");
       } catch (error) {
+        console.log(error);
         if (localStorage.claim_txid) {
           localStorage.claim_fail_txid = localStorage.claim_txid;
           localStorage.claim_txid = "";
         }
-        console.log(error);
         let msg = error.message;
         if (/Not Found/i.test(msg)) {
           msg = "Your Wallet address is not in reward list.";
         }
-        this.$alert(error.message);
+        this.$alert(msg);
       }
       this.claimLoading = false;
     },
