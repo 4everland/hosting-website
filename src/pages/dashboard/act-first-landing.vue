@@ -367,10 +367,10 @@ export default {
       // }
       //
       try {
-        this.claimLoading = true;
         if (!window.ethContract) {
           const isOk = await this.connectMetaMask();
           if (!isOk) return;
+          this.claimLoading = true;
           this.$setState({
             noticeMsg: {
               name: "walletConnect",
@@ -441,6 +441,7 @@ export default {
             (err, txid) => {
               if (err) {
                 this.$alert(err.message);
+                this.claimLoading = false;
                 return;
               }
               localStorage.claim_txid = txid;

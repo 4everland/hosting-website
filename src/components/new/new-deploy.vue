@@ -354,7 +354,7 @@ export default {
       const { buildCommand = {}, outputDirectory = {} } = item.settings || {};
       this.form.buildCommand = buildCommand.value || "";
       this.buildCommandHint = buildCommand.placeholder || "";
-      this.form.outputDirectory = outputDirectory.value || "";
+      this.form.outputDirectory = outputDirectory.value || "./";
     },
     addEnv() {
       const { key } = this.envForm;
