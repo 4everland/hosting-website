@@ -34,6 +34,14 @@ new Vue({
       noticeMsg: (s) => s.noticeMsg,
     }),
   },
+  created() {
+    console.log(this.$route.query);
+    const { v } = this.$route.query;
+    if (v != 1) {
+      location.href = "https://dashboard.4everland.org";
+      return;
+    }
+  },
   mounted() {
     this.onInit();
   },
